@@ -1,0 +1,44 @@
+{
+    "dialogues": [
+      {
+        "event": 1,
+        "character": "Soulie",
+        "text": "You finally wake up... but you are not whole. Someone has stripped you of what you once were. Your guts, your heart, and your mind are scattered. Only by recovering them can you become yourself again."
+      },
+      {
+        "event": 2,
+        "character": "Soulie",
+        "text": "You have recovered a part of yourself, but there is still a long way to go. The darkness grows denser as you move forward."
+      },
+      {
+        "event": 3,
+        "character": "Soulie",
+        "text": "Your heart... It still beats strongly. Now you can use it to destroy certain obstacles in your path."
+      },
+      {
+        "event": 4,
+        "character": "Soulie",
+        "text": "Each piece you recover brings you closer to your essence, but it also brings you closer to hell... and to the one who took everything from you."
+      },
+      {
+        "event": 5,
+        "character": "Diablo",
+        "text": "You have crawled all the way here of your own will. How pathetic. Do you really think a bag of bones can challenge me?"
+      },
+      {
+        "event": 6,
+        "character": "Soulie",
+        "text": "You are more than you appear. You have crossed death and despair. Reclaim what is yours."
+      },
+      {
+        "event": 7,
+        "character": "Soulie",
+        "text": "Finally, a way to protect us from those annoying attacks. Use it to repel enemy strikes."
+      },
+      {
+        "event": 8,
+        "character": "Soulie",
+        "text": "You did it. You are whole once more... But tell me, what will you do now that you remember who you are?"
+      }
+    ]
+  }

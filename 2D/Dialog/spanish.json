@@ -1,0 +1,44 @@
+{
+  "dialogos": [
+    {
+      "evento": 1,
+      "personaje": "Soulie",
+      "texto": "Por fin despiertas... pero no estás completo. Alguien te ha despojado de lo que fuiste. Tus entrañas, tu corazón y tu mente están dispersos. Sólo si los recuperas podrás volver a ser tú."
+    },
+    {
+      "evento": 2,
+      "personaje": "Soulie",
+      "texto": "Has recuperado algo de ti, pero aún queda un largo camino. La oscuridad se vuelve más densa conforme avanzas."
+    },
+    {
+      "evento": 3,
+      "personaje": "Soulie",
+      "texto": "Tu corazón... Aún late con fuerza. Ahora podrás usarlo para destruir ciertos obstáculos que se interpongan en tu camino."
+    },
+    {
+      "evento": 4,
+      "personaje": "Soulie",
+      "texto": "Cada pieza que recuperas te acerca más a tu esencia, pero también te acerca al infierno... y a quien te arrebató todo."
+    },
+    {
+      "evento": 5,
+      "personaje": "Diablo",
+      "texto": "Te has arrastrado hasta aquí por tu propia voluntad. Qué patético. ¿Crees que un saco de huesos puede desafiarme?"
+    },
+    {
+      "evento": 6,
+      "personaje": "Soulie",
+      "texto": "Eres más de lo que pareces. Has cruzado la muerte y la desesperación. Recupera lo que es tuyo."
+    },
+    {
+      "evento": 7,
+      "personaje": "Soulie",
+      "texto": "Por fin un modo de protegernos de esos molestos ataques. Úsalo para repeler los ataques de los enemigos."
+    },
+    {
+      "evento": 8,
+      "personaje": "Soulie",
+      "texto": "Lo has logrado. Estás completo una vez más... Pero dime, ¿qué harás ahora que recuerdas quién eres?"
+    }
+  ]
+}
