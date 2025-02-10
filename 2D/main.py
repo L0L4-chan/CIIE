@@ -10,16 +10,25 @@ Version: 1.0.0
 '''
 
 import pygame, sys , random
+import config as c
+import player
+
 
 pygame.init()
 
-#Const 
-WIDTH =  1020
-HEIGTH = 1020
-
-PAUSE = False
-#Will be initiate when the language is selected
-DIALOG = []
+FramePerSec = pygame.time.Clock()
 
 
 
+
+#Game Loop
+
+while(True):
+
+
+
+   # game code
+
+    # update frame
+    pygame.display.update()
+    FramePerSec.tick(c.FPS)
