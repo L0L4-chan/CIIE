@@ -9,11 +9,12 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys , random, gameManager
+import pygame, sys , random
+from gameManager import GameManager
 
 class Load():
     def __init__(self):
         super().__init__()
-        self.screen = gameManager.screen
+        self.gameManager = GameManager.get_instance()
 
 

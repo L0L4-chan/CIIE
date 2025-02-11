@@ -9,6 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 import pygame, sys , random
+from gameManager import GameManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Player():

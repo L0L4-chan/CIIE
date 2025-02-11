@@ -9,18 +9,20 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys, gameManager
+import pygame, sys
+from gameManager import GameManager
 
 
 class Game():
 
     def __init__(self):
        pygame.init()
+       self.gameManager = GameManager.get_instance()
 
 
-    def main():
+    def main(self):
 
-        while gameManager.running:
+        while self.gameManager.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -32,7 +34,7 @@ class Game():
 
             # update frame
             pygame.display.update()
-            gameManager.clock.tick(gameManager.FPS)
+            self.gameManager.clock.tick(self.gameManager.FPS)
 
 
         pygame.quit()

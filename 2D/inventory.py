@@ -9,10 +9,11 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys, gameManager
+import pygame, sys
+from gameManager import GameManager
 
 class Inventory():
  
     def __init__(self):
         super().__init__()
-        self.screen = gameManager.screen
+        self.gameManager = GameManager.get_instance()
