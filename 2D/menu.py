@@ -19,7 +19,7 @@ class Menu():
         super().__init__()
         self.gameManager = GameManager.get_instance() 
         self.screen = self.gameManager.screen  
-        self.bg = pygame.image.load("Art/background/Menu.jpg")
+        self.bg = pygame.image.load(f"Art/{self.gameManager.artpath}/background/Menu.jpg")
         self.font = pygame.font.SysFont('arial', self.gameManager.lettering) 
 
         # Botones del menú

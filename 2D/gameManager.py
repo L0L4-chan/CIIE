@@ -24,7 +24,7 @@ class GameManager():
     ONGAME = False # in case of being on game
     PAUSE = False # in case of pause
 
-
+    artpath = "big"
     lettering = 48 
     btn_lettering = 30 
     
@@ -45,6 +45,10 @@ class GameManager():
     def __init__(self):
         if not self._initialized:
             pygame.init()
+            pygame.mixer.pre_init(44100,16,2,4096)
+            pygame.mixer.init()
+            pygame.mixer.music.load("Sound/BSO/Credits.wav")
+            pygame.mixer.music.play()
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGTH))  # Tamaño por defecto, puede cambiarse
             pygame.display.set_caption("Skelly & Soulie")
             self.clock = pygame.time.Clock()

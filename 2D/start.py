@@ -13,6 +13,10 @@ import pygame, sys
 from gameManager import GameManager
 
 class Start():
+     
+     stop_motion = []
+
      def __init__(self):
         super().__init__()
         self.gameManager = GameManager.get_instance()
+        

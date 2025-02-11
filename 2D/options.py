@@ -20,7 +20,7 @@ class Options():
         super().__init__()
         self.gameManager = GameManager.get_instance() 
         self.screen = self.gameManager.screen  
-        self.bg = pygame.image.load("Art/background/Options.jpg")
+        self.bg = pygame.image.load(f"Art/{self.gameManager.artpath}/background/Options.jpg")
         self.font = pygame.font.SysFont('arial', self.gameManager.lettering) 
         
 
@@ -53,26 +53,25 @@ class Options():
                 if self.buttons["hard"].checkForInput(pygame.mouse.get_pos()):
                    self.gameManager.config["difficulty"] = 3   
                 if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):
-                   self.gameManager.WIDTH = 720
-                   self.gameManager.HEIGTH = 405
-                   self.gameManager.lettering = 30 
-                   self.gameManager.btn_lettering = 20
-                   self.font = pygame.font.SysFont('arial', self.gameManager.lettering) 
-                   self.gameManager.change_resolution()
-                   self.new_buttons()
+                   self.change_resolution(width = 720, heigth = 405, ltt= 30, btn_ltt = 20, art ="small")
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
-                   self.gameManager.WIDTH = 1280
-                   self.gameManager.HEIGTH = 720
-                   self.gameManager.lettering = 48
-                   self.gameManager.btn_lettering = 30
-                   self.font = pygame.font.SysFont('arial', self.gameManager.lettering)  
-                   self.font = pygame.font.SysFont('arial', self.big) 
-                   self.gameManager.change_resolution()
-                   self.new_buttons()
+                   self.change_resolution(width = 1280, heigth = 720, ltt= 48, btn_ltt = 30, art ="big")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
                    self.gameManager.load_menu()
                     
     
+    def change_resolution(self, width, heigth, ltt, btn_ltt, art):
+        self.gameManager.WIDTH = width
+        self.gameManager.HEIGTH = heigth
+        self.gameManager.lettering = ltt
+        self.gameManager.btn_lettering = btn_ltt
+        self.gameManager.artpath = art
+        self.font = pygame.font.SysFont('arial', self.gameManager.lettering)  
+        self.bg = pygame.image.load(f"Art/{self.gameManager.artpath}/background/Options.jpg") 
+        self.gameManager.change_resolution()
+        self.new_buttons()
+
+
     def new_buttons(self):
         self.buttons = {
             "galician": button.Button(pos=((self.gameManager.WIDTH/8)*5, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["galician"],size = self.gameManager.btn_lettering),
