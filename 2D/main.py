@@ -9,26 +9,9 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys , random
-import config as c
-import player
+from gameManager import GameManager
 
-
-pygame.init()
-
-FramePerSec = pygame.time.Clock()
-
-
-
-
-#Game Loop
-
-while(True):
-
-
-
-   # game code
-
-    # update frame
-    pygame.display.update()
-    FramePerSec.tick(c.FPS)
+if __name__ == "__main__":
+    game = GameManager() 
+    game.load_menu()
+    game.run()

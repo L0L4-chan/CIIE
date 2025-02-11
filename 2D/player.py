@@ -9,16 +9,16 @@ Lola Suárez González
 Version: 1.0.0
 '''
 import pygame, sys , random
-import config as c
+vec = pygame.math.Vector2 #2 for two dimensional
 
 class Player():
     #variables
 
-    #conxtructor
+    #constructor
     def __init__(self, x, y):
         super().__init__()
-        self.pos = c.vec(0.0)
-        self.vel = c.vec(0,0)
+        self.pos = vec(0.0)
+        self.vel = vec(0,0)
 
         self.jumping = False
         self.speed = 5
