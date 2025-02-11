@@ -2,5 +2,17 @@
   "PLAY" : "PLAY",
   "LOAD" : "LOAD",
   "OPTIONS" : "OPTIONS",
-  "QUIT" : "QUIT"
+  "QUIT" : "QUIT",
+  "LANGUAGE": "LANGUAGE",
+    "DIFFICULTY": "DIFFICULTY",
+    "RESOLUTION": "RESOLUTION",
+    "BACK": "BACK",
+    "galician": "GALICIAN",
+    "english": "ENGLISH",
+    "spanish":"SPANISH",
+    "easy": "EASY",
+    "medium": "MEDIUM",
+    "hard": "DIFFICULT",
+    "small": "720X405",
+    "big": "1280X720"
 }

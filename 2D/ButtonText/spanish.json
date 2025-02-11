@@ -3,6 +3,17 @@
     "PLAY" : "JUGAR",
     "LOAD" : "CARGAR PARTIDA",
     "OPTIONS" : "OPCIONES",
-    "QUIT" : "SALIR"
-
+    "QUIT" : "SALIR",
+    "LANGUAGE": "IDIOMA",
+    "DIFFICULTY": "DIFICULTAD",
+    "RESOLUTION": "RESOLUCION",
+    "BACK": "VOLVER",
+    "galician": "GALLEGO",
+    "english": "INGLES",
+    "spanish":"CASTELLANO",
+    "easy": "FACIL",
+    "medium": "INTERMEDIO",
+    "hard": "DIFICIL",
+    "small": "720X405",
+    "big": "1280X720"
 }

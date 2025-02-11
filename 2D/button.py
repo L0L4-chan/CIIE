@@ -12,11 +12,11 @@ Version: 1.0.0
 import pygame, sys , gameManager
 
 class Button():
-	def __init__(self, pos, text_input):
+	def __init__(self, pos, text_input, size):
 
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
-		self.font = pygame.font.SysFont('arial', 48)
+		self.font = pygame.font.SysFont('arial', size)
 		self.base_color = (255,255,255)
 		self.text_input = text_input
 		self.text = self.font.render(self.text_input, True, (255,255,255))

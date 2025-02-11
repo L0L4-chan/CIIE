@@ -24,6 +24,11 @@ class GameManager():
     ONGAME = False # in case of being on game
     PAUSE = False # in case of pause
 
+
+    lettering = 48 
+    btn_lettering = 30 
+    
+
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(GameManager, cls).__new__(cls)
@@ -48,7 +53,7 @@ class GameManager():
             #default configuration 
             self.config = {
                 "language" : "spanish",
-                "difficulty" : "normal",
+                "difficulty" : 2,
                 #otras configuraciones a utilizar
             }
 
@@ -61,7 +66,10 @@ class GameManager():
 
     def change_language(self, language):
         self.config["language"] = language
-        self.textos = self.load_texts(language)
+        self.textos = self.change_texts(language)
+
+    def change_resolution(self):
+        self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGTH)) 
 
     def load_menu(self):
         from menu import Menu

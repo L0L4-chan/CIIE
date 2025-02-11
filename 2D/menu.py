@@ -19,16 +19,11 @@ class Menu():
         super().__init__()
         self.gameManager = GameManager.get_instance() 
         self.screen = self.gameManager.screen  
-        self.bg = pygame.image.load("Art/background/cementerio.PNG")
-        self.font = pygame.font.SysFont('arial', 70) 
+        self.bg = pygame.image.load("Art/background/Menu.jpg")
+        self.font = pygame.font.SysFont('arial', self.gameManager.lettering) 
 
         # Botones del menú
-        self.buttons = {
-            "play": button.Button(pos=(200, 125), text_input= self.gameManager.btn_text["PLAY"]),
-            "load": button.Button(pos=(200, 225), text_input= self.gameManager.btn_text["LOAD"]),
-            "options": button.Button(pos=(200, 325), text_input= self.gameManager.btn_text["OPTIONS"]),
-            "quit": button.Button(pos=(200, 425), text_input= self.gameManager.btn_text["QUIT"]),
-        }
+        self.new_buttons()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -48,6 +43,18 @@ class Menu():
                     pygame.quit()
                     sys.exit()
 
+
+        
+    def new_buttons(self):
+         self.buttons = {
+            "play": button.Button(pos=(self.gameManager.WIDTH/8, (self.gameManager.HEIGTH/8) *3), text_input= self.gameManager.btn_text["PLAY"],size = self.gameManager.btn_lettering),
+            "load": button.Button(pos=(self.gameManager.WIDTH/8, (self.gameManager.HEIGTH/8)*4), text_input= self.gameManager.btn_text["LOAD"], size = self.gameManager.btn_lettering),
+            "options": button.Button(pos=(self.gameManager.WIDTH/8, (self.gameManager.HEIGTH/8)*5), text_input= self.gameManager.btn_text["OPTIONS"],size = self.gameManager.btn_lettering),
+            "quit": button.Button(pos=(self.gameManager.WIDTH/8, (self.gameManager.HEIGTH/8)*6), text_input= self.gameManager.btn_text["QUIT"],size = self.gameManager.btn_lettering),
+        }
+
+
+
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values():
@@ -56,7 +63,7 @@ class Menu():
     def render(self):
         self.screen.blit(self.bg, (0, 0))
         menu_text = self.font.render("MAIN MENU", True, (255, 255, 255))
-        self.screen.blit(menu_text, (50, 25))
+        self.screen.blit(menu_text, (self.gameManager.WIDTH/14, (self.gameManager.HEIGTH/6)))
         
         for btn in self.buttons.values():
             btn.update(self.screen)
