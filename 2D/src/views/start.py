@@ -14,7 +14,7 @@ from game.gameManager import GameManager
 from views.scene import Scene
 from game.platform import Platform
 from classes.player import Player
-from classes.enemy import Enemy
+from enemies.boss import Boss
 
 from game.game import Game
 
@@ -32,6 +32,6 @@ class Start():
    def run(self):
       #de momento para probar.
       self.gameManager.player = Player(400,300)
-      self.gameManager.enemy = Enemy(1,400,300)
+      self.gameManager.enemy = Boss(400,300)
 
       self.gameManager.scene = Game(Scene(background="cementerio.PNG", pt_skin= "Art/varios/Nueva carpeta/Tile_a(7).png"), sound = "Sound/BSO/levels-_2_.wav" )
