@@ -9,9 +9,9 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys , button
+import pygame, sys 
 from gameManager import GameManager
-
+from button import Button
 
 class Options():
 
@@ -74,15 +74,15 @@ class Options():
 
     def new_buttons(self):
         self.buttons = {
-            "galician": button.Button(pos=((self.gameManager.WIDTH/8)*5, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["galician"],size = self.gameManager.btn_lettering),
-            "english": button.Button(pos=((self.gameManager.WIDTH/8)*6, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["english"],size = self.gameManager.btn_lettering),
-            "spanish": button.Button(pos=((self.gameManager.WIDTH/8)*7, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["spanish"],size = self.gameManager.btn_lettering),
-            "easy": button.Button(pos=((self.gameManager.WIDTH/8)*5, (self.gameManager.HEIGTH/10)*5), text_input= self.gameManager.btn_text["easy"],size = self.gameManager.btn_lettering),
-            "medium": button.Button(pos=((self.gameManager.WIDTH/8)*6, (self.gameManager.HEIGTH/10)*5), text_input= self.gameManager.btn_text["medium"],size = self.gameManager.btn_lettering),
-            "hard": button.Button(pos=((self.gameManager.WIDTH/8)*7, (self.gameManager.HEIGTH/10)*5), text_input= self.gameManager.btn_text["hard"],size = self.gameManager.btn_lettering),
-            "small": button.Button(pos=((self.gameManager.WIDTH/6)*4, (self.gameManager.HEIGTH/10)*7), text_input= self.gameManager.btn_text["small"],size = self.gameManager.btn_lettering),
-            "big": button.Button(pos=((self.gameManager.WIDTH/6)*5, (self.gameManager.HEIGTH/10)*7), text_input= self.gameManager.btn_text["big"],size = self.gameManager.btn_lettering),
-            "BACK": button.Button(pos=((self.gameManager.WIDTH/4)*3, (self.gameManager.HEIGTH/10)*8), text_input= self.gameManager.btn_text["BACK"],size = self.gameManager.btn_lettering),
+            "galician": Button(pos=((self.gameManager.WIDTH/8)*5, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["galician"],size = self.gameManager.btn_lettering),
+            "english": Button(pos=((self.gameManager.WIDTH/8)*6, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["english"],size = self.gameManager.btn_lettering),
+            "spanish": Button(pos=((self.gameManager.WIDTH/8)*7, (self.gameManager.HEIGTH/10)*3), text_input= self.gameManager.btn_text["spanish"],size = self.gameManager.btn_lettering),
+            "easy": Button(pos=((self.gameManager.WIDTH/8)*5, (self.gameManager.HEIGTH/10)*5), text_input= self.gameManager.btn_text["easy"],size = self.gameManager.btn_lettering),
+            "medium": Button(pos=((self.gameManager.WIDTH/8)*6, (self.gameManager.HEIGTH/10)*5), text_input= self.gameManager.btn_text["medium"],size = self.gameManager.btn_lettering),
+            "hard": Button(pos=((self.gameManager.WIDTH/8)*7, (self.gameManager.HEIGTH/10)*5), text_input= self.gameManager.btn_text["hard"],size = self.gameManager.btn_lettering),
+            "small": Button(pos=((self.gameManager.WIDTH/6)*4, (self.gameManager.HEIGTH/10)*7), text_input= self.gameManager.btn_text["small"],size = self.gameManager.btn_lettering),
+            "big": Button(pos=((self.gameManager.WIDTH/6)*5, (self.gameManager.HEIGTH/10)*7), text_input= self.gameManager.btn_text["big"],size = self.gameManager.btn_lettering),
+            "BACK": Button(pos=((self.gameManager.WIDTH/4)*3, (self.gameManager.HEIGTH/10)*8), text_input= self.gameManager.btn_text["BACK"],size = self.gameManager.btn_lettering),
         }
     
     def update(self):
