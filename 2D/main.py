@@ -10,8 +10,8 @@ Version: 1.0.0
 '''
 
 from gameManager import GameManager
-
+# Main class start of the game
 if __name__ == "__main__":
-    game = GameManager() 
-    game.load_menu()
-    game.run()
+    game = GameManager()  #create the singleton
+    game.load_menu() #load first screen
+    game.run() # start loop

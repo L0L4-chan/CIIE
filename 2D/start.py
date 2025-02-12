@@ -23,7 +23,8 @@ class Start():
    def __init__(self):
       super().__init__()
       self.gameManager = GameManager.get_instance()
-      #para la animación inicial antes de pasar al juego
+      # todo get everything ready for the animation
+
 
 
    def run(self):

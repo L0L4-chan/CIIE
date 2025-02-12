@@ -17,14 +17,15 @@ class Menu():
 
     def __init__(self):
         super().__init__()
-        self.gameManager = GameManager.get_instance() 
-        self.screen = self.gameManager.screen  
-        self.bg = pygame.image.load(f"Art/{self.gameManager.artpath}/background/Menu.jpg")
-        self.font = pygame.font.SysFont('arial', self.gameManager.lettering) 
+        self.gameManager = GameManager.get_instance() # access to the game manager
+        self.screen = self.gameManager.screen  # get screen
+        self.bg = pygame.image.load(f"Art/{self.gameManager.artpath}/background/Menu.jpg") #add background
+        self.font = pygame.font.SysFont('arial', self.gameManager.lettering) # set letter size and style
 
-        # Botones del menú
-        self.new_buttons()
+        # Botones del menu
+        self.new_buttons() #create buttons 
 
+    # to handle events from the mouse input
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -44,7 +45,7 @@ class Menu():
                     sys.exit()
 
 
-        
+    # create buttons    
     def new_buttons(self):
          self.buttons = {
             "play": Button(pos=(self.gameManager.WIDTH/8, (self.gameManager.HEIGTH/8) *3), text_input= self.gameManager.btn_text["PLAY"],size = self.gameManager.btn_lettering),
@@ -54,22 +55,24 @@ class Menu():
         }
 
 
-
+    # update buttons color in case the mouse is hovering on them
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values():
             btn.changeColor(mouse_pos)
 
+    # rendering the screen
     def render(self):
-        self.screen.blit(self.bg, (0, 0))
-        menu_text = self.font.render("MAIN MENU", True, (255, 255, 255))
-        self.screen.blit(menu_text, (self.gameManager.WIDTH/14, (self.gameManager.HEIGTH/6)))
+        self.screen.blit(self.bg, (0, 0)) #background
+        menu_text = self.font.render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
+        self.screen.blit(menu_text, (self.gameManager.WIDTH/14, (self.gameManager.HEIGTH/6))) # add to buffer
         
-        for btn in self.buttons.values():
+        for btn in self.buttons.values(): #add the buttons
             btn.update(self.screen)
 
-        pygame.display.update()
+        pygame.display.update() # show
 
+    # game loop 
     def run(self):
         while self.gameManager.running and self.gameManager.scene == self:
             self.handle_events()
