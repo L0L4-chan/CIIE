@@ -10,8 +10,8 @@ Version: 1.0.0
 '''
 
 import pygame, sys 
-from gameManager import GameManager
-from button import Button
+from game.gameManager import GameManager
+from ui.button import Button
 
 class Menu():
 

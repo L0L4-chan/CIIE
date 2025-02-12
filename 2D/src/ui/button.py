@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys , gameManager
+import pygame, sys , game.gameManager 
 
 class Button():
 	def __init__(self, pos, text_input, size):

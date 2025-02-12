@@ -10,7 +10,7 @@ Version: 1.0.0
 '''
 
 import pygame, random
-from gameManager import GameManager
+from game.gameManager import GameManager
 
 class Platform(pygame.sprite.Sprite):
     

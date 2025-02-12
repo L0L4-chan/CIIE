@@ -10,11 +10,13 @@ Version: 1.0.0
 '''
 
 import pygame
-from gameManager import GameManager
-from scene import Scene
-from platform import Platform
-from player import Player
-from game import Game
+from game.gameManager import GameManager
+from views.scene import Scene
+from game.platform import Platform
+from classes.player import Player
+from classes.enemy import Enemy
+
+from game.game import Game
 
 class Start():
      
@@ -30,4 +32,6 @@ class Start():
    def run(self):
       #de momento para probar.
       self.gameManager.player = Player(400,300)
+      self.gameManager.enemy = Enemy(1,400,300)
+
       self.gameManager.scene = Game(Scene(background="cementerio.PNG", pt_skin= "Art/varios/Nueva carpeta/Tile_a(7).png"), sound = "Sound/BSO/levels-_2_.wav" )

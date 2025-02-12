@@ -10,9 +10,9 @@ Version: 1.0.0
 '''
 
 import pygame, sys
-from gameManager import GameManager
-from platform import Platform
-from button import Button
+from game.gameManager import GameManager
+from game.platform import Platform
+from ui.button import Button
 
 
 class Game():
@@ -83,6 +83,9 @@ class Game():
             self.gameManager.player.move()
             self.gameManager.player.update(self.floor)
 
+            self.gameManager.enemy.move()
+
+
             
             self.screen.blit(self.bg, (0, 0))
             for btn in self.buttons.values():
@@ -91,6 +94,9 @@ class Game():
             for platform in self.platforms:
                 platform.update(self.screen)
             self.screen.blit(self.gameManager.player.surf, self.gameManager.player.rect.topleft)
+            
+            self.screen.blit(self.gameManager.enemy.surf, self.gameManager.enemy.rect.topleft)
+
 
             pygame.display.flip()
 

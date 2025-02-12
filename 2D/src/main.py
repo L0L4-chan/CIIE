@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-from gameManager import GameManager
+from game.gameManager import GameManager
 # Main class start of the game
 if __name__ == "__main__":
     game = GameManager()  #create the singleton

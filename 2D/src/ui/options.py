@@ -11,7 +11,7 @@ Version: 1.0.0
 
 import pygame, sys 
 from gameManager import GameManager
-from button import Button
+from src.ui.button import Button
 
 class Options():
 

@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys, auxiliar 
+import pygame, sys, utils.auxiliar as auxiliar 
 
 
 class GameManager():
@@ -81,11 +81,11 @@ class GameManager():
 
     #functions to load different scenes
     def load_menu(self):
-        from menu import Menu
+        from ui.menu import Menu
         self.scene =  Menu()
         
     def load_options(self):
-        from options import Options
+        from ui.options import Options
         self.scene = Options()
     
     def load_game(self):
@@ -93,11 +93,11 @@ class GameManager():
         self.scene = Game()
 
     def load_pause(self):
-        from pausa import Pausa
+        from ui.pausa import Pausa
         self.scene = Pausa()
 
     def load_loading(self):
-        from load import Load
+        from utils.load import Load
         self.scene =  Load()
         
     def load_inventory(self):
@@ -105,7 +105,7 @@ class GameManager():
         self.scene = Inventory()
 
     def load_start(self):
-        from start import Start
+        from views.start import Start
         self.scene = Start()
 
     # game loop
