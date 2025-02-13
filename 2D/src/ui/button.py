@@ -9,17 +9,16 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys , game.gameManager 
+from game.configManager import ConfigManager
 
 class Button():
-	def __init__(self, pos, text_input, size, font):
-
+	def __init__(self, pos, text_input):
+		self.config = ConfigManager().get_instance()
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
-		self.font = font
 		self.base_color = (255,255,255)
 		self.text_input = text_input
-		self.text = self.font.render(self.text_input, True, (255,255,255))
+		self.text = self.config.get_font().render(self.text_input, True, (255,255,255))
 		self.rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
 		self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
 
@@ -36,4 +35,4 @@ class Button():
 			self.base_color = (0,200, 0)
 		else:
 			self.base_color = (255,255,255)	
-		self.text = self.font.render(self.text_input, True, self.base_color)
+		self.text = self.config.get_font().render(self.text_input, True, self.base_color)

@@ -38,7 +38,7 @@ class GameManager():
             pygame.mixer.init()
             pygame.mixer.music.load("../Sound/BSO/Credits.wav") #load by default the menu music
             pygame.mixer.music.play() #start the music
-            self.config = ConfigManager()
+            self.config = ConfigManager().get_instance()
             self.config.load_fonts()
             self.screen = pygame.display.set_mode((self.config.get_width(), self.config.get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window

@@ -21,8 +21,7 @@ class Game():
     def __init__(self, scene = None, sound = None):
        
        self.gameManager = GameManager.get_instance()
-       self.config = ConfigManager() #esto te dara el path el ancho y alto....
-       self.font = self.config.get_font() 
+       self.config = ConfigManager().get_instance() #esto te dara el path el ancho y alto....
        self.clock = self.gameManager.clock         
 
        self.scene = scene
@@ -36,12 +35,10 @@ class Game():
        
        self.buttons = {
             "pause": Button(pos=(self.config.get_width() - 100, self.config.get_height() / 8), 
-                text_input=self.gameManager.btn_text["PAUSE"], 
-                size=self.config.get_size_btn_ltt(), font= self.font),
+                text_input=self.gameManager.btn_text["PAUSE"]),
 
             "quit": Button(pos=(self.config.get_width()/ 16, self.config.get_height() / 8), 
-                text_input=self.gameManager.btn_text["QUIT"], 
-                size=self.config.get_size_btn_ltt(), font= self.font),
+                text_input=self.gameManager.btn_text["QUIT"]),
 
         }
        

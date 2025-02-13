@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.gameManager = GameManager.get_instance()
-        self.config = ConfigManager()
+        self.config = ConfigManager().get_instance()
         self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png") # carga de sprite o imagen
         self.rect = self.surf.get_rect() # proporcionamos collider
         self.pos = vec(x,y) # posicion inicial

@@ -19,9 +19,9 @@ class Menu():
     def __init__(self):
         super().__init__()
         self.gameManager = GameManager.get_instance() # access to the game manager
-        self.config = ConfigManager()
+        self.config = ConfigManager().get_instance()
         self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/Menu.jpg") #add background
-        self.font = self.config.get_font() # set letter size and style
+
 
         # Botones del menu
         self.new_buttons() #create buttons 
@@ -45,10 +45,10 @@ class Menu():
     # create buttons    
     def new_buttons(self):
          self.buttons = {
-            "play": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8) *3), text_input= self.gameManager.btn_text["PLAY"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "load": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*4), text_input= self.gameManager.btn_text["LOAD"], size = self.config.get_size_btn_ltt(), font = self.font),
-            "options": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*5), text_input= self.gameManager.btn_text["OPTIONS"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "quit": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*6), text_input= self.gameManager.btn_text["QUIT"],size = self.config.get_size_btn_ltt(), font = self.font),
+            "play": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8) *3), text_input= self.gameManager.btn_text["PLAY"]),
+            "load": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*4), text_input= self.gameManager.btn_text["LOAD"]),
+            "options": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*5), text_input= self.gameManager.btn_text["OPTIONS"]),
+            "quit": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*6), text_input= self.gameManager.btn_text["QUIT"]),
         }
 
 

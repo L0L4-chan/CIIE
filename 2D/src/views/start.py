@@ -23,7 +23,7 @@ class Start():
    def __init__(self, path, sound, event):
       super().__init__()
       self.gameManager = GameManager.get_instance()
-      self.config = ConfigManager()
+      self.config = ConfigManager().get_instance()
       self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/{path}"))
       self.frame_index = 0
       self.fps = 24

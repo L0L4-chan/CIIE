@@ -1,6 +1,7 @@
 import pygame
 
 class ConfigManager:
+    
     _instance = None
 
     def __new__(cls):
@@ -9,6 +10,12 @@ class ConfigManager:
             cls._instance._initialized = False  
         return cls._instance
 
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None: 
+            cls._instance = ConfigManager() #create instance  
+        return cls._instance
+    
     def __init__(self):
         if not self._initialized:
             self.language = "spanish"
