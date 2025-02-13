@@ -10,6 +10,7 @@ Version: 1.0.0
 '''
 import pygame, sys , random
 from game.gameManager import GameManager
+from game.configManager import ConfigManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Player(pygame.sprite.Sprite):
@@ -22,7 +23,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.gameManager = GameManager.get_instance()
-        self.surf = pygame.image.load(f"Art/{self.gameManager.artpath}/skelly/skeleton_1.png")
+        self.config = ConfigManager()
+        self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png")
         self.rect = self.surf.get_rect()
         self.pos = vec(x,y)
         self.vel = vec(0,0)
@@ -45,10 +47,10 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
          
-        if self.pos.x > self.gameManager.WIDTH:
+        if self.pos.x > self.config.get_width():
             self.pos.x = 0
         if self.pos.x < 0:
-            self.pos.x = self.gameManager.WIDTH
+            self.pos.x =  self.config.get_width()
              
         self.rect.midbottom = self.pos
  

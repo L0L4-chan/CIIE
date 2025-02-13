@@ -10,7 +10,7 @@ Version: 1.0.0
 '''
 
 import pygame, sys
-from gameManager import GameManager
+from game.gameManager import GameManager
 
 class Pausa():
     def __init__(self):

@@ -11,6 +11,7 @@ Version: 1.0.0
 
 import pygame, sys
 from game.gameManager import GameManager
+from game.configManager import ConfigManager
 from game.platform import Platform
 from ui.button import Button
 
@@ -20,12 +21,12 @@ class Game():
     def __init__(self, scene = None, sound = None):
        
        self.gameManager = GameManager.get_instance()
-       self.screen = self.gameManager.screen
-
+       self.config = ConfigManager() #esto te dara el path el ancho y alto....
+       self.font = pygame.font.SysFont(self.config.get_font_titlew(), self.config.get_size_ltt()) 
        self.clock = self.gameManager.clock         
 
        self.scene = scene
-       self.bg = pygame.image.load(f"Art/{self.gameManager.artpath}/background/{self.scene.background}")
+       self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/{self.scene.background}")
        self.sound = sound
 
        self.platforms = pygame.sprite.Group()
@@ -34,13 +35,13 @@ class Game():
        self.generate_floor()
        
        self.buttons = {
-            "pause": Button(pos=(self.gameManager.WIDTH - 100, self.gameManager.HEIGTH / 8), 
+            "pause": Button(pos=(self.config.get_width() - 100, self.config.get_height() / 8), 
                 text_input=self.gameManager.btn_text["PAUSE"], 
-                size=self.gameManager.btn_lettering),
+                size=self.config.get_size_btn_ltt(), font= self.font),
 
-            "quit": Button(pos=(self.gameManager.WIDTH / 16, self.gameManager.HEIGTH / 8), 
+            "quit": Button(pos=(self.config.get_width()/ 16, self.config.get_height() / 8), 
                 text_input=self.gameManager.btn_text["QUIT"], 
-                size=self.gameManager.btn_lettering),
+                size=self.config.get_size_btn_ltt(), font= self.font),
 
         }
        
@@ -50,8 +51,8 @@ class Game():
 
     def generate_floor(self):
         platform_width = 80
-        num_platforms = self.gameManager.WIDTH // platform_width + 1
-        floor_y = self.gameManager.HEIGTH - 50  
+        num_platforms = self.config.get_width() // platform_width + 1
+        floor_y = - 50  
 
         for i in range(num_platforms):
             platform = Platform(i * platform_width, floor_y, platform_width, self.scene.pt_skin)
@@ -61,7 +62,7 @@ class Game():
     def run(self):
         running = True
         while running:
-            self.clock.tick(self.gameManager.FPS)
+            self.clock.tick(self.config.get_fps())
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -87,15 +88,15 @@ class Game():
 
 
             
-            self.screen.blit(self.bg, (0, 0))
+            self.gameManager.screen.blit(self.bg, (0, 0))
             for btn in self.buttons.values():
-                btn.update(self.screen)
+                btn.update(self.gameManager.screen)
             
             for platform in self.platforms:
-                platform.update(self.screen)
-            self.screen.blit(self.gameManager.player.surf, self.gameManager.player.rect.topleft)
+                platform.update(self.gameManager.screen)
+            self.gameManager.screen.blit(self.gameManager.player.surf, self.gameManager.player.rect.topleft)
             
-            self.screen.blit(self.gameManager.enemy.surf, self.gameManager.enemy.rect.topleft)
+            self.gameManager.screen.blit(self.gameManager.enemy.surf, self.gameManager.enemy.rect.topleft)
 
 
             pygame.display.flip()

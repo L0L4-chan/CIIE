@@ -10,14 +10,15 @@ Version: 1.0.0
 '''
 import pygame, sys , random
 from game.gameManager import GameManager
+from game.configManager import ConfigManager
 vec = pygame.math.Vector2 #2 for two dimensional
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.gameManager = GameManager.get_instance()
-        
+        self.config = ConfigManager() #esto te dara el path el ancho y alto....
         # Imagen y rectángulo del enemigo (será sobrescrito por las subclases)
-        self.surf = pygame.image.load(f"img/1280x720/devil/devil_1.png")
+        self.surf = pygame.image.load(f"../img/1280x720/devil/devil_1.png")
         self.rect = self.surf.get_rect()
         self.pos = vec(x, y)  # Posición inicial
         self.vel = vec(1, 1)  # Movimiento inicial genérico
@@ -31,11 +32,11 @@ class Enemy(pygame.sprite.Sprite):
         self.pos.y += self.vel.y * self.speed
 
         # Limitar el movimiento dentro de la pantalla
-        if self.pos.x > self.gameManager.WIDTH - self.rect.width:
+        if self.pos.x > self.config.get_width() - self.rect.width:
             self.vel.x = -abs(self.vel.x)  # Rebotar a la izquierda
         if self.pos.x < 0:
             self.vel.x = abs(self.vel.x)  # Rebotar a la derecha
-        if self.pos.y > self.gameManager.HEIGTH - self.rect.height:
+        if self.pos.y > self.config.get_height() - self.rect.height:
             self.vel.y = -abs(self.vel.y)  # Rebotar hacia arriba
         if self.pos.y < 0:
             self.vel.y = abs(self.vel.y)  # Rebotar hacia abajo
