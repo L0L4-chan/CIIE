@@ -39,6 +39,7 @@ class GameManager():
             pygame.mixer.music.load("../Sound/BSO/Credits.wav") #load by default the menu music
             pygame.mixer.music.play() #start the music
             self.config = ConfigManager()
+            self.config.load_fonts()
             self.screen = pygame.display.set_mode((self.config.get_width(), self.config.get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window
             self.clock = pygame.time.Clock() # create a clock
@@ -88,9 +89,12 @@ class GameManager():
 
     def load_start(self):
         from views.start import Start
-        self.scene = Start()
+        self.scene = Start(path = "1animation", sound = "..\Sound/BSO/levels-_1_.wav", event = 1)
 
     # game loop
     def run(self):
         while self.running:
             self.scene.run()  # it will delegate on the scene loop
+
+        pygame.quit()
+        sys.exit()

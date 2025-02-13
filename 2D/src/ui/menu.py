@@ -21,7 +21,7 @@ class Menu():
         self.gameManager = GameManager.get_instance() # access to the game manager
         self.config = ConfigManager()
         self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/Menu.jpg") #add background
-        self.font = pygame.font.SysFont(self.config.get_font_titlew(), self.config.get_size_btn_ltt()) # set letter size and style
+        self.font = self.config.get_font() # set letter size and style
 
         # Botones del menu
         self.new_buttons() #create buttons 
@@ -31,8 +31,6 @@ class Menu():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.gameManager.running = False  
-                pygame.quit()
-                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["play"].checkForInput(pygame.mouse.get_pos()):
                     self.gameManager.load_start()
@@ -42,8 +40,6 @@ class Menu():
                     self.gameManager.load_options()
                 if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
                     self.gameManager.running = False
-                    pygame.quit()
-                    sys.exit()
 
 
     # create buttons    
@@ -65,7 +61,7 @@ class Menu():
     # rendering the screen
     def render(self):
         self.gameManager.screen.blit(self.bg, (0, 0)) #background
-        menu_text = self.font.render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
+        menu_text = self.config.get_font_titlew().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
         self.gameManager.screen.blit(menu_text, (self.config.get_width()/14, (self.config.get_height()/6))) # add to buffer
         
         for btn in self.buttons.values(): #add the buttons

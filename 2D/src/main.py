@@ -15,3 +15,4 @@ if __name__ == "__main__":
     game = GameManager()  #create the singleton
     game.load_menu() #load first screen
     game.run() # start loop
+    

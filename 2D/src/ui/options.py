@@ -21,7 +21,6 @@ class Options():
         self.config = ConfigManager() 
         self.gameManager = GameManager.get_instance()  
         self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/Options.jpg")
-        self.font = pygame.font.SysFont(self.config.get_font_titlew(), self.config.get_size_ltt()) 
         
 
         # Botones del menú
@@ -53,7 +52,7 @@ class Options():
                 if self.buttons["hard"].checkForInput(pygame.mouse.get_pos()):
                    self.config.update_config(difficulty =  3  ) 
                 if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):                   
-                   self.change_resolution(width = 720, heigth = 405, ltt= 30, btn_ltt = 20, art ="small")
+                   self.change_resolution(width = 720, heigth = 405, ltt= 16, btn_ltt = 10, art ="small")
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
                    self.change_resolution(width = 1280, heigth = 720, ltt= 48, btn_ltt = 30, art ="big")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
@@ -61,8 +60,7 @@ class Options():
                     
     
     def change_resolution(self, width, heigth, ltt, btn_ltt, art):
-        self.config.update_config(width=width, height=heigth, lettering=ltt, btn_lettering=btn_ltt, artpath=art ) 
-        self.font = pygame.font.SysFont(self.config.get_font_titlew(), self.config.get_size_ltt())  
+        self.config.update_config(width=width, height=heigth, lettering=ltt, btn_lettering=btn_ltt, artpath=art )  
         self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/Options.jpg") 
         self.gameManager.change_resolution()
         self.new_buttons()
@@ -70,15 +68,15 @@ class Options():
 
     def new_buttons(self):
         self.buttons = {
-            "galician": Button(pos=((self.config.get_width()/12)*5, (self.config.get_height()/10)*3), text_input= self.gameManager.btn_text["galician"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "english": Button(pos=((self.config.get_width()/12)*7, (self.config.get_height()/10)*3), text_input= self.gameManager.btn_text["english"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "spanish": Button(pos=((self.config.get_width()/12)*9, (self.config.get_height()/10)*3), text_input= self.gameManager.btn_text["spanish"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "easy": Button(pos=((self.config.get_width()/12)*5, (self.config.get_height()/10)*5), text_input= self.gameManager.btn_text["easy"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "medium": Button(pos=((self.config.get_width()/12)*7, (self.config.get_height()/10)*5), text_input= self.gameManager.btn_text["medium"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "hard": Button(pos=((self.config.get_width()/12)*9, (self.config.get_height()/10)*5), text_input= self.gameManager.btn_text["hard"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "small": Button(pos=((self.config.get_width()/8)*4, (self.config.get_height()/10)*7), text_input= self.gameManager.btn_text["small"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "big": Button(pos=((self.config.get_width()/8)*6, (self.config.get_height()/10)*7), text_input= self.gameManager.btn_text["big"],size = self.config.get_size_btn_ltt(), font = self.font),
-            "BACK": Button(pos=((self.config.get_width()/4)*3, (self.config.get_height()/10)*8), text_input= self.gameManager.btn_text["BACK"],size = self.config.get_size_btn_ltt(), font = self.font),
+            "galician": Button(pos=((self.config.get_width()/12)*5, (self.config.get_height()/10)*3), text_input= self.gameManager.btn_text["galician"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "english": Button(pos=((self.config.get_width()/12)*7, (self.config.get_height()/10)*3), text_input= self.gameManager.btn_text["english"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "spanish": Button(pos=((self.config.get_width()/12)*9, (self.config.get_height()/10)*3), text_input= self.gameManager.btn_text["spanish"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "easy": Button(pos=((self.config.get_width()/12)*5, (self.config.get_height()/10)*5), text_input= self.gameManager.btn_text["easy"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "medium": Button(pos=((self.config.get_width()/12)*7, (self.config.get_height()/10)*5), text_input= self.gameManager.btn_text["medium"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "hard": Button(pos=((self.config.get_width()/12)*9, (self.config.get_height()/10)*5), text_input= self.gameManager.btn_text["hard"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "small": Button(pos=((self.config.get_width()/8)*4, (self.config.get_height()/10)*7), text_input= self.gameManager.btn_text["small"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "big": Button(pos=((self.config.get_width()/8)*6, (self.config.get_height()/10)*7), text_input= self.gameManager.btn_text["big"],size = self.config.get_size_btn_ltt(), font = self.config.get_font()),
+            "BACK": Button(pos=((self.config.get_width()/8)*5, (self.config.get_height()/10)*8), text_input= self.gameManager.btn_text["BACK"],size = self.config.get_size_btn_ltt(), font = self.config.get_font_titlew()),
         }
     
     def update(self):
@@ -88,13 +86,13 @@ class Options():
 
     def render(self):
         self.gameManager.screen.blit(self.bg, (0, 0))
-        menu_text = self.font.render("OPTIONS", True, (255, 255, 255))
+        menu_text = self.config.get_font_titlew().render("OPTIONS", True, (255, 255, 255))
         self.gameManager.screen.blit(menu_text, ((self.config.get_width()/8)*4, (self.config.get_height()/10)*1))
-        language_text = self.font.render(self.gameManager.btn_text["LANGUAGE"], True, (255, 255, 255))
+        language_text = self.config.get_font_titlew().render(self.gameManager.btn_text["LANGUAGE"], True, (255, 255, 255))
         self.gameManager.screen.blit(language_text, ((self.config.get_width()/8)*4, (self.config.get_height()/10)*2))
-        difficulty_text = self.font.render(self.gameManager.btn_text["DIFFICULTY"], True, (255, 255, 255))
+        difficulty_text = self.config.get_font_titlew().render(self.gameManager.btn_text["DIFFICULTY"], True, (255, 255, 255))
         self.gameManager.screen.blit(difficulty_text, ((self.config.get_width()/8)*4, (self.config.get_height()/10)*4))
-        resolution_text = self.font.render(self.gameManager.btn_text["RESOLUTION"], True, (255, 255, 255))
+        resolution_text = self.config.get_font_titlew().render(self.gameManager.btn_text["RESOLUTION"], True, (255, 255, 255))
         self.gameManager.screen.blit(resolution_text, ((self.config.get_width()/8)* 4, (self.config.get_height()/10)*6))
         
         for btn in self.buttons.values():

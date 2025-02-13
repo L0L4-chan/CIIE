@@ -20,18 +20,15 @@ class ConfigManager:
             
             self.lettering = 48
             self.btn_lettering = 30
-            
-            
-            self.fonts_titles ={}
-            self.fonts_text = {}
 
             self._initialized = True  
 
     def load_fonts(self):
-        self.fonts = {
-            "default": pygame.font.Font("../Font/Cryptik/Cryptik.ttf", self.lettering),
-            "button": pygame.font.Font('arial', self.btn_lettering)
-        }
+       
+        self.fonts_titles = pygame.font.Font("../Font/Cryptik/Cryptik.ttf", self.lettering)
+        self.fonts_text =  pygame.font.SysFont("arial", self.btn_lettering)
+        
+        
 
     #setter
     def update_config(self, language = "spanish", difficulty = 2, width = 1280 ,height = 720, artpath = "big", lettering = 48, btn_lettering = 30):

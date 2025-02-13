@@ -15,8 +15,8 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Player(pygame.sprite.Sprite):
     #variables
-    ACC = 0.5
-    FRIC = -0.12
+    ACC = 0.5  #aceleración del movimiento
+    FRIC = -0.12 # friccion
 
 
     #constructor
@@ -24,12 +24,12 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.gameManager = GameManager.get_instance()
         self.config = ConfigManager()
-        self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png")
-        self.rect = self.surf.get_rect()
-        self.pos = vec(x,y)
-        self.vel = vec(0,0)
+        self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png") # carga de sprite o imagen
+        self.rect = self.surf.get_rect() # proporcionamos collider
+        self.pos = vec(x,y) # posicion inicial
+        self.vel = vec(0,0) # velocidad inicial
 
-        self.jumping = False
+        self.jumping = False 
         self.speed = 5
         
 

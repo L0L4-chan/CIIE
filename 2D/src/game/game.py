@@ -9,11 +9,11 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys
+import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
-from game.platform import Platform
 from ui.button import Button
+from game.platforms import Platforms
 
 
 class Game():
@@ -22,7 +22,7 @@ class Game():
        
        self.gameManager = GameManager.get_instance()
        self.config = ConfigManager() #esto te dara el path el ancho y alto....
-       self.font = pygame.font.SysFont(self.config.get_font_titlew(), self.config.get_size_ltt()) 
+       self.font = self.config.get_font() 
        self.clock = self.gameManager.clock         
 
        self.scene = scene
@@ -47,15 +47,15 @@ class Game():
        
        pygame.mixer.music.stop()
        pygame.mixer.music.load(self.sound)
-       pygame.mixer.music.play()
+       pygame.mixer.music.play(-1)
 
     def generate_floor(self):
         platform_width = 80
         num_platforms = self.config.get_width() // platform_width + 1
-        floor_y = - 50  
+        floor_y =  self.config.get_height() - 50 
 
         for i in range(num_platforms):
-            platform = Platform(i * platform_width, floor_y, platform_width, self.scene.pt_skin)
+            platform = Platforms(i * platform_width, floor_y, platform_width, self.scene.pt_skin)
             self.platforms.add(platform)
             self.floor.add(platform)
 
@@ -73,9 +73,7 @@ class Game():
                         #todo menu pausa 
                         print("pause has been press")
                     if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
-                        self.gameManager.running = False
-                        pygame.quit()
-                        sys.exit()
+                        running = False
                 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
@@ -101,7 +99,7 @@ class Game():
 
             pygame.display.flip()
 
-        pygame.quit()
+        self.gameManager.running = False
 
 
         
