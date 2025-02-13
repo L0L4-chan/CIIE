@@ -21,16 +21,15 @@ class Game():
     def __init__(self, scene = None, sound = None):
        
        self.gameManager = GameManager.get_instance()
-       self.config = ConfigManager().get_instance() #esto te dara el path el ancho y alto....
-       self.clock = self.gameManager.clock         
-
+       self.config = ConfigManager().get_instance() #esto te dara el path el ancho y alto....       
+       #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
        self.scene = scene
        self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/{self.scene.background}")
        self.sound = sound
 
        self.platforms = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
-       
+       #generamos suelo (funcion que debera ser modificada cuando se tengan los niveles)
        self.generate_floor()
        
        self.buttons = {
@@ -41,11 +40,12 @@ class Game():
                 text_input=self.gameManager.btn_text["QUIT"]),
 
         }
-       
-       pygame.mixer.music.stop()
+       #empieza la musica del nivel
+       pygame.mixer.music.stop() #paramos la anterior
        pygame.mixer.music.load(self.sound)
-       pygame.mixer.music.play(-1)
+       pygame.mixer.music.play(-1) #indicamos loop infinito
 
+    #funcion de generación de suelo
     def generate_floor(self):
         platform_width = 80
         num_platforms = self.config.get_width() // platform_width + 1
@@ -56,10 +56,11 @@ class Game():
             self.platforms.add(platform)
             self.floor.add(platform)
 
+    #game loop se modificara si es necesario cuando se tengan los niveles
     def run(self):
         running = True
         while running:
-            self.clock.tick(self.config.get_fps())
+            self.gameManager.clock.tick(self.config.get_fps())
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

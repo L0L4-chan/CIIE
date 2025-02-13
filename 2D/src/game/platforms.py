@@ -10,14 +10,12 @@ Version: 1.0.0
 '''
 
 import pygame, random
-from game.gameManager import GameManager
 
 class Platforms(pygame.sprite.Sprite):
     
-    
+    #funcion de inicializacion de plataformas (modificar para pasar la altura por parametros cuando se tengan los escenarios)
     def __init__(self, x = 0, y = 0, width = 0, path = None ):
         super().__init__() 
-        self.gameManager = GameManager.get_instance()
 
         self.height = 18
         self.x_pos = x
@@ -25,7 +23,7 @@ class Platforms(pygame.sprite.Sprite):
         if width == 0:
             width = random.randint(50, 120)
 
-        if path is None:
+        if path is None:#si no hay imagen crea un rectangulo
             self.surf = pygame.Surface((width, self.height))
             self.surf.fill((255,0,0))
         
@@ -35,7 +33,7 @@ class Platforms(pygame.sprite.Sprite):
         
         self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
         
-        
+     #funcion de dibujado   
     def update(self, screen):
 	    screen.blit(self.surf,self.rect.topleft) 
        

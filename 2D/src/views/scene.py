@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys , random
+
 
 class Scene():
     def __init__(self, background, pt_skin):

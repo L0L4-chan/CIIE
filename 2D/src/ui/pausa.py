@@ -9,10 +9,10 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys
-from game.gameManager import GameManager
+
+
 
 class Pausa():
     def __init__(self):
       super().__init__()
-      self.gameManager = GameManager.get_instance()
+      

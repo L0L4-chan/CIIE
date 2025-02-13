@@ -1,6 +1,5 @@
-import pygame, sys , random, math
+import pygame, math
 from classes.enemy import Enemy
-from game.gameManager import GameManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 

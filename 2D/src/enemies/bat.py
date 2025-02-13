@@ -1,6 +1,5 @@
-import pygame, sys , random
+import pygame
 from src.classes.enemy import Enemy
-from src.game.gameManager import GameManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Bat(Enemy):

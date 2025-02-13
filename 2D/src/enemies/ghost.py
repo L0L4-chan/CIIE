@@ -1,6 +1,5 @@
-import pygame,sys , random
+import pygame, random
 from classes.enemy import Enemy
-from game.gameManager import GameManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Ghost(Enemy):

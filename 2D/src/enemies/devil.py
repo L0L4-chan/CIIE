@@ -1,6 +1,5 @@
-import pygame, sys , random
+import pygame
 from classes.enemy import Enemy
-from game.gameManager import GameManager
 vec = pygame.math.Vector2 #2 for two dimensional
 class Devil(Enemy):
     def __init__(self, x, y):

@@ -8,14 +8,13 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame, sys , random
-from game.gameManager import GameManager
+import pygame
 from game.configManager import ConfigManager
 vec = pygame.math.Vector2 #2 for two dimensional
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.gameManager = GameManager.get_instance()
+
         self.config = ConfigManager().get_instance() #esto te dara el path el ancho y alto....
         # Imagen y rectángulo del enemigo (será sobrescrito por las subclases)
         self.surf = pygame.image.load(f"../img/1280x720/devil/devil_1.png")
