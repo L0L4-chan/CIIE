@@ -35,7 +35,7 @@ class Start():
    def run(self):
       #de momento para probar.
     
-      self.animation.run()
+      #self.animation.run()
       self.gameManager.player = Player(400,300)
       self.gameManager.enemy = Boss(400,300)
       self.gameManager.scene = Game(Scene(background="cementerio.PNG", pt_skin= "../Art/varios/Tiles/Tile_a(7).png"), sound = "../Sound/BSO/levels-_2_.wav" )

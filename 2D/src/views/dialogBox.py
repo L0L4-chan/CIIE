@@ -13,7 +13,7 @@ class DialogBox:
             self.bg_image = pygame.image.load(bg_image)
         else: # Carga el fondo negro
             self.bg_image = pygame.Surface((100, 100))  # Tamaño inicial arbitrario
-            self.bg_image.fill((0, 0, 0))  # Color negro
+            self.bg_image.fill((255,255,255))  # Color negro
   
         self.width = (self.config.get_width() / 6) * 4 # Ancho del cuadro de diálogo
         self.margin = 20  # Espacio interno
@@ -45,9 +45,6 @@ class DialogBox:
         lines = self.wrap_text()
         height = len(lines) * self.line_height + (self.margin * 2)  # Ajuste altura del cuadro de texto
         
-        screen = self.gameManager.screen
-        screen_width, screen_height = screen.get_size()
-        
         # Posición del cuadro de diálogo 
         box_x = 50
         box_y = 50
@@ -56,7 +53,7 @@ class DialogBox:
         if self.icon:
             icon_width, icon_height = self.icon.get_size()  # Tamaño del icono
             icon_scaled = pygame.transform.scale(self.icon, (icon_width, icon_height))
-            screen.blit(icon_scaled, (box_x, box_y))
+            self.gameManager.screen.blit(icon_scaled, (box_x, box_y))
             box_x += icon_width
             
         # Dibujar fondo del cuadro de diálogo
@@ -70,7 +67,7 @@ class DialogBox:
         text_y = box_y + self.margin
 
         for line in lines:
-            text_surface = self.config.get_font_dialog().render(line, True, (255, 255, 255))
-            screen.blit(text_surface, (text_x, text_y))
+            text_surface = self.config.get_font_dialog().render(line, True, (0,0,0))
+            self.gameManager.screen.blit(text_surface, (text_x, text_y))
             text_y += self.line_height  # Mover hacia abajo para la siguiente línea
 
