@@ -74,7 +74,7 @@ class Game():
                         running = False
                 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_UP]:
                 self.gameManager.player.jump(self.floor)
 
             self.gameManager.player.move()
