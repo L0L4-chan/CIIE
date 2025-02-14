@@ -27,6 +27,7 @@ class ConfigManager:
             
             self.lettering = 48
             self.btn_lettering = 30
+            
 
             self._initialized = True  
 
@@ -34,7 +35,7 @@ class ConfigManager:
        
         self.fonts_titles = pygame.font.Font("../Font/Cryptik/Cryptik.ttf", self.lettering)
         self.fonts_text =  pygame.font.SysFont("arial", self.btn_lettering)
-        
+        self.font_dialog = pygame.font.SysFont("arial", (self.btn_lettering // 2))
         
 
     #setter
@@ -54,7 +55,7 @@ class ConfigManager:
     def get_language(self):
         return self.language
     
-    def get_difficukty(self):
+    def get_difficulty(self):
         return self.difficulty
     
     def get_width(self):
@@ -69,8 +70,11 @@ class ConfigManager:
     def get_artpath(self):
         return self.artpath
 
-    def get_font_titlew(self):
+    def get_font_title(self):
         return self.fonts_titles
+    
+    def get_font_dialog(self):
+        return self.font_dialog
     
     def get_font(self):
         return self.fonts_text

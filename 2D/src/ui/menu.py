@@ -61,7 +61,7 @@ class Menu():
     # rendering the screen
     def render(self):
         self.gameManager.screen.blit(self.bg, (0, 0)) #background
-        menu_text = self.config.get_font_titlew().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
+        menu_text = self.config.get_font_title().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
         self.gameManager.screen.blit(menu_text, (self.config.get_width()/14, (self.config.get_height()/6))) # add to buffer
         
         for btn in self.buttons.values(): #add the buttons

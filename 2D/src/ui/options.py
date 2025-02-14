@@ -34,23 +34,35 @@ class Options():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["galician"].checkForInput(pygame.mouse.get_pos()):
-                   self.config.update_config(language = "galician")
+                   self.config.update_config(language = "galician",  difficulty = self.config.get_difficulty(), width = self.config.get_width(), height = self.config.get_height(), 
+                                             lettering=self.config.get_size_ltt(), btn_lettering= self.config.get_size_btn_ltt(),
+                                             artpath=self.config.get_artpath())
                    self.gameManager.change_language("galician")
                    self.new_buttons()
                 if self.buttons["english"].checkForInput(pygame.mouse.get_pos()):
-                   self.config.update_config(language = "english")
+                   self.config.update_config(language = "english",  difficulty = self.config.get_difficulty(), width = self.config.get_width(), height = self.config.get_height(), 
+                                             lettering=self.config.get_size_ltt(), btn_lettering= self.config.get_size_btn_ltt(),
+                                             artpath=self.config.get_artpath())
                    self.gameManager.change_language("english")
                    self.new_buttons()
                 if self.buttons["spanish"].checkForInput(pygame.mouse.get_pos()):
-                   self.config.update_config(language = "spanish")
+                   self.config.update_config(language = "spanish",  difficulty = self.config.get_difficulty(), width = self.config.get_width(), height = self.config.get_height(), 
+                                             lettering=self.config.get_size_ltt(), btn_lettering= self.config.get_size_btn_ltt(),
+                                             artpath=self.config.get_artpath())
                    self.gameManager.change_language("spanish")
                    self.new_buttons()
                 if self.buttons["easy"].checkForInput(pygame.mouse.get_pos()):
-                   self.config.update_config(difficulty =  1)
+                   self.config.update_config(language= self.config.get_language(), difficulty = 1, width = self.config.get_width(), height = self.config.get_height(), 
+                                             lettering=self.config.get_size_ltt(), btn_lettering= self.config.get_size_btn_ltt(),
+                                             artpath=self.config.get_artpath())
                 if self.buttons["medium"].checkForInput(pygame.mouse.get_pos()):
-                   self.config.update_config(difficulty =  2)
+                   self.config.update_config(language= self.config.get_language(), difficulty = 2, width = self.config.get_width(), height = self.config.get_height(), 
+                                             lettering=self.config.get_size_ltt(), btn_lettering= self.config.get_size_btn_ltt(),
+                                             artpath=self.config.get_artpath())
                 if self.buttons["hard"].checkForInput(pygame.mouse.get_pos()):
-                   self.config.update_config(difficulty =  3  ) 
+                   self.config.update_config(language= self.config.get_language(), difficulty = 3 , width = self.config.get_width(), height = self.config.get_height(), 
+                                             lettering=self.config.get_size_ltt(), btn_lettering= self.config.get_size_btn_ltt(),
+                                             artpath=self.config.get_artpath()) 
                 if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):                   
                    self.change_resolution(width = 720, heigth = 405, ltt= 20, btn_ltt = 16, art ="small")
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
@@ -60,7 +72,7 @@ class Options():
                     
     
     def change_resolution(self, width, heigth, ltt, btn_ltt, art):
-        self.config.update_config(width=width, height=heigth, lettering=ltt, btn_lettering=btn_ltt, artpath=art ) 
+        self.config.update_config(language= self.config.get_language(), difficulty = self.config.get_difficulty(),width=width, height=heigth, lettering=ltt, btn_lettering=btn_ltt, artpath=art ) 
         self.config.load_fonts() 
         self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/Options.jpg") 
         self.gameManager.change_resolution()
@@ -87,13 +99,13 @@ class Options():
 
     def render(self):
         self.gameManager.screen.blit(self.bg, (0, 0))
-        menu_text = self.config.get_font_titlew().render("OPTIONS", True, (255, 255, 255))
+        menu_text = self.config.get_font_title().render("OPTIONS", True, (255, 255, 255))
         self.gameManager.screen.blit(menu_text, ((self.config.get_width()/8)*4, (self.config.get_height()/10)*1))
-        language_text = self.config.get_font_titlew().render(self.gameManager.btn_text["LANGUAGE"], True, (255, 255, 255))
+        language_text = self.config.get_font_title().render(self.gameManager.btn_text["LANGUAGE"], True, (255, 255, 255))
         self.gameManager.screen.blit(language_text, ((self.config.get_width()/8)*4, (self.config.get_height()/10)*2))
-        difficulty_text = self.config.get_font_titlew().render(self.gameManager.btn_text["DIFFICULTY"], True, (255, 255, 255))
+        difficulty_text = self.config.get_font_title().render(self.gameManager.btn_text["DIFFICULTY"], True, (255, 255, 255))
         self.gameManager.screen.blit(difficulty_text, ((self.config.get_width()/8)*4, (self.config.get_height()/10)*4))
-        resolution_text = self.config.get_font_titlew().render(self.gameManager.btn_text["RESOLUTION"], True, (255, 255, 255))
+        resolution_text = self.config.get_font_title().render(self.gameManager.btn_text["RESOLUTION"], True, (255, 255, 255))
         self.gameManager.screen.blit(resolution_text, ((self.config.get_width()/8)* 4, (self.config.get_height()/10)*6))
         
         for btn in self.buttons.values():
