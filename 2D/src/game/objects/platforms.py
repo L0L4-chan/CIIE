@@ -16,7 +16,6 @@ class Platforms(pygame.sprite.Sprite):
     #funcion de inicializacion de plataformas (modificar para pasar la altura por parametros cuando se tengan los escenarios)
     def __init__(self, x = 0, y = 0, width = 0, height = 18, path = None ):
         super().__init__() 
-
         self.height = height
         self.x_pos = x
         self.y_pos = y

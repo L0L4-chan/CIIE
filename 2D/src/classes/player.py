@@ -136,7 +136,8 @@ class Player(pygame.sprite.Sprite):
                     # Crear y devolver la piedra después de la animación
                     stone_x = self.pos.x + (self.rect.width * self.direction)
                     stone_y = self.config.get_height() - (self.rect.height) - 18
-                    return Stone(x = stone_x, y = stone_y, direction= self.direction)
+                    stone_path = (f"../Art/{self.config.get_artpath()}/stone/001.png")
+                    return Stone(x = stone_x, y = stone_y, path = stone_path, direction= self.direction )
                 else:
                     self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/{shoot_path}/{self.frames[self.index]}")
                     self.animation_timer = 0  # Reiniciar el temporizador
