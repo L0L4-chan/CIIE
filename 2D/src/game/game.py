@@ -13,7 +13,7 @@ import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from ui.button import Button
-from game.platforms import Platforms
+from game.objects.platforms import Platforms
 
 
 class Game():
@@ -29,6 +29,7 @@ class Game():
 
        self.platforms = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
+       self.stones = pygame.sprite.Group()
        #generamos suelo (funcion que debera ser modificada cuando se tengan los niveles)
        self.generate_floor()
        
@@ -48,17 +49,19 @@ class Game():
     #funcion de generación de suelo
     def generate_floor(self):
         platform_width = 80
+        platform_height = 18
         num_platforms = self.config.get_width() // platform_width + 1
         floor_y =  self.config.get_height() - 50 
 
         for i in range(num_platforms):
-            platform = Platforms(i * platform_width, floor_y, platform_width, self.scene.pt_skin)
+            platform = Platforms(i * platform_width, floor_y, platform_width, platform_height, self.scene.pt_skin)
             self.platforms.add(platform)
             self.floor.add(platform)
 
     #game loop se modificara si es necesario cuando se tengan los niveles
     def run(self):
         running = True
+        
         while running:
             self.gameManager.clock.tick(self.config.get_fps())
 
@@ -72,8 +75,19 @@ class Game():
                         print("pause has been press")
                     if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
                         running = False    
+                
+                if event.type == pygame.KEYDOWN:
+                     if event.key == pygame.K_SPACE and not self.gameManager.player.shooting:
+                        self.gameManager.player.shooting = True
+                        self.gameManager.player.index = 0
+                
+            stone = self.gameManager.player.shoot()
+            if stone:
+                self.stones.add(stone)
+            else:
+                if not self.gameManager.player.shooting:
+                    self.gameManager.player.update(self.floor)
             
-            self.gameManager.player.update(self.floor)
             self.gameManager.enemy.move()
 
 
@@ -84,6 +98,10 @@ class Game():
             
             for platform in self.platforms:
                 platform.update(self.gameManager.screen)
+            
+            for stn in self.stones:
+                stn.update(self.gameManager.screen)
+            
             self.gameManager.screen.blit(self.gameManager.player.surf, self.gameManager.player.rect.topleft)
             
             self.gameManager.screen.blit(self.gameManager.enemy.surf, self.gameManager.enemy.rect.topleft)

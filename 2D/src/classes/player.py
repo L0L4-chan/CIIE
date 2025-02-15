@@ -10,6 +10,7 @@ Version: 1.0.0
 '''
 import pygame, os
 from game.configManager import ConfigManager
+from game.objects.stone import Stone
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Player(pygame.sprite.Sprite):
@@ -32,41 +33,46 @@ class Player(pygame.sprite.Sprite):
         self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/skelly/to_right"))
         self.end = len(self.frames) -1
         self.animation_timer = 0  # Temporizador para la animación
-        self.frame_rate = 5 #cada cuantos loops cambiamos la animación valor entre 5 y diez no menos
+        self.frame_rate = 4 #cada cuantos loops cambiamos la animación valor entre 5 y diez no menos
         self.jumpchecked = False #indica si ya se ha comprobado el salto
-        print(self.pos)
+        self.shooting = False
         
     #funcion que genera el movimiento (maneja tambien el salto y el cambio de imagen)
     def move(self,platforms):
-        self.acc = vec(0,0.5)
-        pressed_keys = pygame.key.get_pressed()
-        self.animation_timer += 1    #aumentamos el tiempo de la animación      
-        if pressed_keys[pygame.K_LEFT]: #si se ha pulsado izquierda
-            self.acc.x = - self.ACC #cambiamos la aceleración para que cambie la direccion del personaje
-            if self.animation_timer > self.frame_rate and not self.jumping: # si han pasado 10 loops al menos y no esta saltando
-                if (not self.direction): #si la direccion no ha cambiado
-                    self.get_next("to_left") #movemos la animacion
-                else:
-                    self.direction = 0 #cambiamos la direccion
-                    self.index = 0 #comenzamos el contador de imagenes
-                    self.end = len(self.frames) -1 #calculamos cual es el ultimo frame para generar el loop
-                    self.get_next("to_left") # cambiamos la animacion
-            else: 
-                self.direction = 0 #o cambiamos la direccion
-        if pressed_keys[pygame.K_RIGHT]:
-            self.acc.x = self.ACC
-            if self.animation_timer > self.frame_rate and not self.jumping:
-                if (self.direction):
-                    self.get_next("to_right")
-                else:
+        
+        if(self.shooting):
+            self.index = 0
+            self.shoot()
+        else:    
+            self.acc = vec(0,0.5)
+            pressed_keys = pygame.key.get_pressed()
+            self.animation_timer += 1    #aumentamos el tiempo de la animación      
+            if pressed_keys[pygame.K_LEFT]: #si se ha pulsado izquierda
+                self.acc.x = - self.ACC #cambiamos la aceleración para que cambie la direccion del personaje
+                if self.animation_timer > self.frame_rate and not self.jumping: # si han pasado 10 loops al menos y no esta saltando
+                    if (not self.direction): #si la direccion no ha cambiado
+                        self.get_next("to_left") #movemos la animacion
+                    else:
+                        self.direction = 0 #cambiamos la direccion
+                        self.index = 0 #comenzamos el contador de imagenes
+                        self.end = len(self.frames) -1 #calculamos cual es el ultimo frame para generar el loop
+                        self.get_next("to_left") # cambiamos la animacion
+                else: 
+                    self.direction = 0 #o cambiamos la direccion
+            if pressed_keys[pygame.K_RIGHT]:
+                self.acc.x = self.ACC
+                if self.animation_timer > self.frame_rate and not self.jumping :
+                    if (self.direction):
+                        self.get_next("to_right")
+                    else:
+                        self.direction = 1
+                        self.index = 0
+                        self.end = len(self.frames) -1
+                        self.get_next("to_right")
+                else: 
                     self.direction = 1
-                    self.index = 0
-                    self.end = len(self.frames) -1
-                    self.get_next("to_right")
-            else: 
-                self.direction = 1
-        if pressed_keys[pygame.K_UP]:
-                self.jump(platforms)     
+            if pressed_keys[pygame.K_UP]:
+                    self.jump(platforms)     
              
         #se realizan calculos para determinar la nueva posicion       
         self.acc.x += self.vel.x * self.FRIC
@@ -106,6 +112,7 @@ class Player(pygame.sprite.Sprite):
                     self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/002.png")
                     self.animation_timer = 0  
     
+    #posicion de no movimiento
     def rest(self):
         if self.animation_timer > self.frame_rate:
                 if(self.direction):
@@ -115,6 +122,30 @@ class Player(pygame.sprite.Sprite):
                     self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_left/001.png")
                     self.animation_timer = 0 
            
+    def shoot(self):
+        #aumenta el tiempo para avanzar la animacion
+        if self.shooting:
+            self.animation_timer += 1
+            # Seleccionar el directorio de animaciones según la dirección
+            shoot_path = "stoneR" if self.direction else "stoneL"
+            if self.animation_timer > self.frame_rate:
+                if self.index >=2:  # Si se llega al último frame
+                    self.shooting = False
+                    self.index = 0  # Reiniciar la animación
+                    self.rest()
+                    # Crear y devolver la piedra después de la animación
+                    stone_x = self.pos.x + (self.rect.width * self.direction)
+                    stone_y = self.config.get_height() - (self.rect.height) - 18
+                    return Stone(x = stone_x, y = stone_y, direction= self.direction)
+                else:
+                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/{shoot_path}/{self.frames[self.index]}")
+                    self.animation_timer = 0  # Reiniciar el temporizador
+                    # Cambiar frame de animación
+                    self.index += 1
+        
+        return None  # No devuelve piedra hasta que termine la animación
+               
+        
     #evita que se produzca doble salto
     def cancel_jump(self):
         if self.jumping:
