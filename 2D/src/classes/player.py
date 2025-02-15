@@ -14,7 +14,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Player(pygame.sprite.Sprite):
 
-    #constructor
+    #constructor: requiere las posiciones donde el personaje debe aparecer
     def __init__(self, x, y):
         super().__init__()
         self.config = ConfigManager().get_instance()
@@ -27,33 +27,34 @@ class Player(pygame.sprite.Sprite):
         self.jumping = False #variable que se usa en caso de doble salto provisional
         self.speed = 5 #velocidad
         self.direction = 1 # uno indica que se mueve a la derecha, 0 si esta caminando hacia la izquierda. 
-        self.last_position = vec(0,0)
-        self.index = 1 
+        self.last_position = vec(0,0) 
+        self.index = 1 #para ver la siguiente animación
         self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/skelly/to_right"))
-        self.frame_index = 1
         self.end = len(self.frames) -1
         self.animation_timer = 0  # Temporizador para la animación
-        self.frame_rate = 10
+        self.frame_rate = 5 #cada cuantos loops cambiamos la animación valor entre 5 y diez no menos
+        self.jumpchecked = False #indica si ya se ha comprobado el salto
         
-        
-    #funion que genera el movimiento
-    def move(self):
+    #funcion que genera el movimiento (maneja tambien el salto y el cambio de imagen)
+    def move(self,platforms):
         self.acc = vec(0,0.5)
         pressed_keys = pygame.key.get_pressed()
-        self.animation_timer += 1          
-        if pressed_keys[pygame.K_LEFT]:
-            self.acc.x = - self.ACC
-            if self.animation_timer > self.frame_rate:
-                if (not self.direction):
-                    self.get_next("to_left")
+        self.animation_timer += 1    #aumentamos el tiempo de la animación      
+        if pressed_keys[pygame.K_LEFT]: #si se ha pulsado izquierda
+            self.acc.x = - self.ACC #cambiamos la aceleración para que cambie la direccion del personaje
+            if self.animation_timer > self.frame_rate and not self.jumping: # si han pasado 10 loops al menos y no esta saltando
+                if (not self.direction): #si la direccion no ha cambiado
+                    self.get_next("to_left") #movemos la animacion
                 else:
-                    self.direction = 0
-                    self.index = 0
-                    self.end = len(self.frames) -1
-                    self.get_next("to_left")
+                    self.direction = 0 #cambiamos la direccion
+                    self.index = 0 #comenzamos el contador de imagenes
+                    self.end = len(self.frames) -1 #calculamos cual es el ultimo frame para generar el loop
+                    self.get_next("to_left") # cambiamos la animacion
+            else: 
+                self.direction = 0 #o cambiamos la direccion
         if pressed_keys[pygame.K_RIGHT]:
             self.acc.x = self.ACC
-            if self.animation_timer > self.frame_rate:
+            if self.animation_timer > self.frame_rate and not self.jumping:
                 if (self.direction):
                     self.get_next("to_right")
                 else:
@@ -61,20 +62,24 @@ class Player(pygame.sprite.Sprite):
                     self.index = 0
                     self.end = len(self.frames) -1
                     self.get_next("to_right")
-               
+            else: 
+                self.direction = 1
+        if pressed_keys[pygame.K_UP]:
+                self.jump(platforms)     
+             
+        #se realizan calculos para determinar la nueva posicion       
         self.acc.x += self.vel.x * self.FRIC
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        self.pos += self.vel + 0.5 * self.acc # se modifica posicion
          
-         #si se sale de la pantalla vuelve por el otro lado, esto se debera eliminar o cambiar por la activacion de cambio de pantalla
+        #si se sale de la pantalla vuelve por el otro lado, esto se debera eliminar o cambiar por la activacion de cambio de pantalla
         if self.pos.x > self.config.get_width():
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x =  self.config.get_width()
-             
-        self.rect.midbottom = self.pos
-    
-    def get_next(self, path):
+        
+    #Funcion que devuelve la siguiente imagen en el ciclo segun el movimiento
+    def get_next(self, path): 
         
         self.index += 1
         if self.index > self.end:
@@ -84,21 +89,38 @@ class Player(pygame.sprite.Sprite):
         self.animation_timer = 0 
         
     
-    #funcion del salto de momento simple
+    #funcion del salto de momento simple maneja tambien el cambio de imagen de la animación
     def jump(self, platforms): 
         hits = pygame.sprite.spritecollide(self, platforms, False)
         if hits and not self.jumping:
-           self.jumping = True
-           self.vel.y = -10
- 
+            self.jumping = True
+            self.vel.y = -10
+            if self.animation_timer > self.frame_rate:
+                if(self.direction):
+                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/001.png")
+                    self.animation_timer = 0
+                else:
+                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/002.png")
+                    self.animation_timer = 0  
+    
+    def rest(self):
+        if self.animation_timer > self.frame_rate:
+                if(self.direction):
+                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_right/001.png")
+                    self.animation_timer = 0
+                else:
+                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_left/001.png")
+                    self.animation_timer = 0 
+           
     #evita que se produzca doble salto
     def cancel_jump(self):
         if self.jumping:
             if self.vel.y < -3:
                 self.vel.y = -3
  
-    #varia ciertos valores si el jugador esta tocando suelo (relacionados al salto)
+    # realiza las llamadas para la actividad del personaje (varia ciertos valores si el jugador esta tocando suelo (relacionados al salto))
     def update(self, platforms):
+        self.move(platforms)
         hits = pygame.sprite.spritecollide(self ,platforms, False)
         if self.vel.y > 0:        
             if hits:
@@ -106,5 +128,6 @@ class Player(pygame.sprite.Sprite):
                     self.pos.y = hits[0].rect.top +1
                     self.vel.y = 0
                     self.jumping = False
+                    self.rest()
                     
 

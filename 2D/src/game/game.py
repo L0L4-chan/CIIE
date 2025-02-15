@@ -20,7 +20,7 @@ class Game():
 
     def __init__(self, scene = None, sound = None):
        
-       self.gameManager = GameManager.get_instance()
+       self.gameManager = GameManager.get_instance() #proporciona el screen, textos, reloj...
        self.config = ConfigManager().get_instance() #esto te dara el path el ancho y alto....       
        #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
        self.scene = scene
@@ -71,15 +71,9 @@ class Game():
                         #todo menu pausa 
                         print("pause has been press")
                     if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
-                        running = False
-                
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
-                self.gameManager.player.jump(self.floor)
-
-            self.gameManager.player.move()
+                        running = False    
+            
             self.gameManager.player.update(self.floor)
-
             self.gameManager.enemy.move()
 
 
