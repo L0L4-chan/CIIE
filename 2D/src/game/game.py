@@ -34,10 +34,10 @@ class Game():
        
        self.buttons = {
             "pause": Button(pos=(self.config.get_width() - 100, self.config.get_height() / 8), 
-                text_input=self.gameManager.btn_text["PAUSE"]),
+                text_input=self.config.get_text_button(key ="PAUSE")),
 
             "quit": Button(pos=(self.config.get_width()/ 16, self.config.get_height() / 8), 
-                text_input=self.gameManager.btn_text["QUIT"]),
+                text_input=self.config.get_text_button(key ="QUIT")),
 
         }
        #empieza la musica del nivel

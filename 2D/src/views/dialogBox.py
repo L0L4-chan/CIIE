@@ -7,7 +7,7 @@ class DialogBox:
     def __init__(self, bg_image=None, event = 0):
         self.gameManager = GameManager.get_instance()
         self.config = ConfigManager().get_instance()
-        self.dialog = next((d for d in self.gameManager.texts["dialogues"] if d["event"] == event), None)
+        self.dialog = next((d for d in self.config.get_text(key="dialogues") if d["event"] == event), None)
         self.icon = pygame.image.load(f"../Art/{self.config.get_artpath()}/avatar/{self.dialog["character"]}.png") # Carga el icono del personaje
         if bg_image: # Carga el fondo del cuadro de diálogo
             self.bg_image = pygame.image.load(bg_image)

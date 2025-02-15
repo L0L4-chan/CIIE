@@ -44,19 +44,10 @@ class GameManager():
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window
             self.clock = pygame.time.Clock() # create a clock
             self.running = True # bool for game loop
-            self.change_texts(self.config.get_language()) # load text on the apropiate language
             self._initialized = True # one is all done state is inicialized
 
     #load the necessary text that the game will be using from the json
-    #@param string language
-    def change_texts(self, language):
-        self.texts = auxiliar.load_json(f"../Dialog/{language}.json")
-        self.btn_text = auxiliar.load_json(f"../ButtonText/{language}.json")
-    
-    
-    #change the language configuration
-    def change_language(self, language):
-        self.textos = self.change_texts(language)
+   
     
     #change the resolution of the screen
     def change_resolution(self):

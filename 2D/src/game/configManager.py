@@ -1,4 +1,4 @@
-import pygame
+import pygame, utils.auxiliar
 
 class ConfigManager:
     
@@ -28,7 +28,7 @@ class ConfigManager:
             self.lettering = 48
             self.btn_lettering = 30
             
-
+            self.change_texts(self.language) # load text on the apropiate language
             self._initialized = True  
 
     def load_fonts(self):
@@ -48,8 +48,18 @@ class ConfigManager:
         self.artpath = artpath     
         self.lettering = lettering
         self.btn_lettering = btn_lettering
+        
+        self.change_language(language)
             
+     #@param string language
+    def change_texts(self, language):
+        self.texts = utils.auxiliar.load_json(f"../Dialog/{language}.json")
+        self.btn_text = utils.auxiliar.load_json(f"../ButtonText/{language}.json")
     
+    
+    #change the language configuration
+    def change_language(self, language):
+        self.textos = self.change_texts(language)
 
     #getters
     def get_language(self):
@@ -84,3 +94,9 @@ class ConfigManager:
     
     def get_size_btn_ltt(self):
         return self.btn_lettering
+    
+    def get_text(self, key):
+        return self.texts[key]
+    
+    def get_text_button(self, key):
+        return self.btn_text[key]

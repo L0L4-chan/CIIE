@@ -45,10 +45,10 @@ class Menu():
     # create buttons    
     def new_buttons(self):
          self.buttons = {
-            "play": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8) *3), text_input= self.gameManager.btn_text["PLAY"]),
-            "load": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*4), text_input= self.gameManager.btn_text["LOAD"]),
-            "options": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*5), text_input= self.gameManager.btn_text["OPTIONS"]),
-            "quit": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*6), text_input= self.gameManager.btn_text["QUIT"]),
+            "play": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8) *3), text_input= self.config.get_text_button(key = "PLAY")),
+            "load": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*4), text_input= self.config.get_text_button(key ="LOAD")),
+            "options": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*5), text_input= self.config.get_text_button(key ="OPTIONS")),
+            "quit": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*6), text_input= self.config.get_text_button(key ="QUIT")),
         }
 
 

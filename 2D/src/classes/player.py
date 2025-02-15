@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.animation_timer = 0  # Temporizador para la animación
         self.frame_rate = 5 #cada cuantos loops cambiamos la animación valor entre 5 y diez no menos
         self.jumpchecked = False #indica si ya se ha comprobado el salto
+        print(self.pos)
         
     #funcion que genera el movimiento (maneja tambien el salto y el cambio de imagen)
     def move(self,platforms):
@@ -77,6 +78,8 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x =  self.config.get_width()
+        
+        self.rect.midbottom = self.pos #actualiza posiscion del collider
         
     #Funcion que devuelve la siguiente imagen en el ciclo segun el movimiento
     def get_next(self, path): 
