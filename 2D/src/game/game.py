@@ -27,7 +27,7 @@ class Game():
        self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/{self.scene.background}")
        self.sound = sound
 
-       self.platforms = pygame.sprite.Group()
+       self.sprites = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
        self.stones = pygame.sprite.Group()
        #generamos suelo (funcion que debera ser modificada cuando se tengan los niveles)
@@ -46,6 +46,9 @@ class Game():
        pygame.mixer.music.load(self.sound)
        pygame.mixer.music.play(-1) #indicamos loop infinito
 
+       self.sprites.add(self.gameManager.player)
+       self.sprites.add(self.gameManager.enemy)
+        
     #funcion de generación de suelo
     def generate_floor(self):
         platform_width = 80
@@ -55,9 +58,8 @@ class Game():
 
         for i in range(num_platforms):
             platform = Platforms(i * platform_width, floor_y, platform_width, platform_height, self.scene.pt_skin)
-            self.platforms.add(platform)
             self.floor.add(platform)
-
+            self.sprites.add(platform)
     #game loop se modificara si es necesario cuando se tengan los niveles
     def run(self):
         running = True
@@ -76,27 +78,16 @@ class Game():
                     if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
                         running = False    
                 
-                if event.type == pygame.KEYDOWN:
-                     if event.key == pygame.K_SPACE and not self.gameManager.player.shooting:
-                        self.gameManager.player.shooting = True
-                        self.gameManager.player.index = 0
-                
-            stone = self.gameManager.player.shoot()
-            if stone:
-                self.stones.add(stone)
-            else:
-                if not self.gameManager.player.shooting:
-                    self.gameManager.player.update(self.floor)
-            
+            self.stones.add(self.gameManager.player.projectiles)  
+            self.gameManager.player.update(self.floor, self.gameManager.screen)
+
             self.gameManager.enemy.move()
 
-
-            
             self.gameManager.screen.blit(self.bg, (0, 0))
             for btn in self.buttons.values():
                 btn.update(self.gameManager.screen)
             
-            for platform in self.platforms:
+            for platform in self.floor:
                 platform.update(self.gameManager.screen)
             
             for stn in self.stones:

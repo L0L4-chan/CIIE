@@ -11,158 +11,152 @@ Version: 1.0.0
 import pygame, os
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
-vec = pygame.math.Vector2 #2 for two dimensional
+
+vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Player(pygame.sprite.Sprite):
-
-    #constructor: requiere las posiciones donde el personaje debe aparecer
     def __init__(self, x, y):
         super().__init__()
-        self.config = ConfigManager().get_instance()
-        self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png") # carga de sprite o imagen
-        self.rect = self.surf.get_rect() # proporcionamos collider
-        self.pos = vec(x,y) # posicion inicial
-        self.vel = vec(0,0) # velocidad inicial
-        self.ACC = 0.5  #aceleración del movimiento
-        self.FRIC = -0.12 # friccion
-        self.jumping = False #variable que se usa en caso de doble salto provisional
-        self.speed = 5 #velocidad
-        self.direction = 1 # uno indica que se mueve a la derecha, 0 si esta caminando hacia la izquierda. 
-        self.last_position = vec(0,0) 
-        self.index = 1 #para ver la siguiente animación
-        self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/skelly/to_right"))
-        self.end = len(self.frames) -1
-        self.animation_timer = 0  # Temporizador para la animación
-        self.frame_rate = 4 #cada cuantos loops cambiamos la animación valor entre 5 y diez no menos
-        self.jumpchecked = False #indica si ya se ha comprobado el salto
+        self.config = ConfigManager().get_instance() #requerimos el path de la resolucion a utilizar y el ancho de la pantalla
+        self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png") #cargamos la imagen de inicio
+        self.rect = self.surf.get_rect() #obtenemos el collisionador
+        self.pos = vec(x, y) #posicion de inicio
+        self.vel = vec(0, 0) # vector velocidad para los movimientos
+        self.ACC = 0.5  # constante aceleracion
+        self.FRIC = -0.12 # constante friccion (suaviza el movimiento)
+        self.speed = 5 #velocidad de movimiento
+        self.index = 1 #indice para las imagenes
+        #Bools para manejod e acciones
+        self.jumping = False 
         self.shooting = False
+        self.direction = 1 # direccion 1 sera derecha y 0 izquierda
+        #accedemos a los archivos (abria que cambiarlo si se cambio el numero de archivos pero de momento como solo es necesario para derecha e izquiera y ambos comparten
+        # nombre y numero solo se llama una vez)
+        self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/skelly/to_right"))
+        self.end = len(self.frames) - 1 #el indice final para generar el loop en movimiento
+        self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
+        self.frame_rate = 4 # limite de cada cuantos frames cambiamos la animación
         
-    #funcion que genera el movimiento (maneja tambien el salto y el cambio de imagen)
-    def move(self,platforms):
-        
-        if(self.shooting):
-            self.index = 0
+        self.projectiles = pygame.sprite.Group()  # Grupo para almacenar piedras disparadas
+
+    #funcion que maneja los movimientos
+    def move(self, platforms):
+        if self.shooting: 
             self.shoot()
         else:    
-            self.acc = vec(0,0.5)
+            self.acc = vec(0, 0.5)
             pressed_keys = pygame.key.get_pressed()
-            self.animation_timer += 1    #aumentamos el tiempo de la animación      
-            if pressed_keys[pygame.K_LEFT]: #si se ha pulsado izquierda
-                self.acc.x = - self.ACC #cambiamos la aceleración para que cambie la direccion del personaje
-                if self.animation_timer > self.frame_rate and not self.jumping: # si han pasado 10 loops al menos y no esta saltando
-                    if (not self.direction): #si la direccion no ha cambiado
-                        self.get_next("to_left") #movemos la animacion
+            self.animation_timer += 1      
+
+            if pressed_keys[pygame.K_LEFT]:  
+                self.acc.x = -self.ACC  
+                if self.animation_timer > self.frame_rate and not self.jumping:  
+                    if not self.direction:
+                        self.get_next("to_left")  
                     else:
-                        self.direction = 0 #cambiamos la direccion
-                        self.index = 0 #comenzamos el contador de imagenes
-                        self.end = len(self.frames) -1 #calculamos cual es el ultimo frame para generar el loop
-                        self.get_next("to_left") # cambiamos la animacion
+                        self.direction = 0  
+                        self.index = 0  
+                        self.end = len(self.frames) - 1  
+                        self.get_next("to_left")  
                 else: 
-                    self.direction = 0 #o cambiamos la direccion
+                    self.direction = 0  
+                    
             if pressed_keys[pygame.K_RIGHT]:
                 self.acc.x = self.ACC
-                if self.animation_timer > self.frame_rate and not self.jumping :
-                    if (self.direction):
+                if self.animation_timer > self.frame_rate and not self.jumping:
+                    if self.direction:
                         self.get_next("to_right")
                     else:
                         self.direction = 1
                         self.index = 0
-                        self.end = len(self.frames) -1
+                        self.end = len(self.frames) - 1
                         self.get_next("to_right")
                 else: 
                     self.direction = 1
+            
             if pressed_keys[pygame.K_UP]:
-                    self.jump(platforms)     
-             
-        #se realizan calculos para determinar la nueva posicion       
+                self.jump(platforms)
+
+            if pressed_keys[pygame.K_SPACE] and not self.shooting:
+                self.shooting = True
+                self.index = 0
+        #calculos de la nueva posicion
         self.acc.x += self.vel.x * self.FRIC
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc # se modifica posicion
-         
-        #si se sale de la pantalla vuelve por el otro lado, esto se debera eliminar o cambiar por la activacion de cambio de pantalla
+        self.pos += self.vel + 0.5 * self.acc
+        #limite de pantalla se eliminara o cambiara cuando tengamos la pantalla definitiva 
         if self.pos.x > self.config.get_width():
             self.pos.x = 0
         if self.pos.x < 0:
-            self.pos.x =  self.config.get_width()
-        
-        self.rect.midbottom = self.pos #actualiza posiscion del collider
-        
-    #Funcion que devuelve la siguiente imagen en el ciclo segun el movimiento
+            self.pos.x = self.config.get_width()
+        #situamos el collisionador
+        self.rect.midbottom = self.pos  
+
+    #funcion que nos cambia la imagen a mostrar, la carga y la asigna a la superficie
     def get_next(self, path): 
-        
         self.index += 1
         if self.index > self.end:
             self.index = 1
         self.frame_path = os.path.join(f"../Art/{self.config.get_artpath()}/skelly/{path}", self.frames[self.index])
         self.surf = pygame.image.load(self.frame_path)
         self.animation_timer = 0 
-        
-    
-    #funcion del salto de momento simple maneja tambien el cambio de imagen de la animación
+
+    #funcion que maneja el salto y sus animaciones
     def jump(self, platforms): 
         hits = pygame.sprite.spritecollide(self, platforms, False)
         if hits and not self.jumping:
             self.jumping = True
             self.vel.y = -10
             if self.animation_timer > self.frame_rate:
-                if(self.direction):
+                if self.direction:
                     self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/001.png")
-                    self.animation_timer = 0
                 else:
                     self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/002.png")
-                    self.animation_timer = 0  
-    
-    #posicion de no movimiento
+                self.animation_timer = 0  
+
+    #funcion idle(carga la animación de estar parado)
     def rest(self):
         if self.animation_timer > self.frame_rate:
-                if(self.direction):
-                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_right/001.png")
-                    self.animation_timer = 0
-                else:
-                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_left/001.png")
-                    self.animation_timer = 0 
-           
+            if self.direction:
+                self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_right/001.png")
+            else:
+                self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_left/001.png")
+            self.animation_timer = 0  
+
+    #funcion que maneja la animación y generacion de lanzamiento de piedras
     def shoot(self):
-        #aumenta el tiempo para avanzar la animacion
         if self.shooting:
             self.animation_timer += 1
-            # Seleccionar el directorio de animaciones según la dirección
             shoot_path = "stoneR" if self.direction else "stoneL"
+
             if self.animation_timer > self.frame_rate:
-                if self.index >=2:  # Si se llega al último frame
+                if self.index >= 2:  
                     self.shooting = False
-                    self.index = 0  # Reiniciar la animación
+                    self.index = 0
                     self.rest()
-                    # Crear y devolver la piedra después de la animación
+
                     stone_x = self.pos.x + (self.rect.width * self.direction)
                     stone_y = self.config.get_height() - (self.rect.height) - 18
-                    stone_path = (f"../Art/{self.config.get_artpath()}/stone/001.png")
-                    return Stone(x = stone_x, y = stone_y, path = stone_path, direction= self.direction )
+                    stone_path = f"../Art/{self.config.get_artpath()}/stone/001.png"
+                    new_stone = Stone(x=stone_x, y=stone_y, path=stone_path, direction=self.direction)
+                    self.projectiles.add(new_stone)  
                 else:
                     self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/{shoot_path}/{self.frames[self.index]}")
-                    self.animation_timer = 0  # Reiniciar el temporizador
-                    # Cambiar frame de animación
+                    self.animation_timer = 0  
                     self.index += 1
         
-        return None  # No devuelve piedra hasta que termine la animación
-               
-        
-    #evita que se produzca doble salto
-    def cancel_jump(self):
-        if self.jumping:
-            if self.vel.y < -3:
-                self.vel.y = -3
- 
-    # realiza las llamadas para la actividad del personaje (varia ciertos valores si el jugador esta tocando suelo (relacionados al salto))
-    def update(self, platforms):
-        self.move(platforms)
-        hits = pygame.sprite.spritecollide(self ,platforms, False)
-        if self.vel.y > 0:        
+    #funcion de actualizacion para ser llamada desde el game loop    
+    def update(self, platforms, screen):
+        self.move(platforms) # llama a move para gestionar las entradas del teclado
+        self.projectiles.update(screen) # actualiza los proyectiles en la pantalla
+        hits = pygame.sprite.spritecollide(self, platforms, False) #comprueba colisiones con las plataformas del suelo, posiblemente requiera modificacion cualdo haya mas
+        if self.vel.y > 0:      
             if hits:
                 if self.pos.y < hits[0].rect.bottom:         
-                    self.pos.y = hits[0].rect.top +1
+                    self.pos.y = hits[0].rect.top + 1
                     self.vel.y = 0
                     self.jumping = False
                     self.rest()
-                    
+
+
 
