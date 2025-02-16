@@ -12,8 +12,10 @@ Version: 1.0.0
 import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
-from ui.button import Button
 from game.objects.platforms import Platforms
+from ui.button import Button
+from ui.pausa import Pausa
+
 
 
 class Game():
@@ -26,7 +28,7 @@ class Game():
        self.scene = scene
        self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/{self.scene.background}")
        self.sound = sound
-
+       self.running = False
        self.sprites = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
        self.stones = pygame.sprite.Group()
@@ -62,44 +64,50 @@ class Game():
             self.sprites.add(platform)
     #game loop se modificara si es necesario cuando se tengan los niveles
     def run(self):
-        running = True
         
-        while running:
-            self.gameManager.clock.tick(self.config.get_fps())
+        self.running = True
+ 
+        while self.running:
+            
+            self.gameManager.clock.tick(self.config.get_fps()) # indicamos el numero de frames por segundo
 
+            # Se manejan los eventos
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                         #todo menu pausa 
-                        print("pause has been press")
+                        Pausa(self.gameManager.screen)
                     if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
-                        running = False    
+                        self.running = False    
+            
                 
-            self.stones.add(self.gameManager.player.projectiles)  
-            self.gameManager.player.update(self.floor, self.gameManager.screen)
+            
+            self.gameManager.player.update(self.floor, self.gameManager.screen) #actualiza al player
+            self.stones.add(self.gameManager.player.projectiles)  #añade piedras al grupo de piedras para su visualizacion
+            self.gameManager.enemy.move() #actualiza al enemigo
 
-            self.gameManager.enemy.move()
-
-            self.gameManager.screen.blit(self.bg, (0, 0))
-            for btn in self.buttons.values():
+            self.gameManager.screen.blit(self.bg, (0, 0)) #carga el fondo (en la escena completa el 0,0 tendra que varias con los movimientos del personaje TODO)
+            
+            for btn in self.buttons.values(): #carga botones
                 btn.update(self.gameManager.screen)
             
-            for platform in self.floor:
+            for platform in self.floor: #carga plataformas
                 platform.update(self.gameManager.screen)
             
-            for stn in self.stones:
+            for stn in self.stones: #carga piedrass
                 stn.update(self.gameManager.screen)
             
-            self.gameManager.screen.blit(self.gameManager.player.surf, self.gameManager.player.rect.topleft)
+            self.gameManager.screen.blit(self.gameManager.player.surf, self.gameManager.player.rect.topleft) #carga player
             
-            self.gameManager.screen.blit(self.gameManager.enemy.surf, self.gameManager.enemy.rect.topleft)
+            self.gameManager.screen.blit(self.gameManager.enemy.surf, self.gameManager.enemy.rect.topleft) # carga al enemigo 
 
-
+            #Muestra por pantalla
             pygame.display.flip()
-
+        
+        #maneja la salida y cierre para que todos los bucles finalicen correctamente
         self.gameManager.running = False
 
 

@@ -148,7 +148,7 @@ class Player(pygame.sprite.Sprite):
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms, screen):
         self.move(platforms) # llama a move para gestionar las entradas del teclado
-        self.projectiles.update(screen) # actualiza los proyectiles en la pantalla
+        #self.projectiles.update(screen) # actualiza los proyectiles en la pantalla se maneja en el game loop de momento
         hits = pygame.sprite.spritecollide(self, platforms, False) #comprueba colisiones con las plataformas del suelo, posiblemente requiera modificacion cualdo haya mas
         if self.vel.y > 0:      
             if hits:
