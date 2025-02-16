@@ -29,6 +29,10 @@ class Stone(Platforms):
         self.speed = 10 * 1 if direction else -8 #no se porque estos son los numeros para que se vean más o menos a la misma velocidad
     
     #funcion de dibujado   
-    def update(self, screen):
+    def update(self, screen, object = None):
         self.rect.x += self.speed
+        #manejo de collisiones 
+        #hits = pygame.sprite.spritecollide(self, object, False)
+        #if hits:
+        #   self.kill() #desaparecera por lo tanto 
         super().update(screen)
