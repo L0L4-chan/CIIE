@@ -80,7 +80,7 @@ class GameManager():
 
     def load_start(self):
         from views.start import Start
-        self.scene = Start(path = "1animation", sound = "..\Sound/BSO/levels-_1_.wav", event = 1)
+        self.scene = Start(path = "1animation", sound = "../Sound/BSO/levels-_1_.wav", event = 1)
 
     # game loop
     def run(self):
