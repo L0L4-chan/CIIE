@@ -79,12 +79,10 @@ class Game():
                         Pausa(GameManager().get_instance().screen)
                     if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
                         self.running = False    
-                if event.type == pygame.K_DOWN:    
-                    GameManager().get_instance().player.move(self.floor,pygame.key.get_pressed())
 
                 
             
-            GameManager().get_instance().player.update(self.floor, GameManager().get_instance().screen) #actualiza al player
+            GameManager().get_instance().player.update(self.floor) #actualiza al player
             self.stones.add(GameManager().get_instance().player.projectiles)  #añade piedras al grupo de piedras para su visualizacion
             GameManager().get_instance().enemy.move() #actualiza al enemigo
 

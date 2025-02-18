@@ -27,7 +27,8 @@ class ConfigManager:
             
             self.lettering = 48
             self.btn_lettering = 30
-            
+            self.player_w = 60
+            self.player_h = 120
             self.change_texts(self.language) # load text on the apropiate language
             self._initialized = True  
 
@@ -39,7 +40,7 @@ class ConfigManager:
         
 
     #setter
-    def update_config(self, language = "spanish", difficulty = 2, width = 1280 ,height = 720, artpath = "big", lettering = 48, btn_lettering = 30):
+    def update_config(self, language = "spanish", difficulty = 2, width = 1280 ,height = 720, artpath = "big", lettering = 48, btn_lettering = 30, pw = 60, ph = 120):
         
         self.language = language
         self.difficulty = difficulty
@@ -48,7 +49,8 @@ class ConfigManager:
         self.artpath = artpath     
         self.lettering = lettering
         self.btn_lettering = btn_lettering
-        
+        self.player_w = pw
+        self.player_h = ph
         self.change_language(language)
             
      #@param string language
@@ -100,3 +102,9 @@ class ConfigManager:
     
     def get_text_button(self, key):
         return self.btn_text[key]
+    
+    def get_player_W(self):
+        return self.player_w
+    
+    def get_player_H(self):
+        return self.player_h

@@ -60,15 +60,15 @@ class Options():
                                              lettering=ConfigManager().get_instance().get_size_ltt(), btn_lettering= ConfigManager().get_instance().get_size_btn_ltt(),
                                              artpath=ConfigManager().get_instance().get_artpath()) 
                 if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):                   
-                   self.change_resolution(width = 720, heigth = 405, ltt= 20, btn_ltt = 16, art ="small")
+                   self.change_resolution(width = 720, heigth = 405, ltt= 20, btn_ltt = 16, art ="small", pw = 33, ph = 66)
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
-                   self.change_resolution(width = 1280, heigth = 720, ltt= 48, btn_ltt = 30, art ="big")
+                   self.change_resolution(width = 1280, heigth = 720, ltt= 48, btn_ltt = 30, art ="big", pw = 60, ph = 120)
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
                    GameManager().get_instance().load_menu()
                     
     
-    def change_resolution(self, width, heigth, ltt, btn_ltt, art):
-        ConfigManager().get_instance().update_config(language= ConfigManager().get_instance().get_language(), difficulty = ConfigManager().get_instance().get_difficulty(),width=width, height=heigth, lettering=ltt, btn_lettering=btn_ltt, artpath=art ) 
+    def change_resolution(self, width, heigth, ltt, btn_ltt, art, pw, ph):
+        ConfigManager().get_instance().update_config(language= ConfigManager().get_instance().get_language(), difficulty = ConfigManager().get_instance().get_difficulty(),width=width, height=heigth, lettering=ltt, btn_lettering=btn_ltt, artpath=art, pw=pw, ph= ph ) 
         ConfigManager().get_instance().load_fonts() 
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Options.jpg") 
         GameManager().get_instance().change_resolution()
