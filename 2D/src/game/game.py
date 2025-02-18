@@ -15,7 +15,7 @@ from game.configManager import ConfigManager
 from game.objects.platforms import Platforms
 from ui.button import Button
 from ui.pausa import Pausa
-
+vec = pygame.math.Vector2  
 
 
 class Game():
@@ -59,7 +59,10 @@ class Game():
             platform = Platforms(i * platform_width, floor_y, platform_width, platform_height, self.scene.pt_skin)
             self.floor.add(platform)
             self.sprites.add(platform)
+    
     #game loop se modificara si es necesario cuando se tengan los niveles
+    
+    
     def run(self):
         
         self.running = True
@@ -85,8 +88,8 @@ class Game():
             GameManager().get_instance().player.update(self.floor) #actualiza al player
             self.stones.add(GameManager().get_instance().player.projectiles)  #añade piedras al grupo de piedras para su visualizacion
             GameManager().get_instance().enemy.move() #actualiza al enemigo
-
-            GameManager().get_instance().screen.blit(self.bg, (0, 0)) #carga el fondo (en la escena completa el 0,0 tendra que varias con los movimientos del personaje TODO)
+            
+            GameManager().get_instance().screen.blit(self.bg, (0,0)) #carga el fondo (en la escena completa el 0,0 tendra que varias con los movimientos del personaje TODO)
             
             for btn in self.buttons.values(): #carga botones
                 btn.update(GameManager().get_instance().screen)
