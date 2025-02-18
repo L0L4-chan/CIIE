@@ -1,5 +1,6 @@
 import pygame, math
 from classes.enemy import Enemy
+from game.configManager import ConfigManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 
@@ -14,8 +15,8 @@ class Bug(Enemy):
         self.pos.x += math.sin(pygame.time.get_ticks() / 100) * self.speed * 2  # Oscilación rápida
 
         # Limitar el movimiento dentro de la pantalla
-        if self.pos.x > self.config.get_width() - self.rect.width:
-            self.pos.x =  self.config.get_width() - self.rect.width
+        if self.pos.x > ConfigManager().get_instance().get_width() - self.rect.width:
+            self.pos.x =  ConfigManager().get_instance().get_width() - self.rect.width
         if self.pos.x < 0:
             self.pos.x = 0
 

@@ -1,5 +1,6 @@
 import pygame
 from classes.enemy import Enemy
+from game.configManager import ConfigManager
 vec = pygame.math.Vector2 #2 for two dimensional
 class Devil(Enemy):
     def __init__(self, x, y):
@@ -13,10 +14,10 @@ class Devil(Enemy):
         self.pos.y += self.vel.y * self.speed
 
         # Rebotar en los límites de la pantalla
-        if self.pos.x >  self.config.get_width() - self.rect.width or self.pos.x < 0:
+        if self.pos.x >  ConfigManager().get_instance().get_width() - self.rect.width or self.pos.x < 0:
             self.vel.x = -self.vel.x  # Cambia la dirección en X
 
-        if self.pos.y >  self.config.get_height() - self.rect.height or self.pos.y < 0:
+        if self.pos.y >  ConfigManager().get_instance().get_height() - self.rect.height or self.pos.y < 0:
             self.vel.y = -self.vel.y  # Cambia la dirección en Y
 
         self.rect.center = self.pos

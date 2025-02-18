@@ -17,8 +17,7 @@ from game.configManager import ConfigManager
 class Pausa():
   def __init__(self, screen):
     super().__init__()
-    self.config = ConfigManager().get_instance()
-    self.button = Button(pos=((self.config.get_width()/2), (self.config.get_height()/2)), text_input= self.config.get_text_button(key ="BACK"))
+    self.button = Button(pos=((ConfigManager().get_instance().get_width()/2), (ConfigManager().get_instance().get_height()/2)), text_input= ConfigManager().get_instance().get_text_button(key ="BACK"))
     self.running: False
     self.run(screen)
 

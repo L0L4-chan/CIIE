@@ -14,8 +14,6 @@ vec = pygame.math.Vector2 #2 for two dimensional
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-
-        self.config = ConfigManager().get_instance() #esto te dara el path el ancho y alto....
         # Imagen y rectángulo del enemigo (será sobrescrito por las subclases)
         self.surf = pygame.image.load(f"../img/1280x720/devil/devil_1.png")
         self.rect = self.surf.get_rect()
@@ -31,11 +29,11 @@ class Enemy(pygame.sprite.Sprite):
         self.pos.y += self.vel.y * self.speed
 
         # Limitar el movimiento dentro de la pantalla
-        if self.pos.x > self.config.get_width() - self.rect.width:
+        if self.pos.x > ConfigManager().get_instance().get_width() - self.rect.width:
             self.vel.x = -abs(self.vel.x)  # Rebotar a la izquierda
         if self.pos.x < 0:
             self.vel.x = abs(self.vel.x)  # Rebotar a la derecha
-        if self.pos.y > self.config.get_height() - self.rect.height:
+        if self.pos.y > ConfigManager().get_instance().get_height() - self.rect.height:
             self.vel.y = -abs(self.vel.y)  # Rebotar hacia arriba
         if self.pos.y < 0:
             self.vel.y = abs(self.vel.y)  # Rebotar hacia abajo

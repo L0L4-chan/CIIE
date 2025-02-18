@@ -10,10 +10,9 @@ Version: 1.0.0
 '''
 
 import pygame, sys
-from gameManager import GameManager
+from game.configManager import ConfigManager
 
 class Inventory():
  
     def __init__(self):
         super().__init__()
-        self.gameManager = GameManager.get_instance()

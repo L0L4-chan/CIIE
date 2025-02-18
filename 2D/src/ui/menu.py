@@ -18,9 +18,7 @@ class Menu():
 
     def __init__(self):
         super().__init__()
-        self.gameManager = GameManager.get_instance() # access to the game manager
-        self.config = ConfigManager().get_instance()
-        self.bg = pygame.image.load(f"../Art/{self.config.get_artpath()}/background/Menu.jpg") #add background
+        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Menu.jpg") #add background
 
 
         # Botones del menu
@@ -30,25 +28,25 @@ class Menu():
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.gameManager.running = False  
+                GameManager().get_instance().running = False  
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["play"].checkForInput(pygame.mouse.get_pos()):
-                    self.gameManager.load_start()
+                    GameManager().get_instance().load_start()
                 if self.buttons["load"].checkForInput(pygame.mouse.get_pos()):
-                    self.gameManager.load_loading()
+                    GameManager().get_instance().load_loading()
                 if self.buttons["options"].checkForInput(pygame.mouse.get_pos()):
-                    self.gameManager.load_options()
+                    GameManager().get_instance().load_options()
                 if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
-                    self.gameManager.running = False
+                    GameManager().get_instance().running = False
 
 
     # create buttons    
     def new_buttons(self):
          self.buttons = {
-            "play": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8) *3), text_input= self.config.get_text_button(key = "PLAY")),
-            "load": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*4), text_input= self.config.get_text_button(key ="LOAD")),
-            "options": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*5), text_input= self.config.get_text_button(key ="OPTIONS")),
-            "quit": Button(pos=(self.config.get_width()/8, (self.config.get_height()/8)*6), text_input= self.config.get_text_button(key ="QUIT")),
+            "play": Button(pos=(ConfigManager().get_instance().get_width()/8, (ConfigManager().get_instance().get_height()/8) *3), text_input= ConfigManager().get_instance().get_text_button(key = "PLAY")),
+            "load": Button(pos=(ConfigManager().get_instance().get_width()/8, (ConfigManager().get_instance().get_height()/8)*4), text_input= ConfigManager().get_instance().get_text_button(key ="LOAD")),
+            "options": Button(pos=(ConfigManager().get_instance().get_width()/8, (ConfigManager().get_instance().get_height()/8)*5), text_input= ConfigManager().get_instance().get_text_button(key ="OPTIONS")),
+            "quit": Button(pos=(ConfigManager().get_instance().get_width()/8, (ConfigManager().get_instance().get_height()/8)*6), text_input= ConfigManager().get_instance().get_text_button(key ="QUIT")),
         }
 
 
@@ -60,18 +58,18 @@ class Menu():
 
     # rendering the screen
     def render(self):
-        self.gameManager.screen.blit(self.bg, (0, 0)) #background
-        menu_text = self.config.get_font_title().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
-        self.gameManager.screen.blit(menu_text, (self.config.get_width()/14, (self.config.get_height()/6))) # add to buffer
+        GameManager().get_instance().screen.blit(self.bg, (0, 0)) #background
+        menu_text = ConfigManager().get_instance().get_font_title().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
+        GameManager().get_instance().screen.blit(menu_text, (ConfigManager().get_instance().get_width()/14, (ConfigManager().get_instance().get_height()/6))) # add to buffer
         
         for btn in self.buttons.values(): #add the buttons
-            btn.update(self.gameManager.screen)
+            btn.update(GameManager().get_instance().screen)
 
         pygame.display.update() # show
 
     # game loop 
     def run(self):
-        while self.gameManager.running and self.gameManager.scene == self:
+        while GameManager().get_instance().running and GameManager().get_instance().scene == self:
             self.handle_events()
             self.update()
             self.render()

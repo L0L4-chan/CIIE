@@ -17,8 +17,7 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.config = ConfigManager().get_instance() #requerimos el path de la resolucion a utilizar y el ancho de la pantalla
-        self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/skeleton_1.png") #cargamos la imagen de inicio
+        self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/idle.png") #cargamos la imagen de inicio
         self.rect = self.surf.get_rect() #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
         self.vel = vec(0, 0) # vector velocidad para los movimientos
@@ -32,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
         #accedemos a los archivos (abria que cambiarlo si se cambio el numero de archivos pero de momento como solo es necesario para derecha e izquiera y ambos comparten
         # nombre y numero solo se llama una vez)
-        self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/skelly/to_right"))
+        self.frames = sorted(os.listdir(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/to_right"))
         self.end = len(self.frames) - 1 #el indice final para generar el loop en movimiento
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 4 # limite de cada cuantos frames cambiamos la animación
@@ -85,10 +84,10 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         #limite de pantalla se eliminara o cambiara cuando tengamos la pantalla definitiva 
-        if self.pos.x > self.config.get_width():
+        if self.pos.x > ConfigManager().get_instance().get_width():
             self.pos.x = 0
         if self.pos.x < 0:
-            self.pos.x = self.config.get_width()
+            self.pos.x = ConfigManager().get_instance().get_width()
         #situamos el collisionador
         self.rect.midbottom = self.pos  
 
@@ -97,7 +96,7 @@ class Player(pygame.sprite.Sprite):
         self.index += 1
         if self.index > self.end:
             self.index = 1
-        self.frame_path = os.path.join(f"../Art/{self.config.get_artpath()}/skelly/{path}", self.frames[self.index])
+        self.frame_path = os.path.join(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/{path}", self.frames[self.index])
         self.surf = pygame.image.load(self.frame_path)
         self.animation_timer = 0 
 
@@ -109,18 +108,18 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = -10
             if self.animation_timer > self.frame_rate:
                 if self.direction:
-                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/001.png")
+                    self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/to_jump/001.png")
                 else:
-                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_jump/002.png")
+                    self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/to_jump/002.png")
                 self.animation_timer = 0  
 
     #funcion idle(carga la animación de estar parado)
     def rest(self):
         if self.animation_timer > self.frame_rate:
             if self.direction:
-                self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_right/001.png")
+                self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/to_right/001.png")
             else:
-                self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/to_left/001.png")
+                self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/to_left/001.png")
             self.animation_timer = 0  
 
     #funcion que maneja la animación y generacion de lanzamiento de piedras
@@ -136,12 +135,12 @@ class Player(pygame.sprite.Sprite):
                     self.rest()
 
                     stone_x = self.pos.x + (self.rect.width * self.direction)
-                    stone_y = self.config.get_height() - (self.rect.height) - 18
-                    stone_path = f"../Art/{self.config.get_artpath()}/stone/001.png"
+                    stone_y = ConfigManager().get_instance().get_height() - (self.rect.height) - 18
+                    stone_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/stone/001.png"
                     new_stone = Stone(x=stone_x, y=stone_y, path=stone_path, direction=self.direction)
                     self.projectiles.add(new_stone)  
                 else:
-                    self.surf = pygame.image.load(f"../Art/{self.config.get_artpath()}/skelly/{shoot_path}/{self.frames[self.index]}")
+                    self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/{shoot_path}/{self.frames[self.index]}")
                     self.animation_timer = 0  
                     self.index += 1
         

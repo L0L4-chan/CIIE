@@ -38,9 +38,9 @@ class GameManager():
             pygame.mixer.init()
             pygame.mixer.music.load("../Sound/BSO/Credits.wav") #load by default the menu music
             pygame.mixer.music.play() #start the music
-            self.config = ConfigManager().get_instance()
-            self.config.load_fonts()
-            self.screen = pygame.display.set_mode((self.config.get_width(), self.config.get_height()))  # screen size default 1280 x 720
+            ConfigManager().get_instance() = ConfigManager().get_instance()
+            ConfigManager().get_instance().load_fonts()
+            self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window
             self.clock = pygame.time.Clock() # create a clock
             self.running = True # bool for game loop
@@ -51,7 +51,7 @@ class GameManager():
     
     #change the resolution of the screen
     def change_resolution(self):
-        self.screen = pygame.display.set_mode((self.config.width, self.config.height)) 
+        self.screen = pygame.display.set_mode((ConfigManager().get_instance().width, ConfigManager().get_instance().height)) 
 
     #functions to load different scenes
     def load_menu(self):
