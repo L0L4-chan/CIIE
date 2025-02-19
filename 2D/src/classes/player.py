@@ -22,19 +22,21 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(x, y, ConfigManager().get_instance().get_player_W(),ConfigManager().get_instance().get_player_H()) #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
         self.vel = vec(0, 0) # vector velocidad para los movimientos
+        self.local = vec(x,y)
         self.ACC = 0.5  # constante aceleracion
         self.FRIC = -0.12 # constante friccion (suaviza el movimiento)
         self.speed = 5 #velocidad de movimiento
         self.index = 0
+        self.level = 1
         #Bools para manejod e acciones
         self.jumping = False 
         self.shooting = False
-        self.idle = True
         self.pushing = False
         self.lasso_up = False
         self.lasso_side = False
         self.die = False
-        self.shield = False  
+        self.shield = False 
+        self.bombing = False 
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
         #accedemos a los archivos (abria que cambiarlo si se cambio el numero de archivos pero de momento como solo es necesario para derecha e izquiera y ambos comparten
         # nombre y numero solo se llama una vez)
@@ -50,13 +52,23 @@ class Player(pygame.sprite.Sprite):
         stone_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/stone/001.png"
         self.projectiles = Stone(path=stone_path)
 
+    
+    def get_pos(self):
+        return self.rect.topleft
+        
+    def get_local(self):
+        return self.local 
+
+    def set_local(self,vector):
+        self.local = vector
+
+
     #funcion que maneja los movimientos
     def move(self, platforms):
         if not self.shooting:     
             self.acc = vec(0, 0.5)
             pressed_keys = pygame.key.get_pressed()     
             if not any(pressed_keys):# No hay teclas presionadas
-                self.idle = True
                 self.acc.x = 0
                 self.current_action = "idle"
             if pressed_keys[pygame.K_LEFT]:  
@@ -67,21 +79,34 @@ class Player(pygame.sprite.Sprite):
                 self.acc.x = self.ACC
                 self.direction = 1
                 self.current_action = "walk"  
-            if pressed_keys[pygame.K_UP]:
+            if pressed_keys[pygame.K_SPACE]:
                 hits = pygame.sprite.spritecollide(self, platforms, False)
                 if hits and not self.jumping:
                     self.jumping = True
                     self.vel.y = -10
                 self.current_action = "jump"  
-            if pressed_keys[pygame.K_SPACE]:
+            if pressed_keys[pygame.K_q]:
                 if self.projectiles.get_inUse():
-                    self.idle = True
                     self.acc.x = 0
                     self.current_action = "idle"
                 else:
                     self.shooting = True
                     self.current_action = "shoot"  
-                
+            if pressed_keys[pygame.K_a] and self.level>= 4 :
+                self.current_action = "shield"
+                self.shield = True 
+            if pressed_keys[pygame.K_w] and self.level>= 2 :
+                self.current_action = "lasso_up"
+                self.lasso_up = True 
+            if pressed_keys[pygame.K_e] and self.level>= 2 :
+                self.current_action = "lasso_side"
+                self.lasso_side = True 
+            if pressed_keys[pygame.K_s] and self.level>= 3 :
+                self.current_action = "bomb"
+                self.bombing = True 
+            if pressed_keys[pygame.K_d]:
+                self.current_action = "push"
+                self.pushing = True
             #calculos de la nueva posicion
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
@@ -100,7 +125,6 @@ class Player(pygame.sprite.Sprite):
         action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
         index = len(action_frames)  # Determinamos el índice del fotograma
         if self.current_action == "shoot" and self.index >= index -1:
-            print(self.index)
             self.shooting = False
             self.shoot()
             self.current_action= "idle"
