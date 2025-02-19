@@ -50,7 +50,7 @@ class GameManager():
     
     #change the resolution of the screen
     def change_resolution(self):
-        self.screen = pygame.display.set_mode((ConfigManager().get_instance().width, ConfigManager().get_instance().height)) 
+        self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height())) 
 
     #functions to load different scenes
     def load_menu(self):
