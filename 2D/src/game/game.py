@@ -98,7 +98,7 @@ class Game():
                 platform.update(GameManager().get_instance().screen)
             
             for stn in self.stones: #carga piedrass
-                stn.update(GameManager().get_instance().screen)
+                stn.update(GameManager().get_instance().screen, self.sprites)
             
             GameManager().get_instance().screen.blit(GameManager().get_instance().player.surf, GameManager().get_instance().player.rect.topleft) #carga player
             

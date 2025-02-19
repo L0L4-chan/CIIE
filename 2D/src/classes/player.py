@@ -30,11 +30,16 @@ class Player(pygame.sprite.Sprite):
         self.jumping = False 
         self.shooting = False
         self.idle = True
+        self.pushing = False
+        self.lasso_up = False
+        self.lasso_side = False
+        self.die = False
+        self.shield = False  
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
         #accedemos a los archivos (abria que cambiarlo si se cambio el numero de archivos pero de momento como solo es necesario para derecha e izquiera y ambos comparten
         # nombre y numero solo se llama una vez)
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
-        self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación
+        self.frame_rate = 6 # limite de cada cuantos frames cambiamos la animación
         self.frames = {
             "idle": [(0, 0)],  # Una sola imagen para idle
             "walk": [( ConfigManager().get_instance().get_player_W() + (i * ConfigManager().get_instance().get_player_W()), 0) for i in range(4)],  # 4 imágenes para caminar
@@ -42,7 +47,8 @@ class Player(pygame.sprite.Sprite):
             "shoot": [(( ConfigManager().get_instance().get_player_W()* 6 ) + ( i * ConfigManager().get_instance().get_player_W()), 0) for i in range(3)],  # 3 imágenes para disparo
         }
         self.current_action = "idle"  # Acción inicial
-        self.projectiles = pygame.sprite.Group()  # Grupo para almacenar piedras disparadas
+        stone_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/stone/001.png"
+        self.projectiles = Stone(path=stone_path)
 
     #funcion que maneja los movimientos
     def move(self, platforms):
@@ -68,8 +74,13 @@ class Player(pygame.sprite.Sprite):
                     self.vel.y = -10
                 self.current_action = "jump"  
             if pressed_keys[pygame.K_SPACE]:
-                self.shooting = True
-                self.current_action = "shoot"  
+                if self.projectiles.get_inUse():
+                    self.idle = True
+                    self.acc.x = 0
+                    self.current_action = "idle"
+                else:
+                    self.shooting = True
+                    self.current_action = "shoot"  
                 
             #calculos de la nueva posicion
             self.acc.x += self.vel.x * self.FRIC
@@ -89,6 +100,7 @@ class Player(pygame.sprite.Sprite):
         action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
         index = len(action_frames)  # Determinamos el índice del fotograma
         if self.current_action == "shoot" and self.index >= index -1:
+            print(self.index)
             self.shooting = False
             self.shoot()
             self.current_action= "idle"
@@ -108,11 +120,12 @@ class Player(pygame.sprite.Sprite):
         
     #funcion que maneja la generacion de piedras
     def shoot(self):
-        stone_x = self.pos.x + (self.rect.width * self.direction)
+        if(self.direction):
+            stone_x = self.pos.x + (self.rect.width * self.direction)
+        else:
+            stone_x = self.pos.x - (self.rect.width)
         stone_y = ConfigManager().get_instance().get_height() - (self.rect.height) - 18
-        stone_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/stone/001.png"
-        new_stone = Stone(x=stone_x, y=stone_y, path=stone_path, direction=self.direction)
-        self.projectiles.add(new_stone)  
+        self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction) 
         
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):
