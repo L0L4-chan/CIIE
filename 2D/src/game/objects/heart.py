@@ -18,8 +18,8 @@ class Heart(OneUse):
         super().__init__(path)
        
         # Definir el tamaño de cada fotograma de la sprite sheet
-        self.width = 40
-        self.height = 50
+        self.width = ConfigManager.get_instance().get_heart_W()
+        self.height = ConfigManager.get_instance().get_heart_H()
         # Cargar la imagen de la sprite sheet del corazón
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         # Diccionario de animaciones (por ahora solo bomb, pero puedes agregar más como "walk", etc.)

@@ -1,1 +1,10 @@
-{"width" : 720, "height" : 405,  "lettering" : 20, "btn_lettering" : 16, "art_path" :"small", "pw" : 33, "ph" : 66}
+{"width" : 720, 
+"height" : 405,  
+"lettering" : 20, 
+"btn_lettering" : 16, 
+"art_path" :"small", 
+"pw" : 33, 
+"ph" : 66,
+"heartw" : 22,
+"hearth" : 28
+}

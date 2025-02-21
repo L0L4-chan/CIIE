@@ -99,3 +99,9 @@ class ConfigManager:
     
     def get_player_H(self):
         return self.conf["ph"]
+    
+    def get_heart_W(self):
+        return self.conf["heartw"]
+    
+    def get_heart_H(self):
+        return self.conf["hearth"]
