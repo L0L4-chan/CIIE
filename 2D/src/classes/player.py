@@ -234,15 +234,15 @@ class Player(pygame.sprite.Sprite):
             if(self.direction):
                 lzz_x = self.pos.x + (self.rect.width/6 * self.direction)
             else:
-                lzz_x = self.pos.x - (self.rect.width/6)
+                lzz_x = self.pos.x 
             lzz_y = self.rect.y 
             self.lasso_up.active(x= lzz_x, y = lzz_y, direction= self.direction)  
         else:
             if(self.direction):
-                lzz_x = self.pos.x + (self.rect.width * self.direction)
+                lzz_x = self.pos.x + (self.rect.width/2 * self.direction)
             else:
-                lzz_x = self.pos.x - (self.rect.width)
-            lzz_y = self.rect.y  + ((self.height) /3)
+                lzz_x = self.pos.x - (self.rect.width/2)
+            lzz_y = self.rect.y  + ((self.height/6)*4)
             self.lasso_side.active(x= lzz_x, y = lzz_y, direction= self.direction)    
             
     def level_up(self):

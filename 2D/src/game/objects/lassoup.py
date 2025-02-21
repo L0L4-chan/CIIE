@@ -20,8 +20,7 @@ class LassoUp(OneUse):  # Modo 0 (Vertical)
 
         self.frames_sizes = [
             (self.width, self.height // 4),  
-            (self.width, self.height // 2),  
-            (self.width, self.height // 4)   
+            (self.width, self.height // 2),   
         ]
 
         self.frames = {
@@ -44,12 +43,21 @@ class LassoUp(OneUse):  # Modo 0 (Vertical)
     def animation(self):
         if self.index < len(self.frames["bowel"]):
             frame_rect = pygame.Rect(self.frames["bowel"][self.index])
-            self.image = self.spritesheet.subsurface(frame_rect)
-            self.surf = self.image
+            self.surf = self.spritesheet.subsurface(frame_rect)
+             
+            if self.direction:
+                self.rect = pygame.Rect(self.x_pos, self.y_pos - self.surf.get_height(), self.width, self.height)
+            else:
+                self.surf = pygame.transform.flip( self.surf, True, False)
+                width = round(self.surf.get_width() * 1.5)
+                self.rect = pygame.Rect(self.x_pos - width, self.y_pos - self.surf.get_height(), self.width, self.height)
+                
             self.index += 1
             self.animation_timer = 0
         else:
-            self.inUse = False  
+            self.inUse = False
+            self.index = 0  
+              
 
     def update(self, screen, object=None):
         if self.inUse:

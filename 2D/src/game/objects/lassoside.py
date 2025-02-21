@@ -26,7 +26,9 @@ class LassoSide(OneUse):  # Modo 1 (Horizontal)
         ]
 
         self.frames = {
-            "bowel": [pygame.Rect(0, 0, w, h) for w, h in self.frames_sizes]
+            "bowel": [pygame.Rect(0, 0,self.width // 4, self.height), 
+                      pygame.Rect(self.width //4 , 0,self.width //2 , self.height), 
+                      pygame.Rect((self.width //4) * 3 , 0, self.width //4 , self.height) ]
         }
 
         self.surf = self.spritesheet.subsurface(self.frames["bowel"][0])
@@ -38,21 +40,22 @@ class LassoSide(OneUse):  # Modo 1 (Horizontal)
     def active(self, x, y, direction):
         self.direction = direction
         super().active(x, y)
-        self.rect = pygame.Rect(x, y, self.width, self.height)
+        self.rect = pygame.Rect(x, y , self.width, self.height)
         self.index = 0
         
         
     def animation(self):
         if self.index < len(self.frames["bowel"]):
             frame_rect = pygame.Rect(self.frames["bowel"][self.index])
-            self.image = self.spritesheet.subsurface(frame_rect)
-            self.surf = self.image
+            self.surf = self.spritesheet.subsurface(frame_rect)
             self.index += 1
             if self.direction == 0:
-                self.image = pygame.transform.flip(self.image, True, False)
+                self.surf = pygame.transform.flip( self.surf, True, False)
+                self.rect = pygame.Rect(self.x_pos - self.surf.get_width(), self.y_pos  , self.width, self.height)
             self.animation_timer = 0
         else:
-            self.inUse = False  
+            self.inUse = False
+            self.index = 0  
 
     def update(self, screen, object=None):
         if self.inUse:
