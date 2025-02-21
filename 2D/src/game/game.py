@@ -13,6 +13,7 @@ import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from game.objects.platforms import Platforms
+from game.objects.lives import Lives
 from ui.button import Button
 from ui.pausa import Pausa
 vec = pygame.math.Vector2  
@@ -29,6 +30,7 @@ class Game():
        self.sprites = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
        self.stones = pygame.sprite.Group()
+       self.group_lives = pygame.sprite.Group()
        #generamos suelo (funcion que debera ser modificada cuando se tengan los niveles)
        self.generate_floor()
        
@@ -95,6 +97,10 @@ class Game():
             for btn in self.buttons.values(): #carga botones
                 btn.update(GameManager().get_instance().screen)
             
+            for i in range(GameManager().get_instance().player.get_lives()): 
+                self.group_lives.add(Lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
+
+            self.group_lives.update(GameManager().get_instance().screen)
             for platform in self.floor: #carga plataformas
                 platform.update(GameManager().get_instance().screen)
             

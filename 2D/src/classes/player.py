@@ -10,6 +10,7 @@ Version: 1.0.0
 '''
 import pygame, os
 from game.configManager import ConfigManager
+from game.gameManager import GameManager
 from game.objects.stone import Stone
 from game.objects.heart import Heart
 
@@ -23,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos la imagen de inicio
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
 
-        self.rect = pygame.Rect(x, y,self.width,ConfigManager().get_instance().get_player_H()) #obtenemos el collisionador
+        self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
         self.vel = vec(0, 0) # vector velocidad para los movimientos
         self.local = vec(x,y)
@@ -31,7 +32,8 @@ class Player(pygame.sprite.Sprite):
         self.FRIC = -0.12 # constante friccion (suaviza el movimiento)
         self.speed = 5 #velocidad de movimiento
         self.index = 0
-        self.level = 3
+        self.level = 5
+        self.lives = 3
         #Bools para manejod e acciones
         self.jumping = False 
         self.shooting = False
@@ -54,7 +56,9 @@ class Player(pygame.sprite.Sprite):
             "bomb": [( self.width * 9 + (i * self.width), 0) for i in range(4)], # 4 para el corazón
             "shield": [(( self.width* 13 ) + ( i * self.width), 0) for i in range(3)], #2 para el escudo
             "lasso_side": [(( self.width* 15 ) + ( i * self.width), 0) for i in range(3)],
-            "lasso_up": [(( self.width* 18 ) + ( i *self.width), 0) for i in range(3)]
+            "lasso_up": [(( self.width* 18 ) + ( i *self.width), 0) for i in range(3)],
+            "death" :  [(( self.width* 21 ) + ( i *self.width), 0) for i in range(3)],
+            "push" :  [(( self.width* 24 ) + ( i *self.width), 0) for i in range(2)],
         
         }
         self.current_action = "idle"  # Acción inicial
@@ -74,7 +78,9 @@ class Player(pygame.sprite.Sprite):
 
     def set_local(self,vector):
         self.local = vector
-
+    
+    def get_lives(self):
+        return self.lives
 
     #funcion que maneja los movimientos
     def move(self, platforms):
@@ -105,9 +111,9 @@ class Player(pygame.sprite.Sprite):
                 else:
                     self.shooting = True
                     self.current_action = "shoot"  
-            #if pressed_keys[pygame.K_a] and self.level>= 4 :
-            #    self.current_action = "shield"
-            #    self.shield = True 
+            if pressed_keys[pygame.K_a] and self.level>= 4 :
+                self.current_action = "shield"
+                self.shield = True 
             #if pressed_keys[pygame.K_w] and self.level>= 2 :
             #    self.current_action = "lasso_up"
             #    self.lasso_up = True 
@@ -155,6 +161,13 @@ class Player(pygame.sprite.Sprite):
             self.explode()
             self.current_action= "idle"
             self.index = 0
+        elif self.current_action == "death" and self.index >= index -1:
+            if self.lifes > 0 :
+                self.current_action= "idle"
+                self.index = 0
+                self.lifes -=1
+            else:
+                GameManager.get_instance().end_game()    
         #elif self.current_action == "lasso_up":
             
         #elif self.current_action == "lasso_side":   
@@ -186,7 +199,6 @@ class Player(pygame.sprite.Sprite):
         else:
             heart_x = self.pos.x - (self.rect.width)
         heart_y = self.rect.y + ((self.height) /2)
-        print(heart_y)
         self.heart.active(x= int( heart_x), y = int(heart_y), direction= self.direction)
         self.bomb_counter = 0 
         

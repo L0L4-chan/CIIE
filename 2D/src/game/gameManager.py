@@ -81,6 +81,14 @@ class GameManager():
         from views.start import Start
         self.scene = Start(path = "1animation", sound = "../Sound/BSO/levels-_1_.wav", event = 1)
 
+    #TODO
+    def end_game(self):
+        print("end") 
+    
+    def credits(self):
+        print("credits")
+        
+
     # game loop
     def run(self):
         while self.running:
