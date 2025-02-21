@@ -87,6 +87,7 @@ class Game():
             
             GameManager().get_instance().player.update(self.floor) #actualiza al player
             self.stones.add(GameManager().get_instance().player.projectiles)  #añade piedras al grupo de piedras para su visualizacion
+            self.stones.add(GameManager().get_instance().player.heart)
             GameManager().get_instance().enemy.move() #actualiza al enemigo
             
             GameManager().get_instance().screen.blit(self.bg, (0,0)) #carga el fondo (en la escena completa el 0,0 tendra que varias con los movimientos del personaje TODO)

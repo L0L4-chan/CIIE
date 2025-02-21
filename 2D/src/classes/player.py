@@ -11,15 +11,19 @@ Version: 1.0.0
 import pygame, os
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
+from game.objects.heart import Heart
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
+        self.width =  ConfigManager().get_instance().get_player_W()
+        self.height =  ConfigManager().get_instance().get_player_H()
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos la imagen de inicio
-        self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, ConfigManager().get_instance().get_player_W(),ConfigManager().get_instance().get_player_H()))
-        self.rect = pygame.Rect(x, y, ConfigManager().get_instance().get_player_W(),ConfigManager().get_instance().get_player_H()) #obtenemos el collisionador
+        self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
+
+        self.rect = pygame.Rect(x, y,self.width,ConfigManager().get_instance().get_player_H()) #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
         self.vel = vec(0, 0) # vector velocidad para los movimientos
         self.local = vec(x,y)
@@ -27,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.FRIC = -0.12 # constante friccion (suaviza el movimiento)
         self.speed = 5 #velocidad de movimiento
         self.index = 0
-        self.level = 1
+        self.level = 3
         #Bools para manejod e acciones
         self.jumping = False 
         self.shooting = False
@@ -41,17 +45,26 @@ class Player(pygame.sprite.Sprite):
         #accedemos a los archivos (abria que cambiarlo si se cambio el numero de archivos pero de momento como solo es necesario para derecha e izquiera y ambos comparten
         # nombre y numero solo se llama una vez)
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
-        self.frame_rate = 6 # limite de cada cuantos frames cambiamos la animación
+        self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación
         self.frames = {
             "idle": [(0, 0)],  # Una sola imagen para idle
-            "walk": [( ConfigManager().get_instance().get_player_W() + (i * ConfigManager().get_instance().get_player_W()), 0) for i in range(4)],  # 4 imágenes para caminar
-            "jump": [(( ConfigManager().get_instance().get_player_W()* 5), 0)],  # Una sola imagen para salto
-            "shoot": [(( ConfigManager().get_instance().get_player_W()* 6 ) + ( i * ConfigManager().get_instance().get_player_W()), 0) for i in range(3)],  # 3 imágenes para disparo
+            "walk": [( self.width + (i * self.width), 0) for i in range(4)],  # 4 imágenes para caminar
+            "jump": [(( self.width* 5), 0)],  # Una sola imagen para salto
+            "shoot": [(( self.width* 6 ) + ( i * self.width), 0) for i in range(3)],  # 3 imágenes para disparo
+            "bomb": [( self.width * 9 + (i * self.width), 0) for i in range(4)], # 4 para el corazón
+            "shield": [(( self.width* 13 ) + ( i * self.width), 0) for i in range(3)], #2 para el escudo
+            "lasso_side": [(( self.width* 15 ) + ( i * self.width), 0) for i in range(3)],
+            "lasso_up": [(( self.width* 18 ) + ( i *self.width), 0) for i in range(3)]
+        
         }
         self.current_action = "idle"  # Acción inicial
         stone_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/stone/001.png"
         self.projectiles = Stone(path=stone_path)
-
+        heart_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/heart/spritesheet.png"
+        self.heart = Heart(heart_path)
+        self.bomb_counter = 0
+        self.shield_counter = 0
+    
     
     def get_pos(self):
         return self.rect.topleft
@@ -65,7 +78,7 @@ class Player(pygame.sprite.Sprite):
 
     #funcion que maneja los movimientos
     def move(self, platforms):
-        if not self.shooting:     
+        if not self.shooting or not self.bombing:     
             self.acc = vec(0, 0.5)
             pressed_keys = pygame.key.get_pressed()     
             if not any(pressed_keys):# No hay teclas presionadas
@@ -92,21 +105,23 @@ class Player(pygame.sprite.Sprite):
                 else:
                     self.shooting = True
                     self.current_action = "shoot"  
-            if pressed_keys[pygame.K_a] and self.level>= 4 :
-                self.current_action = "shield"
-                self.shield = True 
-            if pressed_keys[pygame.K_w] and self.level>= 2 :
-                self.current_action = "lasso_up"
-                self.lasso_up = True 
-            if pressed_keys[pygame.K_e] and self.level>= 2 :
-                self.current_action = "lasso_side"
-                self.lasso_side = True 
-            if pressed_keys[pygame.K_s] and self.level>= 3 :
+            #if pressed_keys[pygame.K_a] and self.level>= 4 :
+            #    self.current_action = "shield"
+            #    self.shield = True 
+            #if pressed_keys[pygame.K_w] and self.level>= 2 :
+            #    self.current_action = "lasso_up"
+            #    self.lasso_up = True 
+            #if pressed_keys[pygame.K_e] and self.level>= 2 :
+            #    self.current_action = "lasso_side"
+            #    self.lasso_side = True 
+            if pressed_keys[pygame.K_s] and self.level>= 3 and self.bomb_counter > 300:
                 self.current_action = "bomb"
-                self.bombing = True 
-            if pressed_keys[pygame.K_d]:
-                self.current_action = "push"
-                self.pushing = True
+                self.bombing = True
+                self.index = 0  # Reiniciar la animación
+                self.bomb_counter = 0
+            #if pressed_keys[pygame.K_d]:
+            #    self.current_action = "push"
+            #    self.pushing = True
             #calculos de la nueva posicion
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
@@ -124,16 +139,30 @@ class Player(pygame.sprite.Sprite):
         # Seleccionamos la imagen actual de la animación
         action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
         index = len(action_frames)  # Determinamos el índice del fotograma
+       
         if self.current_action == "shoot" and self.index >= index -1:
             self.shooting = False
             self.shoot()
             self.current_action= "idle"
             self.index = 0
+        elif self.current_action == "shield" and self.index >= index -1:
+            self.shield = False
+            self.shield_counter = 0
+            self.current_action= "idle"
+            self.index = 0
+        elif self.current_action == "bomb" and self.index >= index -1:
+            self.bombing = False
+            self.explode()
+            self.current_action= "idle"
+            self.index = 0
+        #elif self.current_action == "lasso_up":
+            
+        #elif self.current_action == "lasso_side":   
         elif self.current_action == "jump" or self.current_action == "idle" or self.index == index:
             self.index = 0
         frame = action_frames[self.index]
         # Cargamos la imagen del sprite de acuerdo con la acción actual
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], ConfigManager().get_instance().get_player_W(),ConfigManager().get_instance().get_player_H()))
+        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width,self.height))
         
         # Si la dirección es izquierda, reflejamos la imagen
         if self.direction == 0:
@@ -141,20 +170,32 @@ class Player(pygame.sprite.Sprite):
         self.surf = sprite_image
         self.animation_timer = 0
         self.index += 1
-        
+
     #funcion que maneja la generacion de piedras
     def shoot(self):
         if(self.direction):
             stone_x = self.pos.x + (self.rect.width * self.direction)
         else:
             stone_x = self.pos.x - (self.rect.width)
-        stone_y = ConfigManager().get_instance().get_height() - (self.rect.height) - 18
+        stone_y = self.rect.y  + ((self.height) /2)
         self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction) 
+    
+    def explode(self):
+        if(self.direction):
+            heart_x = self.pos.x + (self.rect.width * self.direction)
+        else:
+            heart_x = self.pos.x - (self.rect.width)
+        heart_y = self.rect.y + ((self.height) /2)
+        print(heart_y)
+        self.heart.active(x= int( heart_x), y = int(heart_y), direction= self.direction)
+        self.bomb_counter = 0 
         
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):
         self.move(platforms) # llama a move para gestionar las entradas del teclado
         self.animation_timer += 1
+        self.bomb_counter += 1
+        self.shield_counter += 1
         if self.animation_timer > self.frame_rate:
             self.draw()
         #self.projectiles.update(screen) # actualiza los proyectiles en la pantalla se maneja en el game loop de momento
