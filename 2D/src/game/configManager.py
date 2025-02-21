@@ -105,3 +105,21 @@ class ConfigManager:
     
     def get_heart_H(self):
         return self.conf["hearth"]
+    
+    def get_player_Acc(self):
+        return self.conf["Acc"]
+    
+    def get_player_speed(self):
+        return self.conf["speed"]
+    
+    def get_player_jump(self):
+        return self.conf["jump"]
+    
+    def get_player_fric(self):
+        return self.conf["fric"]
+    
+    def get_lasso_W(self):
+        return self.conf["lasso_SW"]
+    
+    def get_lasso_H(self):
+        return self.conf["lasso_SH"]

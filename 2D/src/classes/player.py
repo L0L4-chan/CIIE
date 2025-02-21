@@ -13,6 +13,8 @@ from game.configManager import ConfigManager
 from game.gameManager import GameManager
 from game.objects.stone import Stone
 from game.objects.heart import Heart
+from game.objects.lassoup import LassoUp
+from game.objects.lassoside import LassoSide
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -28,9 +30,11 @@ class Player(pygame.sprite.Sprite):
         self.pos = vec(x, y) #posicion de inicio
         self.vel = vec(0, 0) # vector velocidad para los movimientos
         self.local = vec(x,y)
-        self.ACC = 0.5  # constante aceleracion
-        self.FRIC = -0.12 # constante friccion (suaviza el movimiento)
-        self.speed = 5 #velocidad de movimiento
+        self.ACC =  ConfigManager().get_instance().get_player_Acc()  # constante aceleracion
+        self.FRIC =  ConfigManager().get_instance().get_player_fric() # constante friccion (suaviza el movimiento)
+        self.speed =  ConfigManager().get_instance().get_player_speed #velocidad de movimiento
+        self.jump_Max = ConfigManager().get_instance().get_player_jump()
+        
         self.index = 0
         self.level = 5
         self.lives = 3
@@ -38,8 +42,8 @@ class Player(pygame.sprite.Sprite):
         self.jumping = False 
         self.shooting = False
         self.pushing = False
-        self.lasso_up = False
-        self.lasso_side = False
+        self.lasso_u = False
+        self.lasso_s = False
         self.die = False
         self.shield = False 
         self.bombing = False 
@@ -68,7 +72,13 @@ class Player(pygame.sprite.Sprite):
         self.heart = Heart(heart_path)
         self.bomb_counter = 0
         self.shield_counter = 0
+        lasso_side_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/bowel/002.png"
+        self.lasso_side = LassoSide(lasso_side_path)
+        lasso_up_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/bowel/001.png"
+        self.lasso_up = LassoUp(lasso_up_path)
     
+        self.group = pygame.sprite.Group()
+        self.group.add(self.projectiles, self.heart, self.lasso_side, self.lasso_up)
     
     def get_pos(self):
         return self.rect.topleft
@@ -85,49 +95,57 @@ class Player(pygame.sprite.Sprite):
     #funcion que maneja los movimientos
     def move(self, platforms):
         if not self.shooting or not self.bombing:     
-            self.acc = vec(0, 0.5)
+            self.acc = vec(0, ConfigManager().get_instance().get_player_Acc())
             pressed_keys = pygame.key.get_pressed()     
             if not any(pressed_keys):# No hay teclas presionadas
                 self.acc.x = 0
                 self.current_action = "idle"
-            if pressed_keys[pygame.K_LEFT]:  
+            elif not pressed_keys[pygame.K_d] and self.pushing:
+                self.pushing = False
+                self.ACC = self.original_acc  # Restauramos la aceleración original
+                self.vel.x = self.original_vel
+            elif pressed_keys[pygame.K_LEFT]:  
                 self.acc.x = -self.ACC  
                 self.direction = 0
                 self.current_action = "walk"          
-            if pressed_keys[pygame.K_RIGHT]:
+            elif pressed_keys[pygame.K_RIGHT]:
                 self.acc.x = self.ACC
                 self.direction = 1
                 self.current_action = "walk"  
-            if pressed_keys[pygame.K_SPACE]:
+            elif pressed_keys[pygame.K_SPACE]:
                 hits = pygame.sprite.spritecollide(self, platforms, False)
                 if hits and not self.jumping:
                     self.jumping = True
-                    self.vel.y = -10
+                    self.vel.y = self.jump_Max
                 self.current_action = "jump"  
-            if pressed_keys[pygame.K_q]:
+            elif pressed_keys[pygame.K_q]:
                 if self.projectiles.get_inUse():
                     self.acc.x = 0
                     self.current_action = "idle"
                 else:
                     self.shooting = True
                     self.current_action = "shoot"  
-            if pressed_keys[pygame.K_a] and self.level>= 4 :
+            elif pressed_keys[pygame.K_a] and self.level>= 4 :
                 self.current_action = "shield"
                 self.shield = True 
-            #if pressed_keys[pygame.K_w] and self.level>= 2 :
-            #    self.current_action = "lasso_up"
-            #    self.lasso_up = True 
-            #if pressed_keys[pygame.K_e] and self.level>= 2 :
-            #    self.current_action = "lasso_side"
-            #    self.lasso_side = True 
-            if pressed_keys[pygame.K_s] and self.level>= 3 and self.bomb_counter > 300:
+            elif pressed_keys[pygame.K_w] and self.level>= 2 :
+                self.current_action = "lasso_up"
+                self.lasso_u = True 
+            elif pressed_keys[pygame.K_e] and self.level>= 2 :
+                self.current_action = "lasso_side"
+                self.lasso_s = True 
+            elif pressed_keys[pygame.K_s] and self.level>= 3 and self.bomb_counter > 300:
                 self.current_action = "bomb"
                 self.bombing = True
                 self.index = 0  # Reiniciar la animación
                 self.bomb_counter = 0
-            #if pressed_keys[pygame.K_d]:
-            #    self.current_action = "push"
-            #    self.pushing = True
+            elif pressed_keys[pygame.K_d]:
+                self.current_action = "push"
+                self.pushing = True 
+                self.original_acc = self.ACC  # Guardamos la aceleración original
+                self.original_vel = self.vel.x  # Guardamos la velocidad original
+                self.acc /= 2  # Reduce la aceleración a la mitad
+                self.vel.x /= 2
             #calculos de la nueva posicion
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
@@ -168,9 +186,18 @@ class Player(pygame.sprite.Sprite):
                 self.lifes -=1
             else:
                 GameManager.get_instance().end_game()    
-        #elif self.current_action == "lasso_up":
-            
-        #elif self.current_action == "lasso_side":   
+        elif self.current_action == "lasso_up":
+            if self.index == 1:
+                self.get_lasso("up")
+            elif self.index ==  index -1:
+                self.index = 0
+                print("pendiente escalada")          
+        elif self.current_action == "lasso_side" and self.index and self.index == 1:
+            if self.index == 1:
+                self.get_lasso("side")
+            elif self.index ==  index -1:
+                self.current_action= "idle"
+                self.index = 0
         elif self.current_action == "jump" or self.current_action == "idle" or self.index == index:
             self.index = 0
         frame = action_frames[self.index]
@@ -201,6 +228,27 @@ class Player(pygame.sprite.Sprite):
         heart_y = self.rect.y + ((self.height) /2)
         self.heart.active(x= int( heart_x), y = int(heart_y), direction= self.direction)
         self.bomb_counter = 0 
+    
+    def get_lasso(self, position):
+        if position == "up":
+            if(self.direction):
+                lzz_x = self.pos.x + (self.rect.width/6 * self.direction)
+            else:
+                lzz_x = self.pos.x - (self.rect.width/6)
+            lzz_y = self.rect.y 
+            self.lasso_up.active(x= lzz_x, y = lzz_y, direction= self.direction)  
+        else:
+            if(self.direction):
+                lzz_x = self.pos.x + (self.rect.width * self.direction)
+            else:
+                lzz_x = self.pos.x - (self.rect.width)
+            lzz_y = self.rect.y  + ((self.height) /3)
+            self.lasso_side.active(x= lzz_x, y = lzz_y, direction= self.direction)    
+            
+    def level_up(self):
+        self.level += 1
+        if(self.level == 2):
+            self.jump_Max *=2
         
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):

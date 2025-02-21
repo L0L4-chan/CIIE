@@ -6,5 +6,12 @@
 "pw" : 60, 
 "ph" : 120,
 "heartw" : 40,
-"hearth" : 50
+"hearth" : 50,
+"speed" : 5,
+"Acc" : 0.5,
+"fric" : -0.12,
+"jump" : -10,
+"lasso_SW" : 240,
+"lasso_SH" : 20
+
 }

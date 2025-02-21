@@ -22,7 +22,7 @@ class Heart(OneUse):
         self.height = ConfigManager.get_instance().get_heart_H()
         # Cargar la imagen de la sprite sheet del corazón
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
-        # Diccionario de animaciones (por ahora solo bomb, pero puedes agregar más como "walk", etc.)
+        # Diccionario de animaciones 
         self.frames = {
             "bomb": [(i * self.width, 0, self.width, self.height) for i in range(4)]  # 4 fotogramas para la animación 'bomb'
         } 
@@ -30,11 +30,8 @@ class Heart(OneUse):
         self.frame_rate = 10  # Cada cuántos frames cambiamos la animación
         self.index = 0  # Índice para las animaciones
         self.direction = 0  # Dirección (0: izquierda, 1: derecha)
-        self.image = None  # Imagen actual del sprite (se actualizará con cada fotograma)
+        self.surf = self.spritesheet.subsurface(self.frames["bomb"][0])
         
-        # Posición inicial y estado
-        self.rect =  pygame.Rect(0, 0, self.width, self.height)
-        self.inUse = False
         
         self.vel_y = 0  # Reiniciar velocidad vertical
         self.acc = 0.5  # Aceleración inicial (gravedad)
