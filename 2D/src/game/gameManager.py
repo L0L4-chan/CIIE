@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys, utils.auxiliar as auxiliar 
+import pygame, sys
 from game.configManager import ConfigManager
 
 class GameManager():
@@ -83,7 +83,8 @@ class GameManager():
 
     #TODO
     def end_game(self):
-        print("end") 
+        from views.gameOver import GameOver
+        self.scene =  GameOver()
     
     def credits(self):
         print("credits")
@@ -92,7 +93,7 @@ class GameManager():
     # game loop
     def run(self):
         while self.running:
-            self.scene.run()  # it will delegate on the scene loop
+            self.scene.run(self.screen)  # it will delegate on the scene loop
 
         pygame.quit()
         sys.exit()

@@ -73,6 +73,9 @@ class Game():
             
             GameManager().get_instance().clock.tick(ConfigManager().get_instance().get_fps()) # indicamos el numero de frames por segundo
 
+            if GameManager().get_instance().player.get_lives() == 0:
+                GameManager().get_instance().end_game()
+
             # Se manejan los eventos
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -100,6 +103,7 @@ class Game():
                 self.group_lives.add(Lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
 
             self.group_lives.update(GameManager().get_instance().screen)
+            
             for platform in self.floor: #carga plataformas
                 platform.update(GameManager().get_instance().screen)
             
