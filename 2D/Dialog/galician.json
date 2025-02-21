@@ -1,0 +1,44 @@
+{
+  "dialogues": [
+    {
+      "event": 1,
+      "character": "Soulie",
+      "text": "Por fin espertas... pero non estás completo. Alguén arrebatoute todo o que fuches. As túas entrañas, o teu corazón e a túa mente están dispersos. Só se os recuperas poderás volver a ser ti."
+    },
+    {
+      "event": 2,
+      "character": "Soulie",
+      "text": "Recuperaches algo de ti, pero aínda queda un longo camiño. A escuridade faise máis densa a medida que avanzas."
+    },
+    {
+      "event": 3,
+      "character": "Soulie",
+      "text": "O teu corazón... Aínda late con forza. Agora poderás usalo para destruir certos obstáculos que se interpoñen no teu camiño."
+    },
+    {
+      "event": 4,
+      "character": "Soulie",
+      "text": "Cada peza que recuperas achegate máis á túa esencia, pero tamén achegate ao inferno... e a quen che o arrebatou todo."
+    },
+    {
+      "event": 5,
+      "character": "Diablo",
+      "text": "Arrastráchete ata aquí pola túa propia vontade. Qué patético. Crees que un saco de ósos pode desafiarme?"
+    },
+    {
+      "event": 6,
+      "character": "Soulie",
+      "text": "E máis do que parece. Cruzaches a morte e a desesperación. Recupera o que é teu."
+    },
+    {
+      "event": 7,
+      "character": "Soulie",
+      "text": "Por fin un modo de protexernos deses molestos ataques. Úsao para repelir os ataques dos enemigos."
+    },
+    {
+      "event": 8,
+      "character": "Soulie",
+      "text": "Conseguilo. Estás completo unha vez máis... Pero dime, que farás agora que lembras quen es?"
+    }
+  ]
+}

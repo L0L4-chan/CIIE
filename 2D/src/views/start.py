@@ -15,7 +15,7 @@ from game.configManager import ConfigManager
 from views.scene import Scene
 from views.animationPlayer import AnimationPlayer
 from classes.player import Player
-from enemies.boss import Boss
+from enemies.devil import Devil
 
 from game.game import Game
 
@@ -37,5 +37,5 @@ class Start():
     
       #self.animation.run()
       self.gameManager.player = Player(self.config.get_width()/2, self.config.get_height()/2)
-      self.gameManager.enemy = Boss(400,300)
+      self.gameManager.enemy = Devil(700,300)
       self.gameManager.scene = Game(Scene(background="level1a.jpg", pt_skin= "../Art/varios/Tiles/Tile_a(7).png"), sound = "../Sound/BSO/levels-_2_.wav" )
