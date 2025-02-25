@@ -12,28 +12,26 @@ Version: 1.0.0
 import pygame, sys 
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
+from game.base import Base
 from ui.button import Button
 
-class Menu():
+class Menu(Base):
 
     def __init__(self):
         super().__init__()
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Menu.jpg") #add background
-
         self.screen = GameManager().get_instance().screen
         self.screen_width = ConfigManager().get_instance().get_width()
         self.screen_height =  ConfigManager().get_instance().get_height()
-        self.running = False
-        
         # Botones del menu
         self.new_buttons() #create buttons 
+        self.run()
         
     # to handle events from the mouse input
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
-                GameManager().get_instance().running= False  
+                self.running = False 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["play"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
@@ -72,14 +70,15 @@ class Menu():
         self.screen.blit(menu_text, (self.screen_width/14, (self.screen_height/6))) # add to buffer
         
         for btn in self.buttons.values(): #add the buttons
-            btn.update(self.screen)
+            btn.render(self.screen)
 
         pygame.display.update() # show
 
-    # game loop 
-    def run(self):
-        self.running = True
-        while self.running:
-            self.handle_events()
-            self.update()
-            self.render()
+    def cleanup(self):
+        # Liberar recursos de imágenes y botones
+        self.bg = None
+        self.buttons.clear()
+        # Forzar al recolector de basura a limpiar
+        import gc
+        gc.collect()
+   

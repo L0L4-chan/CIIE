@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys
+import pygame
 from game.configManager import ConfigManager
 
 class GameManager():
@@ -33,18 +33,16 @@ class GameManager():
 
     def __init__(self):
         if not self._initialized:
-            pygame.init()
-            pygame.mixer.pre_init(44100,16,2,4096) #initialize the mixer (sound)
-            pygame.mixer.init()
             pygame.mixer.music.load("../Sound/BSO/Credits.wav") #load by default the menu music
             pygame.mixer.music.play() #start the music
             ConfigManager().get_instance().load_fonts()
             self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window
             self.clock = pygame.time.Clock() # create a clock
-            self.running = True # bool for game loop
             self._initialized = True # one is all done state is inicialized
-
+            self.scene = None
+            self.player = None
+            self.enemy = None
     #load the necessary text that the game will be using from the json
    
     
@@ -54,46 +52,48 @@ class GameManager():
 
     #functions to load different scenes
     def load_menu(self):
+        if self.scene:
+            self.scene.cleanup() 
         from ui.menu import Menu
         self.scene =  Menu()
         
     def load_options(self):
+        if self.scene:
+            self.scene.cleanup()
         from ui.options import Options
         self.scene = Options()
     
-    def load_game(self):
-        from game import Game
-        self.scene = Game()
-
-    def load_pause(self):
-        from ui.pausa import Pausa
-        self.scene = Pausa()
+    def load_game(self, scene, sound):
+        if self.scene:
+            self.scene.cleanup()
+        if self.player == None:
+            from classes.player import Player
+            self.player = Player(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2)
+        from game.game import Game
+        self.scene = Game(scene, sound)
 
     def load_loading(self):
+        if self.scene:
+            self.scene.cleanup()
         from utils.load import Load
         self.scene =  Load()
         
-    def load_inventory(self):
-        from inventory import Inventory
-        self.scene = Inventory()
-
-    def load_start(self):
-        from views.start import Start
-        self.scene = Start(path = "1animation", sound = "../Sound/BSO/levels-_1_.wav", event = 1)
-
-    #TODO
+    def load_credits(self):
+        if self.scene:
+            self.scene.cleanup()
+        from views.credits import Credits
+        self.scene =  Credits()
+        
     def end_game(self):
+        if self.scene:
+            self.scene.cleanup()
         from views.gameOver import GameOver
         self.scene =  GameOver()
+
+    def load_start(self):
+        if self.scene:
+            self.scene.cleanup()
+        from views.start import Start
+        self.scene = Start(path = "1animation", sound = "../Sound/BSO/levels-_1_.wav", event = 1)
+ 
     
-    def credits(self):
-        print("credits")
-        
-
-    # game loop
-    def run(self):
-        while self.running:
-            self.scene.run()  # it will delegate on the scene loop
-
-        pygame.quit()
-        sys.exit()

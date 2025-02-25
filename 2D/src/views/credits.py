@@ -29,7 +29,6 @@ class Credits:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False 
-                    GameManager().get_instance().running = False
             current_time = pygame.time.get_ticks()
             if current_time - self.last_update_time > 40000: # Verifica es hora de cambiar el texto
                 self.index += 1  # Cambia de crtextoédito

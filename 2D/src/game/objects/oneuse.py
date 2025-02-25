@@ -16,7 +16,8 @@ class OneUse(pygame.sprite.Sprite):
     def __init__(self, path):
         super().__init__()
         self.spritesheet = pygame.image.load(path)
-        self.surf = self.spritesheet
+        self.image = self.spritesheet
+        self.rect = self.image.get_rect()
         self.inUse = False
         
     def active(self, x, y):
@@ -29,6 +30,6 @@ class OneUse(pygame.sprite.Sprite):
         return self.inUse
         
     def draw(self, screen):
-        screen.blit(self.surf,self.rect.topleft)
+        screen.blit(self.image ,self.rect.topleft)
         
     

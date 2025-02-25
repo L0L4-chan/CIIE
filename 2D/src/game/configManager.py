@@ -23,7 +23,7 @@ class ConfigManager:
             self.conf = utils.auxiliar.load_json("../config/1280x720.json")
             self.change_texts(self.language) # load text on the apropiate language
             self._initialized = True 
-            self.fps = 60 
+            self.fps = 60
 
     def load_fonts(self):
        

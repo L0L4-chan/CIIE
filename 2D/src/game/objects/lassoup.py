@@ -26,11 +26,11 @@ class LassoUp(OneUse):  # Modo 0 (Vertical)
         self.frames = {
             "bowel": [pygame.Rect(0, 0, w, h) for w, h in self.frames_sizes]
         }
-        self.surf = self.spritesheet.subsurface(self.frames["bowel"][0])
+        self.image = self.spritesheet.subsurface(self.frames["bowel"][0])
         self.index = 0
         self.direction = 0
         self.animation_timer = 0
-        self.frame_rate = 10  # Cada cuántos frames cambiamos la animación
+        self.frame_rate = 5  # Cada cuántos frames cambiamos la animación
         
     def active(self, x, y, direction):
         self.direction = direction
@@ -43,14 +43,14 @@ class LassoUp(OneUse):  # Modo 0 (Vertical)
     def animation(self):
         if self.index < len(self.frames["bowel"]):
             frame_rect = pygame.Rect(self.frames["bowel"][self.index])
-            self.surf = self.spritesheet.subsurface(frame_rect)
+            self.image = self.spritesheet.subsurface(frame_rect)
              
             if self.direction:
-                self.rect = pygame.Rect(self.x_pos, self.y_pos - self.surf.get_height(), self.width, self.height)
+                self.rect = pygame.Rect(self.x_pos, self.y_pos - self.image.get_height(), self.width, self.height)
             else:
-                self.surf = pygame.transform.flip( self.surf, True, False)
-                width = round(self.surf.get_width() * 1.5)
-                self.rect = pygame.Rect(self.x_pos - width, self.y_pos - self.surf.get_height(), self.width, self.height)
+                self.image = pygame.transform.flip( self.image, True, False)
+                width = round(self.image.get_width() * 1.5)
+                self.rect = pygame.Rect(self.x_pos - width, self.y_pos - self.image.get_height(), self.width, self.height)
                 
             self.index += 1
             self.animation_timer = 0
@@ -59,7 +59,7 @@ class LassoUp(OneUse):  # Modo 0 (Vertical)
             self.index = 0  
               
 
-    def update(self, screen, object=None):
+    def update(self, object=None):
         if self.inUse:
             self.animation_timer += 1
             if object is not None:
@@ -67,5 +67,5 @@ class LassoUp(OneUse):  # Modo 0 (Vertical)
                 # pendiente de gestionar collision con superior TODO
             if self.animation_timer > self.frame_rate:
                 self.animation() 
-            super().draw(screen)
+
 

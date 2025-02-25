@@ -12,16 +12,14 @@ Version: 1.0.0
 import pygame, sys 
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
+from game.base import Base
 from ui.button import Button
-class Options():
+class Options(Base):
 
     
     def __init__(self):
         super().__init__() 
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Options.jpg")
-        self.screen_width = ConfigManager().get_instance().get_width()
-        self.screen_height =  ConfigManager().get_instance().get_height()
-        self.running = False
         self.font =  ConfigManager().get_instance().get_font_title()
         self.LANGUAGE = ConfigManager().get_instance().get_text_button(key ="LANGUAGE")
         self.op_1 = ConfigManager().get_instance().get_text_button(key ="galician")
@@ -35,15 +33,14 @@ class Options():
         self.big = ConfigManager().get_instance().get_text_button(key ="big")
         self.small = ConfigManager().get_instance().get_text_button(key ="small")
         self. BACK = ConfigManager().get_instance().get_text_button(key ="BACK")
-        self.screen = GameManager().get_instance().screen
         # Botones del menú
         self.new_buttons()
+        super().run()
 
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
- 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["galician"].checkForInput(pygame.mouse.get_pos()):
                    self.change_language("galician")
@@ -123,13 +120,29 @@ class Options():
         self.screen.blit(resolution_text, ((self.screen_width/8)* 4, (self.screen_height/10)*6))
         
         for btn in self.buttons.values():
-            btn.update(self.screen)
+            btn.render(self.screen)
 
         pygame.display.update()
 
-    def run(self):
-        self.running = True
-        while self.running:
-            self.handle_events()
-            self.update()
-            self.render()
+    def cleanup(self):
+        # Liberar recursos
+        self.bg = None
+        self.buttons.clear()
+        self.font = None
+        self.LANGUAGE = None
+        self.op_1 = None
+        self.op_2 = None
+        self.op_3 = None
+        self.DIFFICULTY = None
+        self.easy = None
+        self.meddium = None
+        self.hard = None
+        self.RESOLUTION = None
+        self.big = None
+        self.small = None
+        self.BACK = None
+        
+        # Forzar la recolección de basura
+        import gc
+        gc.collect()
+

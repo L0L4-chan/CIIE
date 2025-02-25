@@ -25,11 +25,11 @@ class Stone(OneUse):
     def active(self, x, y ,direction ):
         self.speed = 10 * 1 if direction else -8
         super().active(x,y)
-        self.surf = pygame.transform.scale(self.spritesheet, (self.width, self.height))
-        self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
+        self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
+        self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
 
     #funcion de dibujado   
-    def update(self, screen, object = None):
+    def update(self, object = None):
         if(self.inUse):
             self.rect.x += self.speed
             if(self.rect.x > ConfigManager.get_instance().get_width() or (self.rect.x + self.width)<= 0):
@@ -38,5 +38,4 @@ class Stone(OneUse):
             hits = pygame.sprite.spritecollide(self, object, False)
             if hits:
                 self.inUse = False #desaparecera por lo tanto 
-            super().draw(screen)
-            
+ 

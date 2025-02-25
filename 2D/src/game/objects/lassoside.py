@@ -31,10 +31,10 @@ class LassoSide(OneUse):  # Modo 1 (Horizontal)
                       pygame.Rect((self.width //4) * 3 , 0, self.width //4 , self.height) ]
         }
 
-        self.surf = self.spritesheet.subsurface(self.frames["bowel"][0])
+        self.image = self.spritesheet.subsurface(self.frames["bowel"][0])
         self.index = 0
         self.animation_timer = 0
-        self.frame_rate = 10  # Cada cuántos frames cambiamos la animación
+        self.frame_rate = 5  # Cada cuántos frames cambiamos la animación
         self.direction = 0
         
     def active(self, x, y, direction):
@@ -47,17 +47,17 @@ class LassoSide(OneUse):  # Modo 1 (Horizontal)
     def animation(self):
         if self.index < len(self.frames["bowel"]):
             frame_rect = pygame.Rect(self.frames["bowel"][self.index])
-            self.surf = self.spritesheet.subsurface(frame_rect)
+            self.image = self.spritesheet.subsurface(frame_rect)
             self.index += 1
             if self.direction == 0:
-                self.surf = pygame.transform.flip( self.surf, True, False)
-                self.rect = pygame.Rect(self.x_pos - self.surf.get_width(), self.y_pos  , self.width, self.height)
+                self.image = pygame.transform.flip( self.image, True, False)
+                self.rect = pygame.Rect(self.x_pos - self.image.get_width(), self.y_pos  , self.width, self.height)
             self.animation_timer = 0
         else:
             self.inUse = False
             self.index = 0  
 
-    def update(self, screen, object=None):
+    def update(self, object=None):
         if self.inUse:
             self.animation_timer += 1
             if object is not None:
@@ -65,4 +65,3 @@ class LassoSide(OneUse):  # Modo 1 (Horizontal)
                 # TODO
             if self.animation_timer > self.frame_rate:
                 self.animation() 
-            super().draw(screen)

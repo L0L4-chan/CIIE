@@ -24,8 +24,9 @@ class Button():
 		self.font = ConfigManager().get_instance().get_font()
 
  	#funcion de dibujado en pantalla
-	def update(self, screen):
+	def render(self, screen):
 		screen.blit(self.text, self.text_rect)
+  
 	#comprueba si hay input, se le pasa la posicion del ratón
 	def checkForInput(self, position):
 		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):

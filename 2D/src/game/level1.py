@@ -292,7 +292,7 @@ class Game():
 
             # Dibujar botones
             for btn in self.buttons.values():
-                btn.update(self.gameManager.screen)
+                btn.render(self.gameManager.screen)
 
             # Dibujar plataformas
             for platform in self.floor:

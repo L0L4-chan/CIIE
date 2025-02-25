@@ -10,7 +10,6 @@ Version: 1.0.0
 '''
 import pygame, os
 from game.configManager import ConfigManager
-from game.gameManager import GameManager
 from game.objects.stone import Stone
 from game.objects.heart import Heart
 from game.objects.lassoup import LassoUp
@@ -95,72 +94,104 @@ class Player(pygame.sprite.Sprite):
     def get_lives(self):
         return self.lives
 
-    #funcion que maneja los movimientos
+    def handle_idle(self):
+        self.acc.x = 0
+        self.current_action = "idle"
+
+    def handle_walk_left(self):
+        self.acc.x = -self.ACC
+        self.direction = 0
+        self.current_action = "walk"
+
+    def handle_walk_right(self):
+        self.acc.x = self.ACC
+        self.direction = 1
+        self.current_action = "walk"
+
+    def handle_jump(self, platforms):
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        if hits and not self.jumping:
+            self.jumping = True
+            self.vel.y = self.jump_Max
+        self.current_action = "jump"
+
+    def handle_shoot(self):
+        if self.projectiles.get_inUse():
+            self.acc.x = 0
+            self.current_action = "idle"
+        else:
+            self.shooting = True
+            self.current_action = "shoot"
+
+    def handle_shield(self):
+        self.current_action = "shield"
+        self.shield = True
+
+    def handle_lasso_up(self):
+        self.current_action = "lasso_up"
+        self.lasso_u = True
+
+    def handle_lasso_side(self):
+        self.current_action = "lasso_side"
+        self.lasso_s = True
+
+    def handle_bomb(self):
+        self.current_action = "bomb"
+        self.bombing = True
+        self.index = 0
+        self.bomb_counter = 0
+
+    def handle_push(self):
+        self.current_action = "push"
+        self.index = 0
+        self.pushing = True
+        self.original_acc = self.acc.x
+        self.original_vel = self.vel.x
+        self.acc.x /= 2
+        self.vel.x /= 2
+
+
     def move(self, platforms):
-        if not self.shooting or not self.bombing:     
+        if not self.shooting and not self.bombing :
             self.acc = vec(0, self.y_acc_value)
-            pressed_keys = pygame.key.get_pressed()     
-            if not any(pressed_keys):# No hay teclas presionadas
-                self.acc.x = 0
-                self.current_action = "idle"
-            elif not pressed_keys[pygame.K_d] and self.pushing:
+            pressed_keys = pygame.key.get_pressed()
+
+            action_map = {
+                pygame.K_LEFT: self.handle_walk_left,
+                pygame.K_RIGHT: self.handle_walk_right,
+                pygame.K_SPACE: lambda: self.handle_jump(platforms),
+                pygame.K_q: self.handle_shoot,
+                pygame.K_a: self.handle_shield if self.level >= 4 else None,
+                pygame.K_w: self.handle_lasso_up if self.level >= 2 else None,
+                pygame.K_e: self.handle_lasso_side if self.level >= 2 else None,
+                pygame.K_s: self.handle_bomb if self.level >= 3 and self.bomb_counter > 300 else None,
+                pygame.K_d: self.handle_push,
+            }
+
+            if not any(pressed_keys):
+                self.handle_idle()
                 self.pushing = False
-                self.acc.x = self.original_acc  # Restauramos la aceleración original
-                self.vel.x = self.original_vel
-            elif pressed_keys[pygame.K_LEFT]:  
-                self.acc.x = -self.ACC  
-                self.direction = 0
-                self.current_action = "walk"          
-            elif pressed_keys[pygame.K_RIGHT]:
-                self.acc.x = self.ACC
-                self.direction = 1
-                self.current_action = "walk"  
-            elif pressed_keys[pygame.K_SPACE]:
-                hits = pygame.sprite.spritecollide(self, platforms, False)
-                if hits and not self.jumping:
-                    self.jumping = True
-                    self.vel.y = self.jump_Max
-                self.current_action = "jump"  
-            elif pressed_keys[pygame.K_q]:
-                if self.projectiles.get_inUse():
-                    self.acc.x = 0
-                    self.current_action = "idle"
-                else:
-                    self.shooting = True
-                    self.current_action = "shoot"  
-            elif pressed_keys[pygame.K_a] and self.level>= 4 :
-                self.current_action = "shield"
-                self.shield = True 
-            elif pressed_keys[pygame.K_w] and self.level>= 2 :
-                self.current_action = "lasso_up"
-                self.lasso_u = True 
-            elif pressed_keys[pygame.K_e] and self.level>= 2 :
-                self.current_action = "lasso_side"
-                self.lasso_s = True 
-            elif pressed_keys[pygame.K_s] and self.level>= 3 and self.bomb_counter > 300:
-                self.current_action = "bomb"
-                self.bombing = True
-                self.index = 0  # Reiniciar la animación
-                self.bomb_counter = 0
-            elif pressed_keys[pygame.K_d]:
-                self.current_action = "push"
-                self.index = 0
-                self.pushing = True 
-                self.original_acc = self.acc.x  # Guardamos la aceleración original
-                self.original_vel = self.vel.x  # Guardamos la velocidad original
-                self.acc.x /= 2  # Reduce la aceleración a la mitad
-                self.vel.x /= 2
-            #calculos de la nueva posicion
+            else:
+                for key, action in action_map.items():
+                    if pressed_keys[key] and action:
+                        action()
+                        break
+
+            # Cálculos de posición
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
-            #limite de pantalla se eliminara o cambiara cuando tengamos la pantalla definitiva 
+
+            # Límite de pantalla
             if self.pos.x > self.screen_width:
                 self.pos.x = 0
             if self.pos.x < 0:
-                self.pos.x =  self.screen_width
-            #situamos el collisionador
-            self.rect.midbottom = self.pos  
+                self.pos.x = self.screen_width
+
+            # Colocamos el collisionador
+            self.rect.midbottom = self.pos
+
+            
     #funcion que nos cambia la imagen a mostrar, la carga y la asigna a la superficie
     def draw(self):
         # Seleccionamos la imagen actual de la animación
