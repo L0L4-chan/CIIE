@@ -17,6 +17,7 @@ from game.objects.spikes import Spikes
 from game.objects.lives import Lives
 from ui.button import Button
 from ui.pausa import Pausa
+from game.camera import Camera
 vec = pygame.math.Vector2  
 
 
@@ -32,6 +33,12 @@ class Game():
        self.floor = pygame.sprite.Group()
        self.stones = pygame.sprite.Group()
        self.group_lives = pygame.sprite.Group()
+       self.world_width = 5120   # O la dimensión que abarque todo el escenario
+       self.world_height = 2160  # O la altura máxima del escenario
+       self.camera = Camera(self.world_width, self.world_height,
+                            ConfigManager().get_instance().get_width(),
+                            ConfigManager().get_instance().get_height())
+
        #generamos suelo (funcion que debera ser modificada cuando se tengan los niveles)
        self.generate_floor()
        
@@ -110,6 +117,7 @@ class Game():
     def run(self):
         
         self.running = True
+        screen = GameManager().get_instance().screen
  
         while self.running:
             
@@ -136,7 +144,11 @@ class Game():
             self.stones = GameManager().get_instance().player.group  #añade piedras al grupo de piedras para su visualizacion
             GameManager().get_instance().enemy.move() #actualiza al enemigo
             
-            GameManager().get_instance().screen.blit(self.bg, (0,0)) #carga el fondo (en la escena completa el 0,0 tendra que varias con los movimientos del personaje TODO)
+            # Actualizamos la cámara usando el jugador como target
+            self.camera.update(GameManager().get_instance().player)
+
+            # Dibujado: el fondo y cada objeto se dibujan desplazados
+            screen.blit(self.bg, (-self.camera.offset.x, -self.camera.offset.y))
             
             for btn in self.buttons.values(): #carga botones
                 btn.update(GameManager().get_instance().screen)
@@ -152,10 +164,12 @@ class Game():
             for stn in self.stones: #carga piedrass
                 stn.update(GameManager().get_instance().screen, self.sprites)
             
-            GameManager().get_instance().screen.blit(GameManager().get_instance().player.surf, GameManager().get_instance().player.rect.topleft) #carga player
+            screen.blit(GameManager().get_instance().player.surf, self.camera.apply(GameManager().get_instance().player.rect))
+            screen.blit(GameManager().get_instance().enemy.surf, self.camera.apply(GameManager().get_instance().enemy.rect))
             
-            GameManager().get_instance().screen.blit(GameManager().get_instance().enemy.surf, GameManager().get_instance().enemy.rect.topleft) # carga al enemigo 
-
+            # Otros elementos (vidas, etc.)
+            self.group_lives.update(screen)
+            
             #Muestra por pantalla
             pygame.display.flip()
         
