@@ -19,7 +19,6 @@ class Scene():
         self.background = background
         self.pt_skin = pt_skin
         self.items = auxiliar.load_json(file)
-        print(self.items)
         self.sprites = pygame.sprite.Group()
         self.create_scene()
         

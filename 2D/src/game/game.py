@@ -49,7 +49,7 @@ class Game(Base):
 
         } 
        self.player = GameManager().get_instance().player
-       self.enemy =GameManager().get_instance().enemy
+       self.enemy = GameManager().get_instance().enemy
        
        #empieza la musica del nivel
        pygame.mixer.music.stop() #paramos la anterior

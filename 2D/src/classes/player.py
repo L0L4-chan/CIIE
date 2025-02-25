@@ -226,7 +226,6 @@ class Player(pygame.sprite.Sprite):
                 self.index = 0
         elif self.current_action == "jump" or self.current_action == "idle" or self.index == index:
             self.index = 0
-        print(self.index)
         frame = action_frames[self.index]
         # Cargamos la imagen del sprite de acuerdo con la acción actual
         sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width,self.height))
