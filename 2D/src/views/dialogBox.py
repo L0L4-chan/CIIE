@@ -5,7 +5,7 @@ from game.configManager import ConfigManager
 class DialogBox:
     
     def __init__(self, bg_image=None, event = 0):
-        self.gameManager = GameManager.get_instance()
+        self.screen = GameManager.get_instance().screen
         self.config = ConfigManager().get_instance()
         self.dialog = next((d for d in self.config.get_text(key="dialogues") if d["event"] == event), None)
         name = self.dialog["character"]
@@ -20,6 +20,9 @@ class DialogBox:
         self.margin = 20  # Espacio interno
         self.line_height = self.config.get_font_dialog().get_height() + 5  # Altura de cada línea de texto
 
+        self.font = ConfigManager().get_instance().get_font_dialog()
+
+
     def wrap_text(self):
         
         words = self.dialog["text"].split(" ")
@@ -28,7 +31,7 @@ class DialogBox:
 
         for word in words:
             test_line = current_line + word + " "
-            if self.config.get_font_dialog().size(test_line)[0] > self.width - (self.margin * 2):
+            if self.font.size(test_line)[0] > self.width - (self.margin * 2):
                 lines.append(current_line)
                 current_line = word + " "
             else:
@@ -54,13 +57,13 @@ class DialogBox:
         if self.icon:
             icon_width, icon_height = self.icon.get_size()  # Tamaño del icono
             icon_scaled = pygame.transform.scale(self.icon, (icon_width, icon_height))
-            self.gameManager.screen.blit(icon_scaled, (box_x, box_y))
+            self.screen.blit(icon_scaled, (box_x, box_y))
             box_x += icon_width
             
         # Dibujar fondo del cuadro de diálogo
         
         bg_scaled = pygame.transform.scale(self.bg_image, (self.width, height))
-        self.gameManager.screen.blit(bg_scaled, (box_x, box_y))
+        self.screen.blit(bg_scaled, (box_x, box_y))
 
         
         # Dibujar texto dentro del cuadro
@@ -68,7 +71,7 @@ class DialogBox:
         text_y = box_y + self.margin
 
         for line in lines:
-            text_surface = self.config.get_font_dialog().render(line, True, (0,0,0))
-            self.gameManager.screen.blit(text_surface, (text_x, text_y))
+            text_surface = self.font.render(line, True, (0,0,0))
+            self.screen.blit(text_surface, (text_x, text_y))
             text_y += self.line_height  # Mover hacia abajo para la siguiente línea
 

@@ -19,27 +19,38 @@ class Options():
     def __init__(self):
         super().__init__() 
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Options.jpg")
-        
-
+        self.screen_width = ConfigManager().get_instance().get_width()
+        self.screen_height =  ConfigManager().get_instance().get_height()
+        self.running = False
+        self.font =  ConfigManager().get_instance().get_font_title()
+        self.LANGUAGE = ConfigManager().get_instance().get_text_button(key ="LANGUAGE")
+        self.op_1 = ConfigManager().get_instance().get_text_button(key ="galician")
+        self.op_2 = ConfigManager().get_instance().get_text_button(key ="english")
+        self.op_3 = ConfigManager().get_instance().get_text_button(key ="spanish")
+        self.DIFFICULTY = ConfigManager().get_instance().get_text_button(key ="DIFFICULTY")
+        self.easy = ConfigManager().get_instance().get_text_button(key ="easy")
+        self.meddium= ConfigManager().get_instance().get_text_button(key ="medium")
+        self.hard = ConfigManager().get_instance().get_text_button(key ="hard")
+        self.RESOLUTION = ConfigManager().get_instance().get_text_button(key ="RESOLUTION")
+        self.big = ConfigManager().get_instance().get_text_button(key ="big")
+        self.small = ConfigManager().get_instance().get_text_button(key ="small")
+        self. BACK = ConfigManager().get_instance().get_text_button(key ="BACK")
+        self.screen = GameManager().get_instance().screen
         # Botones del menú
         self.new_buttons()
 
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                GameManager().get_instance().running = False  
-                pygame.quit()
-                sys.exit()
+                self.running = False
+ 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["galician"].checkForInput(pygame.mouse.get_pos()):
-                   ConfigManager().get_instance().update_config_lang("galician")
-                   self.new_buttons()
+                   self.change_language("galician")
                 if self.buttons["english"].checkForInput(pygame.mouse.get_pos()):
-                   ConfigManager().get_instance().update_config_lang( "english")
-                   self.new_buttons()
+                   self.change_language( "english")
                 if self.buttons["spanish"].checkForInput(pygame.mouse.get_pos()):
-                   ConfigManager().get_instance().update_config_lang("spanish")
-                   self.new_buttons()
+                   self.change_language("spanish")
                 if self.buttons["easy"].checkForInput(pygame.mouse.get_pos()):
                    ConfigManager().get_instance().update_config_difficulty(1)
                 if self.buttons["medium"].checkForInput(pygame.mouse.get_pos()):
@@ -51,27 +62,48 @@ class Options():
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
                    self.change_resolution("../config/1280x720.json")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
+                   self.running = False
                    GameManager().get_instance().load_menu()
-                    
+                   
+    
+    def change_language(self,language): 
+        ConfigManager().get_instance().update_config_lang(language)
+        self.LANGUAGE = ConfigManager().get_instance().get_text_button(key ="LANGUAGE")
+        self.op_1 = ConfigManager().get_instance().get_text_button(key ="galician")
+        self.op_2 = ConfigManager().get_instance().get_text_button(key ="english")
+        self.op_3 = ConfigManager().get_instance().get_text_button(key ="spanish")
+        self.DIFFICULTY = ConfigManager().get_instance().get_text_button(key ="DIFFICULTY")
+        self_easy = ConfigManager().get_instance().get_text_button(key ="easy")
+        self.meddium= ConfigManager().get_instance().get_text_button(key ="medium")
+        self.hard = ConfigManager().get_instance().get_text_button(key ="hard")
+        self.RESOLUTION = ConfigManager().get_instance().get_text_button(key ="RESOLUTION")
+        self.big = ConfigManager().get_instance().get_text_button(key ="big")
+        self.small = ConfigManager().get_instance().get_text_button(key ="small")
+        self. BACK = ConfigManager().get_instance().get_text_button(key ="BACK")
+        self.new_buttons()
+        
+                   
     
     def change_resolution(self, path):
         ConfigManager().get_instance().update_config_meassurement(path)  
-        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Options.jpg") 
+        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Options.jpg")
+        self.screen_width = ConfigManager().get_instance().get_width()
+        self.screen_height =  ConfigManager().get_instance().get_height() 
         GameManager().get_instance().change_resolution()
         self.new_buttons()
 
 
     def new_buttons(self):        
         self.buttons = {
-            "galician": Button(pos=((ConfigManager().get_instance().get_width()/12)*5, (ConfigManager().get_instance().get_height()/10)*3), text_input= ConfigManager().get_instance().get_text_button(key ="galician")),
-            "english": Button(pos=((ConfigManager().get_instance().get_width()/12)*7, (ConfigManager().get_instance().get_height()/10)*3), text_input= ConfigManager().get_instance().get_text_button(key ="english")),
-            "spanish": Button(pos=((ConfigManager().get_instance().get_width()/12)*9, (ConfigManager().get_instance().get_height()/10)*3), text_input= ConfigManager().get_instance().get_text_button(key ="spanish")),
-            "easy": Button(pos=((ConfigManager().get_instance().get_width()/12)*5, (ConfigManager().get_instance().get_height()/10)*5), text_input= ConfigManager().get_instance().get_text_button(key ="easy")),
-            "medium": Button(pos=((ConfigManager().get_instance().get_width()/12)*7, (ConfigManager().get_instance().get_height()/10)*5), text_input= ConfigManager().get_instance().get_text_button(key ="medium")),
-            "hard": Button(pos=((ConfigManager().get_instance().get_width()/12)*9, (ConfigManager().get_instance().get_height()/10)*5), text_input= ConfigManager().get_instance().get_text_button(key ="hard")),
-            "small": Button(pos=((ConfigManager().get_instance().get_width()/8)*4, (ConfigManager().get_instance().get_height()/10)*7), text_input= ConfigManager().get_instance().get_text_button(key ="small")),
-            "big": Button(pos=((ConfigManager().get_instance().get_width()/8)*6, (ConfigManager().get_instance().get_height()/10)*7), text_input= ConfigManager().get_instance().get_text_button(key ="big")),
-            "BACK": Button(pos=((ConfigManager().get_instance().get_width()/8)*5, (ConfigManager().get_instance().get_height()/10)*8), text_input= ConfigManager().get_instance().get_text_button(key ="BACK"))
+            "galician": Button(pos=((self.screen_width/12)*5, (self.screen_height/10)*3), text_input= self.op_1),
+            "english": Button(pos=((self.screen_width/12)*7, (self.screen_height/10)*3), text_input= self.op_2),
+            "spanish": Button(pos=((self.screen_width/12)*9, (self.screen_height/10)*3), text_input= self.op_3 ),
+            "easy": Button(pos=((self.screen_width/12)*5, (self.screen_height/10)*5), text_input= self.easy),
+            "medium": Button(pos=((self.screen_width/12)*7, (self.screen_height/10)*5), text_input= self.meddium),
+            "hard": Button(pos=((self.screen_width/12)*9, (self.screen_height/10)*5), text_input= self.hard ),
+            "small": Button(pos=((self.screen_width/8)*4, (self.screen_height/10)*7), text_input= self.small),
+            "big": Button(pos=((self.screen_width/8)*6, (self.screen_height/10)*7), text_input= self.big),
+            "BACK": Button(pos=((self.screen_width/8)*5, (self.screen_height/10)*8), text_input=self. BACK )
             }
     
     def update(self):
@@ -80,23 +112,24 @@ class Options():
             btn.changeColor(mouse_pos)
 
     def render(self):
-        GameManager().get_instance().screen.blit(self.bg, (0, 0))
-        menu_text = ConfigManager().get_instance().get_font_title().render("OPTIONS", True, (255, 255, 255))
-        GameManager().get_instance().screen.blit(menu_text, ((ConfigManager().get_instance().get_width()/8)*4, (ConfigManager().get_instance().get_height()/10)*1))
-        language_text = ConfigManager().get_instance().get_font_title().render(ConfigManager().get_instance().get_text_button(key ="LANGUAGE"), True, (255, 255, 255))
-        GameManager().get_instance().screen.blit(language_text, ((ConfigManager().get_instance().get_width()/8)*4, (ConfigManager().get_instance().get_height()/10)*2))
-        difficulty_text = ConfigManager().get_instance().get_font_title().render(ConfigManager().get_instance().get_text_button(key ="DIFFICULTY"), True, (255, 255, 255))
-        GameManager().get_instance().screen.blit(difficulty_text, ((ConfigManager().get_instance().get_width()/8)*4, (ConfigManager().get_instance().get_height()/10)*4))
-        resolution_text = ConfigManager().get_instance().get_font_title().render(ConfigManager().get_instance().get_text_button(key ="RESOLUTION"), True, (255, 255, 255))
-        GameManager().get_instance().screen.blit(resolution_text, ((ConfigManager().get_instance().get_width()/8)* 4, (ConfigManager().get_instance().get_height()/10)*6))
+        self.screen.blit(self.bg, (0, 0))
+        menu_text =self.font.render("OPTIONS", True, (255, 255, 255))
+        self.screen.blit(menu_text, ((self.screen_width/8)*4, (self.screen_height/10)*1))
+        language_text =self.font.render(self.LANGUAGE, True, (255, 255, 255))
+        self.screen.blit(language_text, ((self.screen_width/8)*4, (self.screen_height/10)*2))
+        difficulty_text =self.font.render(self.DIFFICULTY, True, (255, 255, 255))
+        self.screen.blit(difficulty_text, ((self.screen_width/8)*4, (self.screen_height/10)*4))
+        resolution_text =self.font.render(self.RESOLUTION, True, (255, 255, 255))
+        self.screen.blit(resolution_text, ((self.screen_width/8)* 4, (self.screen_height/10)*6))
         
         for btn in self.buttons.values():
-            btn.update(GameManager().get_instance().screen)
+            btn.update(self.screen)
 
         pygame.display.update()
 
     def run(self):
-        while GameManager().get_instance().running and GameManager().get_instance().scene == self:
+        self.running = True
+        while self.running:
             self.handle_events()
             self.update()
             self.render()

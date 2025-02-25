@@ -25,7 +25,7 @@ class Devil(Enemy):
         self.pos.y += self.vel.y * self.speed
 
         # Rebotar en los límites de la pantalla
-        if self.pos.x > ConfigManager().get_instance().get_width() - self.rect.width:
+        if self.pos.x > self.screen_width - self.rect.width:
             self.vel.x = -self.vel.x  # Cambia la dirección a izquierda
         elif self.pos.x < 0:
             self.vel.x = -self.vel.x  # Cambia la dirección a derecha

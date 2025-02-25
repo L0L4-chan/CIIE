@@ -17,10 +17,11 @@ from views.dialogBox import DialogBox
 class AnimationPlayer():
     def __init__(self, path, start, amount, event):
         super().__init__()
-        self.gameManager = GameManager.get_instance()
-        self.config = ConfigManager().get_instance()
+        self.screen = GameManager.get_instance().screen
+        self.clock =  GameManager.get_instance().clock
+        self.art_path = ConfigManager().get_instance().get_artpath()
         self.path = path
-        self.frames = sorted(os.listdir(f"../Art/{self.config.get_artpath()}/{path}"))
+        self.frames = sorted(os.listdir(f"../Art/{self.art_path}/{path}"))
         self.frame_index = 0
         self.end = len(self.frames) -1
         self.fps = 24
@@ -47,22 +48,24 @@ class AnimationPlayer():
     
     def run(self):
       #de momento para probar.
-      while(self.running):
+        while(self.running):
           
-        self.frame_path = os.path.join(f"../Art/{self.config.get_artpath()}/{self.path}", self.frames[self.frame_index])
-        self.frame = pygame.image.load(self.frame_path)
-        self.gameManager.screen.blit(self.frame, (0, 0))
-        self.show_dialog() 
-        
-        pygame.display.flip()
-        self.gameManager.clock.tick(self.fps)
-        self.frame_index = (self.frame_index + 1) % len(self.frames)
-        
-        # Manejar eventos
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-                self.gameManager.running = False
-        #end of the animation
-        if self.frame_index == self.end:
-            self.running = False     
+            self.frame_path = os.path.join(f"../Art/{self.art_path}/{self.path}", self.frames[self.frame_index])
+            self.frame = pygame.image.load(self.frame_path)
+            self.screen.blit(self.frame, (0, 0))
+            self.show_dialog() 
+            
+            pygame.display.flip()
+            self.clock.tick(self.fps)
+            self.frame_index = (self.frame_index + 1) % len(self.frames)
+            
+            # Manejar eventos
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    self.screen = GameManager.get_instance().running = False
+            #end of the animation
+            if self.frame_index == self.end:
+                self.running = False  
+                   
+       

@@ -16,10 +16,10 @@ class Boss(Enemy):
         self.pos.y += self.vel.y * self.speed
 
         # Rebotar en los límites de la pantalla
-        if self.pos.x > ConfigManager().get_instance().get_width() - self.rect.width or self.pos.x < 0:
+        if self.pos.x > self.screen_width - self.rect.width or self.pos.x < 0:
             self.vel.y = -self.vel.y  # Cambiar la dirección en Y si toca los bordes horizontales
 
-        if self.pos.y > ConfigManager().get_instance().get_height() - self.rect.height or self.pos.y < 0:
+        if self.pos.y > self.screen_height - self.rect.height or self.pos.y < 0:
             self.vel.y = -self.vel.y  # Cambiar la dirección en Y si toca los bordes verticales
 
         self.rect.center = self.pos

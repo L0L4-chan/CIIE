@@ -93,7 +93,7 @@ class GameManager():
     # game loop
     def run(self):
         while self.running:
-            self.scene.run(self.screen)  # it will delegate on the scene loop
+            self.scene.run()  # it will delegate on the scene loop
 
         pygame.quit()
         sys.exit()

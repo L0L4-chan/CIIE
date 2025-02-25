@@ -34,7 +34,10 @@ class Player(pygame.sprite.Sprite):
         self.FRIC =  ConfigManager().get_instance().get_player_fric() # constante friccion (suaviza el movimiento)
         self.speed =  ConfigManager().get_instance().get_player_speed #velocidad de movimiento
         self.jump_Max = ConfigManager().get_instance().get_player_jump()
-        
+        self.y_acc_value =  ConfigManager().get_instance().get_player_Acc()
+        self.screen_width = ConfigManager().get_instance().get_width()
+        self.screen_height =  ConfigManager().get_instance().get_height()
+        self.art_path = ConfigManager().get_instance().get_artpath()
         self.index = 0
         self.level = 5
         self.lives = 3
@@ -66,15 +69,15 @@ class Player(pygame.sprite.Sprite):
         
         }
         self.current_action = "idle"  # Acción inicial
-        stone_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/stone/001.png"
+        stone_path = f"../Art/{self.art_path}/stone/001.png"
         self.projectiles = Stone(path=stone_path)
-        heart_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/heart/spritesheet.png"
+        heart_path = f"../Art/{self.art_path}/heart/spritesheet.png"
         self.heart = Heart(heart_path)
         self.bomb_counter = 0
         self.shield_counter = 0
-        lasso_side_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/bowel/002.png"
+        lasso_side_path = f"../Art/{self.art_path}/bowel/002.png"
         self.lasso_side = LassoSide(lasso_side_path)
-        lasso_up_path = f"../Art/{ConfigManager().get_instance().get_artpath()}/bowel/001.png"
+        lasso_up_path = f"../Art/{self.art_path}/bowel/001.png"
         self.lasso_up = LassoUp(lasso_up_path)
     
         self.group = pygame.sprite.Group()
@@ -95,14 +98,14 @@ class Player(pygame.sprite.Sprite):
     #funcion que maneja los movimientos
     def move(self, platforms):
         if not self.shooting or not self.bombing:     
-            self.acc = vec(0, ConfigManager().get_instance().get_player_Acc())
+            self.acc = vec(0, self.y_acc_value)
             pressed_keys = pygame.key.get_pressed()     
             if not any(pressed_keys):# No hay teclas presionadas
                 self.acc.x = 0
                 self.current_action = "idle"
             elif not pressed_keys[pygame.K_d] and self.pushing:
                 self.pushing = False
-                self.ACC = self.original_acc  # Restauramos la aceleración original
+                self.acc.x = self.original_acc  # Restauramos la aceleración original
                 self.vel.x = self.original_vel
             elif pressed_keys[pygame.K_LEFT]:  
                 self.acc.x = -self.ACC  
@@ -141,23 +144,23 @@ class Player(pygame.sprite.Sprite):
                 self.bomb_counter = 0
             elif pressed_keys[pygame.K_d]:
                 self.current_action = "push"
+                self.index = 0
                 self.pushing = True 
-                self.original_acc = self.ACC  # Guardamos la aceleración original
+                self.original_acc = self.acc.x  # Guardamos la aceleración original
                 self.original_vel = self.vel.x  # Guardamos la velocidad original
-                self.acc /= 2  # Reduce la aceleración a la mitad
+                self.acc.x /= 2  # Reduce la aceleración a la mitad
                 self.vel.x /= 2
             #calculos de la nueva posicion
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
             #limite de pantalla se eliminara o cambiara cuando tengamos la pantalla definitiva 
-            if self.pos.x > ConfigManager().get_instance().get_width():
+            if self.pos.x > self.screen_width:
                 self.pos.x = 0
             if self.pos.x < 0:
-                self.pos.x = ConfigManager().get_instance().get_width()
+                self.pos.x =  self.screen_width
             #situamos el collisionador
             self.rect.midbottom = self.pos  
-
     #funcion que nos cambia la imagen a mostrar, la carga y la asigna a la superficie
     def draw(self):
         # Seleccionamos la imagen actual de la animación
@@ -180,12 +183,10 @@ class Player(pygame.sprite.Sprite):
             self.current_action= "idle"
             self.index = 0
         elif self.current_action == "death" and self.index >= index -1:
-            if self.lifes > 0 :
+            if self.lifes >= 0 :
                 self.current_action= "idle"
                 self.index = 0
-                self.lifes -=1
-            else:
-                GameManager.get_instance().end_game()    
+                self.lifes -=1    
         elif self.current_action == "lasso_up":
             if self.index == 1:
                 self.get_lasso("up")
@@ -200,6 +201,7 @@ class Player(pygame.sprite.Sprite):
                 self.index = 0
         elif self.current_action == "jump" or self.current_action == "idle" or self.index == index:
             self.index = 0
+        print(self.index)
         frame = action_frames[self.index]
         # Cargamos la imagen del sprite de acuerdo con la acción actual
         sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width,self.height))

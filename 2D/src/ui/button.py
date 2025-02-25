@@ -21,6 +21,7 @@ class Button():
 		self.text = ConfigManager().get_instance().get_font().render(self.text_input, True, (255,255,255))
 		self.rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
 		self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+		self.font = ConfigManager().get_instance().get_font()
 
  	#funcion de dibujado en pantalla
 	def update(self, screen):
@@ -36,4 +37,4 @@ class Button():
 			self.base_color = (0,200, 0)
 		else:
 			self.base_color = (255,255,255)	
-		self.text = ConfigManager().get_instance().get_font().render(self.text_input, True, self.base_color)
+		self.text = self.font.render(self.text_input, True, self.base_color)

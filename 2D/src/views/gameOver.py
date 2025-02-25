@@ -28,9 +28,8 @@ class GameOver():
           for event in pygame.event.get():
               if event.type == pygame.MOUSEBUTTONDOWN:   # Detecta si se ha hecho clic sobre el botón "Volver"
                   if self.button.checkForInput(pygame.mouse.get_pos()): 
-                      GameManager.get_instance().load_menu()
                       self.running = False  # Sale de la pausa y vuelve al juego
-
+                      GameManager.get_instance().load_menu()
           # Dibuja el fondo negro (cambiamos por algo??)
           screen.fill((255, 0, 0))
           self.button.update(screen=screen) # Dibuja el botón
