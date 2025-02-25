@@ -21,7 +21,7 @@ from game.camera import Camera
 vec = pygame.math.Vector2  
 
 
-class Game():
+class Level1():
 
     def __init__(self, scene = None, sound = None):      
        #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 

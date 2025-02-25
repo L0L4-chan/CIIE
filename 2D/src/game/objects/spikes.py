@@ -19,6 +19,7 @@ class Spikes(pygame.sprite.Sprite):
         self.height = height
         self.x_pos = x
         self.y_pos = y
+        self.on_screen = False
         if width == 0:
             width = random.randint(50, 120)
 

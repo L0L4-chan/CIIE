@@ -182,12 +182,6 @@ class Player(pygame.sprite.Sprite):
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
 
-            # Límite de pantalla
-            if self.pos.x > self.screen_width:
-                self.pos.x = 0
-            if self.pos.x < 0:
-                self.pos.x = self.screen_width
-
             # Colocamos el collisionador
             self.rect.midbottom = self.pos
 

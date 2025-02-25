@@ -62,3 +62,10 @@ class Camera:
         """
         return rect.move(-self.offset.x, -self.offset.y)
 
+     # Verificar si el rect del elemento está dentro de la vista de la cámara
+    def check_elements_on_screen(self, elements):
+        for element in elements:
+            if self.apply(element.rect).colliderect(pygame.Rect(0, 0, self.screen_width, self.screen_height)):
+                element.on_scene = True
+            else:
+                element.on_scene = False

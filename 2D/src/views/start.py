@@ -17,8 +17,6 @@ from views.scene import Scene
 from views.animationPlayer import AnimationPlayer
 from enemies.devil import Devil
 
-from game.game import Game
-
 class Start(Base):
 
    def __init__(self, path, sound, event):
@@ -43,4 +41,4 @@ class Start(Base):
       #de momento para probar.
       #self.animation.run()
       GameManager.get_instance().enemy = Devil(700,300)
-      GameManager.get_instance().load_game(Scene(background="level1a.jpg", pt_skin= "../Art/varios/Tiles/Tile_a(7).png"), sound = "../Sound/BSO/levels-_2_.wav" )
+      GameManager.get_instance().load_game(Scene(background="level1.jpg", pt_skin= "../Art/varios/Tiles/Tile_a(7).png", file=(f"../Art/{ConfigManager().get_instance().get_artpath()}/levels/level1.json")), sound = "../Sound/BSO/levels-_2_.wav" )

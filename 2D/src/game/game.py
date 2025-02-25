@@ -12,7 +12,7 @@ Version: 1.0.0
 import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
-from game.objects.platforms import Platforms
+from game.camera import Camera
 from game.objects.lives import Lives
 from game.base import Base
 from ui.button import Button
@@ -35,6 +35,11 @@ class Game(Base):
        self.group_lives = pygame.sprite.Group()
        self.clock =  GameManager().get_instance().clock
        self.FPS = ConfigManager().get_instance().get_fps()
+       self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
+       self.world_height = self.bg.get_height()   # O la altura máxima del escenario
+       self.width = ConfigManager().get_instance().get_width()
+       self.height = ConfigManager().get_instance().get_height()
+       self.camera = Camera(self.world_width, self.world_height,self.width, self.height)
        self.buttons = {
             "pause": Button(pos=(self.screen_width - 100, self.screen_height / 8), 
                 text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE")),
@@ -46,8 +51,6 @@ class Game(Base):
        self.player = GameManager().get_instance().player
        self.enemy =GameManager().get_instance().enemy
        
-       #generamos suelo (funcion que debera ser modificada cuando se tengan los niveles)
-       self.generate_floor()
        #empieza la musica del nivel
        pygame.mixer.music.stop() #paramos la anterior
        pygame.mixer.music.load(self.sound)
@@ -56,19 +59,8 @@ class Game(Base):
        self.sprites.add(self.player)
        self.sprites.add(self.enemy)
        
+       self.floor = self.scene.sprites
        self.run()
-        
-    #funcion de generación de suelo
-    def generate_floor(self):
-        platform_width = 80
-        platform_height = 18
-        num_platforms = self.screen_width // platform_width + 1
-        floor_y = self.screen_height - 50 
-
-        for i in range(num_platforms):
-            platform = Platforms(i * platform_width, floor_y, platform_width, platform_height, self.scene.pt_skin)
-            self.floor.add(platform)
-            self.sprites.add(platform)
     
     #game loop se modificara si es necesario cuando se tengan los niveles
     def handle_events(self):
@@ -86,10 +78,7 @@ class Game(Base):
                     GameManager().get_instance().running = False  
     
     def update(self):
-        #capa escenario se actualiza
-        for platform in self.floor: #carga plataformas
-                platform.update(self.screen)
-                    
+                        
         #Capa jugador se actualiza
         self.player.update(self.floor) #actualiza al player
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
@@ -103,15 +92,22 @@ class Game(Base):
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lives()): 
             self.group_lives.add(Lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
-        
-        
-        
+        self.camera.update(self.player)
+        self.camera.check_elements_on_screen(self.floor)
+                
     def render(self):
         
-        self.screen.blit(self.bg, (0,0)) #carga el fondo (en la escena completa el 0,0 tendra que varias con los movimientos del personaje TODO)
-        self.screen.blit(self.player.surf, self.player.rect.topleft) #carga player
-        self.screen.blit(self.enemy.surf, self.enemy.rect.topleft) # carga al enemigo 
-        self.group_lives.update(self.screen)
+       # Dibujado: el fondo y cada objeto se dibujan desplazados
+        self.screen.blit(self.bg, (-self.camera.offset.x, -self.camera.offset.y))
+        #capa escenario se actualiza
+        for platform in self.floor: #carga plataformas
+            if platform.on_screen:
+                platform.update(self.screen)        
+        self.screen.blit(self.player.surf, self.camera.apply(self.player.rect).topleft)
+        self.screen.blit(self.enemy.surf, self.camera.apply(self.enemy.rect).topleft)
+        for item in self.group_lives:
+            self.camera.apply(item.rect)
+            item.update(self.screen)
         for btn in self.buttons.values(): #carga botones
             btn.render(self.screen)
         self.items.draw(self.screen)
