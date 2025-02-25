@@ -269,4 +269,88 @@ class Player(pygame.sprite.Sprite):
 
 
 
+    """
+    #Función actualización para ser llamada desde el game loop
+    #Función reconfigurada para tener en cuenta colisiones laterales
+    def update(self, platforms=None):
+        # --- PROCESAMIENTO DE ENTRADAS ---
+        self.acc = vec(0, ConfigManager().get_instance().get_player_Acc())
+        pressed_keys = pygame.key.get_pressed()
+        
+        # Movimiento horizontal
+        if pressed_keys[pygame.K_LEFT]:
+            self.acc.x = -self.ACC
+            self.direction = 0
+            self.current_action = "walk"
+        elif pressed_keys[pygame.K_RIGHT]:
+            self.acc.x = self.ACC
+            self.direction = 1
+            self.current_action = "walk"
+        else:
+            self.acc.x = 0
+            self.current_action = "idle"
+        
+        # Salto (se gestiona en la parte vertical)
+        if pressed_keys[pygame.K_SPACE]:
+            hits = pygame.sprite.spritecollide(self, platforms, False)
+            if hits and not self.jumping:
+                self.jumping = True
+                self.vel.y = self.jump_Max
+            self.current_action = "jump"
+        
+        # --- ACTUALIZACIÓN FÍSICA SEPARANDO EJES ---
+        # Actualización horizontal
+        self.acc.x += self.vel.x * self.FRIC
+        self.vel.x += self.acc.x
+        self.pos.x += self.vel.x + 0.5 * self.acc.x
+        
+        # Actualizamos la posición horizontal en el rectángulo
+        self.rect.midbottom = (self.pos.x, self.rect.midbottom[1])
+        
+        # Comprobación de colisiones horizontales
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        for hit in hits:
+            if self.vel.x > 0:  # moviéndose a la derecha
+                if self.rect.right > hit.rect.left:
+                    self.rect.right = hit.rect.left
+                    self.pos.x = self.rect.centerx
+                    self.vel.x = 0
+            elif self.vel.x < 0:  # moviéndose a la izquierda
+                if self.rect.left < hit.rect.right:
+                    self.rect.left = hit.rect.right
+                    self.pos.x = self.rect.centerx
+                    self.vel.x = 0
+        
+        # Actualización vertical
+        # (Nota: La aceleración vertical ya viene configurada como gravedad)
+        self.vel.y += self.acc.y
+        self.pos.y += self.vel.y + 0.5 * self.acc.y
+        
+        # Actualizamos la posición vertical en el rectángulo
+        self.rect.midbottom = (self.rect.midbottom[0], self.pos.y)
+        
+        # Comprobación de colisiones verticales
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        for hit in hits:
+            if self.vel.y > 0:  # cayendo
+                if self.rect.bottom > hit.rect.top:
+                    self.rect.bottom = hit.rect.top
+                    self.pos.y = self.rect.bottom
+                    self.vel.y = 0
+                    self.jumping = False
+            elif self.vel.y < 0:  # subiendo
+                if self.rect.top < hit.rect.bottom:
+                    self.rect.top = hit.rect.bottom
+                    self.pos.y = self.rect.bottom
+                    self.vel.y = 0
+        
+        # --- ACTUALIZACIÓN DE ANIMACIÓN Y CONTADORES ---
+        self.animation_timer += 1
+        self.bomb_counter += 1
+        self.shield_counter += 1
+        if self.animation_timer > self.frame_rate:
+            self.draw()
+
+    """
+
 
