@@ -26,6 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
+        self.respawn = self.pos
         self.vel = vec(0, 0) # vector velocidad para los movimientos
         self.local = vec(x,y)
         self.ACC =  ConfigManager().get_instance().get_player_Acc()  # constante aceleracion
@@ -208,6 +209,7 @@ class Player(pygame.sprite.Sprite):
             self.index = 0
         elif self.current_action == "death" and self.index >= index -1:
             if self.lifes >= 0 :
+                self.pos = self.respawn
                 self.current_action= "idle"
                 self.index = 0
                 self.lifes -=1    

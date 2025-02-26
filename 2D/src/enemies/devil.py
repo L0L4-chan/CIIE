@@ -31,7 +31,6 @@ class Devil(Enemy):
             self.vel.x = -self.vel.x  # Cambia la dirección a derecha
 
         self.rect.center = self.pos
-        print(self.rect)
         
     def draw(self):
         # Seleccionamos la imagen actual de la animación
