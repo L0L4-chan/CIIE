@@ -28,7 +28,8 @@ class Player(pygame.sprite.Sprite):
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
-        self.respawn = self.pos
+        self.respawn_x = x
+        self.respawn_y = y
         self.vel = vec(0, 0) # vector velocidad para los movimientos
         self.local = vec(x,y)
         self.ACC =  ConfigManager().get_instance().get_player_Acc()  # constante aceleracion
@@ -80,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         self.lasso_side = LassoSide(lasso_side_path)
         lasso_up_path = f"../Art/{self.art_path}/bowel/001.png"
         self.lasso_up = LassoUp(lasso_up_path)
-    
+        self.death_timer = 0
         self.group = pygame.sprite.Group()
         self.group.add(self.projectiles, self.heart, self.lasso_side, self.lasso_up)
     
@@ -211,11 +212,19 @@ class Player(pygame.sprite.Sprite):
             self.index = 0
         elif self.current_action == "death" and self.index >= index -1:
             if self.lifes >= 0 :
-                self.rect.topleft = self.respawn
-                self.current_action= "idle"
                 self.index = 0
                 self.lifes -=1
-                self.die = False    
+                self.die = False
+                self.death_timer = 0 
+                print("antes" , self.rect.topleft)
+                print("respaw x", self.respawn_x)
+                print("respaw y", self.respawn_y)
+                self.pos.x = self.respawn_x
+                self.pos.y = self.respawn_y
+                self.rect.topleft = [self.respawn_x , self.respawn_y]
+                
+                print("despues" , self.rect.topleft)
+                self.current_action= "idle"   
         elif self.current_action == "lasso_up":
             if self.index == 1:
                 self.get_lasso("up")
@@ -290,7 +299,7 @@ class Player(pygame.sprite.Sprite):
                     self.vel.y = 0
                     self.jumping = False
             if isinstance(hit, Spikes):
-                if not self.die:
+                if not self.die and self.death_timer > 100:
                     self.die =  True
                     self.pos.y = hits[0].rect.top + 1 
                     self.current_action = "death"
@@ -302,6 +311,7 @@ class Player(pygame.sprite.Sprite):
         self.animation_timer += 1
         self.bomb_counter += 1
         self.shield_counter += 1 
+        self.death_timer += 1
         self.move(platforms) # llama a move para gestionar las entradas del teclado
         self.collision_managment(platforms)
        

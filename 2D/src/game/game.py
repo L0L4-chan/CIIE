@@ -89,7 +89,6 @@ class Game(Base):
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
         self.items.update(self.sprites)
         self.enemy.update()
-        
         # Capa informacion se actualiza
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values(): #carga botones
@@ -97,6 +96,7 @@ class Game(Base):
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
             self.group_lives.add(Lives(path=(f"../Art/{self.path}/avatar/live.png"), x = 400 + (i * 30), y = 50))#todo make dinamic
+        print(self.player.rect.topleft)
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 
