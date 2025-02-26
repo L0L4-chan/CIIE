@@ -25,12 +25,12 @@ class Scene():
     def create_scene(self):    
         if self.items["platform"]:
             for (x, y, w, h) in self.items["platform"]:
-                platform = Platforms(x, y, w, h, self.pt_skin)
+                platform = Platforms(x, y, w, h)
                 self.sprites.add(platform)
                 
         if self.items["spikes"]:
             for (x, y, w, h) in self.items["spikes"]:
-                spikes = Spikes(x, y, w, h, self.pt_skin)
+                spikes = Spikes(x, y, w, h)
                 self.sprites.add(spikes)
         
         #todo chest and traps

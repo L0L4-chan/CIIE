@@ -32,9 +32,10 @@ class Heart(OneUse):
         self.direction = 0  # Dirección (0: izquierda, 1: derecha)
         self.image = self.spritesheet.subsurface(self.frames["bomb"][0])
         
-        
         self.vel_y = 0  # Reiniciar velocidad vertical
         self.acc = 0.5  # Aceleración inicial (gravedad)
+        
+        self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
         
     def active(self,  x, y ,direction):
         self.direction = direction
@@ -52,6 +53,7 @@ class Heart(OneUse):
                 self.image = pygame.transform.flip(self.image, True, False)
             self.animation_timer = 0
         else:
+            self.sound.play
             self.inUse = False
 
             
