@@ -8,12 +8,14 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame, os
+import pygame
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
 from game.objects.heart import Heart
 from game.objects.lassoup import LassoUp
 from game.objects.lassoside import LassoSide
+from game.objects.platforms import Platforms
+from game.objects.spikes import Spikes
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -39,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.art_path = ConfigManager().get_instance().get_artpath()
         self.index = 0
         self.level = 5
-        self.lives = 3
+        self.lifes = 3
         #Bools para manejod e acciones
         self.jumping = False 
         self.shooting = False
@@ -91,8 +93,8 @@ class Player(pygame.sprite.Sprite):
     def set_local(self,vector):
         self.local = vector
     
-    def get_lives(self):
-        return self.lives
+    def get_lifes(self):
+        return self.lifes
 
     def handle_idle(self):
         self.acc.x = 0
@@ -152,7 +154,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def move(self, platforms):
-        if not self.shooting and not self.bombing :
+        if not self.shooting and not self.bombing and not self.die:
             self.acc = vec(0, self.y_acc_value)
             pressed_keys = pygame.key.get_pressed()
 
@@ -209,10 +211,11 @@ class Player(pygame.sprite.Sprite):
             self.index = 0
         elif self.current_action == "death" and self.index >= index -1:
             if self.lifes >= 0 :
-                self.pos = self.respawn
+                self.rect.topleft = self.respawn
                 self.current_action= "idle"
                 self.index = 0
-                self.lifes -=1    
+                self.lifes -=1
+                self.die = False    
         elif self.current_action == "lasso_up":
             if self.index == 1:
                 self.get_lasso("up")
@@ -276,108 +279,33 @@ class Player(pygame.sprite.Sprite):
         self.level += 1
         if(self.level == 2):
             self.jump_Max *=2
-        
-    #funcion de actualizacion para ser llamada desde el game loop    
-    def update(self, platforms= None):
-        self.move(platforms) # llama a move para gestionar las entradas del teclado
-        self.animation_timer += 1
-        self.bomb_counter += 1
-        self.shield_counter += 1
-        if self.animation_timer > self.frame_rate:
-            self.draw()
-        #self.projectiles.update(screen) # actualiza los proyectiles en la pantalla se maneja en el game loop de momento
+    
+    def collision_managment(self, platforms):
         hits = pygame.sprite.spritecollide(self, platforms, False) #comprueba colisiones con las plataformas del suelo, posiblemente requiera modificacion cualdo haya mas
-        if self.vel.y > 0:      
-            if hits:
-                if self.pos.y < hits[0].rect.bottom:         
+              
+        for hit in hits:
+            if isinstance(hit, Platforms): 
+                if self.vel.y > 0 and self.pos.y < hit.rect.bottom:         
                     self.pos.y = hits[0].rect.top + 1
                     self.vel.y = 0
                     self.jumping = False
-
-
-
-    """
-    #Función actualización para ser llamada desde el game loop
-    #Función reconfigurada para tener en cuenta colisiones laterales
-    def update(self, platforms=None):
-        # --- PROCESAMIENTO DE ENTRADAS ---
-        self.acc = vec(0, ConfigManager().get_instance().get_player_Acc())
-        pressed_keys = pygame.key.get_pressed()
+            if isinstance(hit, Spikes):
+                if not self.die:
+                    self.die =  True
+                    self.pos.y = hits[0].rect.top + 1 
+                    self.current_action = "death"
+                    self.animation_timer = self.frame_rate + 1
+    
         
-        # Movimiento horizontal
-        if pressed_keys[pygame.K_LEFT]:
-            self.acc.x = -self.ACC
-            self.direction = 0
-            self.current_action = "walk"
-        elif pressed_keys[pygame.K_RIGHT]:
-            self.acc.x = self.ACC
-            self.direction = 1
-            self.current_action = "walk"
-        else:
-            self.acc.x = 0
-            self.current_action = "idle"
-        
-        # Salto (se gestiona en la parte vertical)
-        if pressed_keys[pygame.K_SPACE]:
-            hits = pygame.sprite.spritecollide(self, platforms, False)
-            if hits and not self.jumping:
-                self.jumping = True
-                self.vel.y = self.jump_Max
-            self.current_action = "jump"
-        
-        # --- ACTUALIZACIÓN FÍSICA SEPARANDO EJES ---
-        # Actualización horizontal
-        self.acc.x += self.vel.x * self.FRIC
-        self.vel.x += self.acc.x
-        self.pos.x += self.vel.x + 0.5 * self.acc.x
-        
-        # Actualizamos la posición horizontal en el rectángulo
-        self.rect.midbottom = (self.pos.x, self.rect.midbottom[1])
-        
-        # Comprobación de colisiones horizontales
-        hits = pygame.sprite.spritecollide(self, platforms, False)
-        for hit in hits:
-            if self.vel.x > 0:  # moviéndose a la derecha
-                if self.rect.right > hit.rect.left:
-                    self.rect.right = hit.rect.left
-                    self.pos.x = self.rect.centerx
-                    self.vel.x = 0
-            elif self.vel.x < 0:  # moviéndose a la izquierda
-                if self.rect.left < hit.rect.right:
-                    self.rect.left = hit.rect.right
-                    self.pos.x = self.rect.centerx
-                    self.vel.x = 0
-        
-        # Actualización vertical
-        # (Nota: La aceleración vertical ya viene configurada como gravedad)
-        self.vel.y += self.acc.y
-        self.pos.y += self.vel.y + 0.5 * self.acc.y
-        
-        # Actualizamos la posición vertical en el rectángulo
-        self.rect.midbottom = (self.rect.midbottom[0], self.pos.y)
-        
-        # Comprobación de colisiones verticales
-        hits = pygame.sprite.spritecollide(self, platforms, False)
-        for hit in hits:
-            if self.vel.y > 0:  # cayendo
-                if self.rect.bottom > hit.rect.top:
-                    self.rect.bottom = hit.rect.top
-                    self.pos.y = self.rect.bottom
-                    self.vel.y = 0
-                    self.jumping = False
-            elif self.vel.y < 0:  # subiendo
-                if self.rect.top < hit.rect.bottom:
-                    self.rect.top = hit.rect.bottom
-                    self.pos.y = self.rect.bottom
-                    self.vel.y = 0
-        
-        # --- ACTUALIZACIÓN DE ANIMACIÓN Y CONTADORES ---
+    #funcion de actualizacion para ser llamada desde el game loop    
+    def update(self, platforms= None):
         self.animation_timer += 1
         self.bomb_counter += 1
-        self.shield_counter += 1
+        self.shield_counter += 1 
+        self.move(platforms) # llama a move para gestionar las entradas del teclado
+        self.collision_managment(platforms)
+       
         if self.animation_timer > self.frame_rate:
             self.draw()
-
-    """
-
-
+        #self.projectiles.update(screen) # actualiza los proyectiles en la pantalla se maneja en el game loop de momento
+            

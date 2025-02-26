@@ -61,11 +61,13 @@ class Game(Base):
        self.sprites.add(self.enemy)
        
        self.floor = self.scene.sprites
+       self.sprites.add(self.floor)
        self.run()
     
     #game loop se modificara si es necesario cuando se tengan los niveles
     def handle_events(self):
-        if self.player.get_lives() == 0:
+        if self.player.get_lifes() == 0:
+            self.running = False
             GameManager().get_instance().end_game()
         
         for event in pygame.event.get():
@@ -73,10 +75,12 @@ class Game(Base):
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
-                    Pausa()
+                    GameManager().get_instance().load_pause()
                 if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
                     GameManager().get_instance().running = False  
+    
+    
     
     def update(self):
                         
@@ -91,7 +95,7 @@ class Game(Base):
         for btn in self.buttons.values(): #carga botones
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
-        for i in range(self.player.get_lives()): 
+        for i in range(self.player.get_lifes()): 
             self.group_lives.add(Lives(path=(f"../Art/{self.path}/avatar/live.png"), x = 400 + (i * 30), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)

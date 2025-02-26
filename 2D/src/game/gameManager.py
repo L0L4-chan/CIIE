@@ -83,11 +83,16 @@ class GameManager():
             self.scene.cleanup()
         from views.credits import Credits
         self.scene =  Credits()
-        
+    
+    def load_pause(self):
+        from ui.pausa import Pausa
+        Pausa()
+                 
     def end_game(self):
         if self.scene:
             self.scene.cleanup()
         from views.gameOver import GameOver
+        self.player = None
         self.scene =  GameOver()
 
     def load_start(self):
