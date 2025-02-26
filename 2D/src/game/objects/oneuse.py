@@ -29,7 +29,7 @@ class OneUse(pygame.sprite.Sprite):
     def get_inUse(self):
         return self.inUse
         
-    def draw(self, screen):
-        screen.blit(self.image ,self.rect.topleft)
+    def draw(self, screen , position):
+        screen.blit(self.image ,position)
         
     

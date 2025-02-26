@@ -28,6 +28,7 @@ class Game(Base):
        self.scene = scene
        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
        self.sound = sound
+       self.path = ConfigManager().get_instance().get_artpath()
        self.running = False
        self.sprites = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
@@ -91,7 +92,7 @@ class Game(Base):
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lives()): 
-            self.group_lives.add(Lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
+            self.group_lives.add(Lives(path=(f"../Art/{self.path}/avatar/live.png"), x = 400 + (i * 30), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 
@@ -105,12 +106,14 @@ class Game(Base):
                 platform.update(self.screen)        
         self.screen.blit(self.player.surf, self.camera.apply(self.player.rect).topleft)
         self.screen.blit(self.enemy.surf, self.camera.apply(self.enemy.rect).topleft)
+        
+        for item in self.items:
+            item.draw(screen = self.screen, position = self.camera.apply(item.rect).topleft)           
         for item in self.group_lives:
-            self.camera.apply(item.rect)
             item.update(self.screen)
         for btn in self.buttons.values(): #carga botones
             btn.render(self.screen)
-        self.items.draw(self.screen)
+        
         #Muestra por pantalla
         pygame.display.flip()
     

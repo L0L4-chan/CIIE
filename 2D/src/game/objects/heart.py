@@ -61,9 +61,6 @@ class Heart(OneUse):
             # Aplicar gravedad acumulativa
             self.vel_y += self.acc  # Aumenta la velocidad con la gravedad
             self.rect.y += self.vel_y  # Aplica la velocidad a la posición
-            
-            if(self.rect.x > ConfigManager.get_instance().get_width() or (self.rect.x + self.width)<= 0):
-                self.inUse = False
             #manejo de collisiones 
             hits = pygame.sprite.spritecollide(self, object, False)
             #if hits.breakable and self.index >= self.frames[self.index]:

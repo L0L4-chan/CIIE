@@ -5,7 +5,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 class Devil(Enemy):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.spritesheet = pygame.image.load(f"../img/1280x720/devil/devil_spritesheet.png")  # Cargar la hoja de sprites
+        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_spritesheet.png")  # Cargar la hoja de sprites
         self.rect = self.spritesheet.get_rect()
         self.pos = vec(x, y)
         self.vel = vec(0, 0)  # Velocidad inicial

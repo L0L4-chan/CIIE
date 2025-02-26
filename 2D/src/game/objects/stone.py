@@ -32,8 +32,6 @@ class Stone(OneUse):
     def update(self, object = None):
         if(self.inUse):
             self.rect.x += self.speed
-            if(self.rect.x > ConfigManager.get_instance().get_width() or (self.rect.x + self.width)<= 0):
-                self.inUse = False
             #manejo de collisiones 
             hits = pygame.sprite.spritecollide(self, object, False)
             if hits:

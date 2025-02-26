@@ -6,7 +6,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 class Ghost(Enemy):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.surf = pygame.image.load(f"../img/1280x720/ghost/ghost_1.png")  # Imagen del murciélago
+        self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/ghost/ghost_1.png")  # Imagen del murciélago
         self.rect = self.surf.get_rect()
 
     def move(self):

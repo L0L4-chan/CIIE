@@ -15,7 +15,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         # Imagen y rectángulo del enemigo (será sobrescrito por las subclases)
-        self.surf = pygame.image.load(f"../img/1280x720/devil/devil_1.png")
+        self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_1.png")
         self.rect = self.surf.get_rect()
         self.pos = vec(x, y)  # Posición inicial
         self.vel = vec(1, 1)  # Movimiento inicial genérico

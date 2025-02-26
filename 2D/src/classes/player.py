@@ -24,7 +24,6 @@ class Player(pygame.sprite.Sprite):
         self.height =  ConfigManager().get_instance().get_player_H()
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos la imagen de inicio
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
-
         self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
         self.pos = vec(x, y) #posicion de inicio
         self.vel = vec(0, 0) # vector velocidad para los movimientos
