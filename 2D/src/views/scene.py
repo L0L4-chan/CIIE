@@ -11,6 +11,7 @@ Version: 1.0.0
 import pygame, utils.auxiliar as auxiliar
 from game.objects.platforms import Platforms
 from game.objects.spikes import Spikes
+from game.objects.switch import Switch
 
 
 class Scene():
@@ -33,6 +34,13 @@ class Scene():
                 spikes = Spikes(x, y, w, h)
                 self.sprites.add(spikes)
         
+        if self.items["switch"]:
+             for (x, y, dx,dy,dw, dh) in self.items["switch"]:
+                switch = Switch(x, y, dx,dy,dw, dh)
+                self.sprites.add(switch)
+                
+       
+                
         #todo chest and traps
         #if self.items["chest"]:
             

@@ -24,7 +24,6 @@ class ConfigManager:
             self.change_texts(self.language) # load text on the apropiate language
             self._initialized = True 
             self.fps = 60
-
     def load_fonts(self):
        
         self.fonts_titles = pygame.font.Font("../Font/Cryptik/Cryptik.ttf",  self.conf["lettering"])

@@ -24,7 +24,7 @@ class Menu(Base):
         self.screen_width = ConfigManager().get_instance().get_width()
         self.screen_height =  ConfigManager().get_instance().get_height()
         # Botones del menu
-        self.new_buttons() #create buttons 
+        self.new_buttons() #create buttons
         self.run()
         
     # to handle events from the mouse input
@@ -43,8 +43,7 @@ class Menu(Base):
                     self.running = False 
                     GameManager().get_instance().load_options()
                 if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
-                    self.running = False 
-                    GameManager().get_instance().running = False 
+                    self.running = False  
 
 
     # create buttons    
@@ -78,6 +77,7 @@ class Menu(Base):
         # Liberar recursos de imágenes y botones
         self.bg = None
         self.buttons.clear()
+        self.screen = None
         # Forzar al recolector de basura a limpiar
         import gc
         gc.collect()

@@ -112,8 +112,10 @@ class Game(Base):
         
         for item in self.items:
             item.draw(screen = self.screen, position = self.camera.apply(item.rect).topleft)           
+        
         for item in self.group_lives:
             item.update(self.screen)
+        
         for btn in self.buttons.values(): #carga botones
             btn.render(self.screen)
         

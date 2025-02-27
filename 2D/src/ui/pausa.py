@@ -19,7 +19,7 @@ from game.gameManager import GameManager
 class Pausa(Base):
   def __init__(self):
     super().__init__()
-    self.button = Button(pos=((self.screen_width/2), (self.screen_height/2)), text_input= ConfigManager().get_instance().get_text_button(key ="BACK"))
+    self.button = Button(pos=((self.screen_width/2), (self.screen_height/2)), text_input= ConfigManager().get_instance().get_text_button(key ="BACK"))   
     self.clock =  GameManager().get_instance().clock
     self.FPS = ConfigManager().get_instance().get_fps()
     self.run()

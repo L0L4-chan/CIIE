@@ -28,7 +28,7 @@ class Platforms(pygame.sprite.Sprite):
         
         self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
         
-    def update(self):
+    def update(self, screen):
         pass
 
         

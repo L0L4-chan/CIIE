@@ -33,8 +33,6 @@ class GameManager():
 
     def __init__(self):
         if not self._initialized:
-            pygame.mixer.music.load("../Sound/BSO/Credits.wav") #load by default the menu music
-            pygame.mixer.music.play() #start the music
             ConfigManager().get_instance().load_fonts()
             self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window
@@ -43,7 +41,15 @@ class GameManager():
             self.scene = None
             self.player = None
             self.enemy = None
-    #load the necessary text that the game will be using from the json
+            self.music = False
+            self.music_on()
+    
+    def music_on(self):
+        if(not self.music):
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+                pygame.mixer.music.play()
+                self.music = True
    
     
     #change the resolution of the screen
@@ -53,7 +59,8 @@ class GameManager():
     #functions to load different scenes
     def load_menu(self):
         if self.scene:
-            self.scene.cleanup() 
+            self.scene.cleanup()
+        self.music_on() 
         from ui.menu import Menu
         self.scene =  Menu()
         
@@ -69,6 +76,7 @@ class GameManager():
         if self.player == None:
             from classes.player2 import Player2
             self.player = Player2(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2,3)
+        self.music= False
         from game.game import Game
         self.scene = Game(scene, sound)
 
@@ -81,6 +89,10 @@ class GameManager():
     def load_credits(self):
         if self.scene:
             self.scene.cleanup()
+        self.music = False
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+        pygame.mixer.music.play()
         from views.credits import Credits
         self.scene =  Credits()
     
@@ -93,6 +105,10 @@ class GameManager():
             self.scene.cleanup()
         from views.gameOver import GameOver
         self.player = None
+        self.music = False
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("../Sound/BSO/game_over.wav")
+        pygame.mixer.music.play()
         self.scene =  GameOver()
 
     def load_start(self):
