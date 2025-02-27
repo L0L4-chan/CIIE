@@ -24,6 +24,7 @@ class Player2(Player1):
         self.heart = Heart(heart_path)
         self.bomb_counter = 300
         self.action_map.update({pygame.K_s: self.handle_bomb})
+        self.group.add(self.heart)
         
     def handle_bomb(self):
         if self.bomb_counter >= 300:

@@ -19,7 +19,7 @@ class Lifes(OneUse):
 
         
     
-    def update(self, screen, ):
+    def update(self, screen):
         self.draw(screen = screen, position=self.rect.topleft)
     
     

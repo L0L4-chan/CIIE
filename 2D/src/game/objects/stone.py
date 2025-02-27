@@ -27,13 +27,14 @@ class Stone(OneUse):
         super().active(x,y)
         self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
         self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
-
-    #funcion de dibujado   
+        super().set_use()
+        
+     
     def update(self, object = None):
         if(self.inUse):
             self.rect.x += self.speed
             #manejo de collisiones 
             hits = pygame.sprite.spritecollide(self, object, False)
             if hits:
-                self.inUse = False #desaparecera por lo tanto 
+                super().set_use()
  

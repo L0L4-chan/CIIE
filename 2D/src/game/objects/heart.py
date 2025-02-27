@@ -42,6 +42,7 @@ class Heart(OneUse):
         super().active(x,y)
         self.rect = pygame.Rect(x, y, self.width, self.height)
         self.index = 0
+        super().set_use()
         
     def animation(self):
         if self.index < len(self.frames["bomb"]):
@@ -54,7 +55,7 @@ class Heart(OneUse):
             self.animation_timer = 0
         else:
             self.sound.play
-            self.inUse = False
+            super().set_use()
 
             
     def update(self, object = None):

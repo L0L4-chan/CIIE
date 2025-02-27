@@ -21,15 +21,17 @@ class OneUse(pygame.sprite.Sprite):
         self.inUse = False
         
     def active(self, x, y):
-        self.inUse = True
         self.x_pos = x
         self.y_pos = y
-
+        
+    def set_use(self):
+        self.inUse = not self.inUse    
 
     def get_inUse(self):
         return self.inUse
         
     def draw(self, screen , position):
-        screen.blit(self.image ,position)
+        if self.inUse:
+            screen.blit(self.image ,position)
         
     
