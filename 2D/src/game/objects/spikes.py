@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, random
+
 from game.objects.platforms import Platforms
 
 class Spikes(Platforms):
