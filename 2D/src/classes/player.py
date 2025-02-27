@@ -138,9 +138,6 @@ class Player(pygame.sprite.Sprite):
                 self.lifes -=1
                 self.die = False
                 self.death_timer = 0 
-                print("antes" , self.rect.topleft)
-                print("respaw x", self.respawn_x)
-                print("respaw y", self.respawn_y)
                 self.pos.x = self.respawn_x
                 self.pos.y = self.respawn_y
                 self.rect.topleft = [self.respawn_x , self.respawn_y]

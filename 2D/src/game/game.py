@@ -13,7 +13,7 @@ import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from game.camera import Camera
-from game.objects.lives import Lives
+from game.objects.lifes import Lifes
 from game.base import Base
 from ui.button import Button
 from ui.pausa import Pausa
@@ -95,8 +95,7 @@ class Game(Base):
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
-            self.group_lives.add(Lives(path=(f"../Art/{self.path}/avatar/live.png"), x = 400 + (i * 30), y = 50))#todo make dinamic
-        print(self.player.rect.topleft)
+            self.group_lives.add(Lifes(path=(f"../Art/{self.path}/avatar/live.png"), x = 400 + (i * 30), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 

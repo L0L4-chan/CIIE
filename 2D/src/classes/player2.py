@@ -16,28 +16,26 @@ from classes.player1 import Player1
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Player2(Player1):
-    def __init__(self, x, y, lifes):
-        super().__init__(x,y, lifes)
-        
+    def __init__(self, x, y, lifes = 3):
+        super().__init__(x,y, lifes)        
         self.bombing = False 
-        self.frames.add( "bomb", [( self.width * 9 + (i * self.width), 0) for i in range(4)])
+        self.frames.update( {"bomb": [( self.width * 9 + (i * self.width), 0) for i in range(4)]})
         heart_path = f"../Art/{self.art_path}/heart/spritesheet.png"
         self.heart = Heart(heart_path)
-        self.bomb_counter = 0
-        self.action_map.add(pygame.K_s,  self.handle_bomb if self.bomb_counter > 300 else None)
+        self.bomb_counter = 300
+        self.action_map.update({pygame.K_s: self.handle_bomb})
         
     def handle_bomb(self):
-        self.current_action = "bomb"
-        self.bombing = True
-        self.index = 0
-        self.bomb_counter = 0
+        if self.bomb_counter >= 300:
+            self.current_action = "bomb"
+            self.bombing = True
+            self.index = 0
+            self.bomb_counter = 0
     
     def draw(self):
-        if self.current_action == "bomb" and self.index >= self.end_index -1:
+        if self.current_action == "bomb" and self.index >= self.end_index-1:
             self.bombing = False
             self.explode()
-            self.current_action= "idle"
-            self.index = 0
         super().draw()
     
     def move(self, platforms):
@@ -54,7 +52,7 @@ class Player2(Player1):
         self.heart.active(x= int( heart_x), y = int(heart_y), direction= self.direction)
         self.bomb_counter = 0 
     
-    def update(self):
+    def update(self, platforms):
         self.bomb_counter +=1
-        super().update()
+        super().update(platforms)
         

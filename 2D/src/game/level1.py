@@ -14,7 +14,7 @@ from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from game.objects.platforms import Platforms
 from game.objects.spikes import Spikes
-from game.objects.lives import Lives
+from objects.lifes import Lives
 from ui.button import Button
 from ui.pausa import Pausa
 from game.camera import Camera

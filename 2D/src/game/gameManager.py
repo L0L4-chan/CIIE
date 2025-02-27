@@ -67,8 +67,8 @@ class GameManager():
         if self.scene:
             self.scene.cleanup()
         if self.player == None:
-            from classes.player import Player
-            self.player = Player(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2)
+            from classes.player2 import Player2
+            self.player = Player2(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2,3)
         from game.game import Game
         self.scene = Game(scene, sound)
 
