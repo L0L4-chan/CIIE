@@ -10,12 +10,12 @@ Version: 1.0.0
 '''
 
 import pygame
-
+from game.configManager import ConfigManager
 
 class OneUse(pygame.sprite.Sprite):
     def __init__(self, path):
         super().__init__()
-        self.spritesheet = pygame.image.load(path)
+        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/{path}")
         self.image = self.spritesheet
         self.rect = self.image.get_rect()
         self.inUse = False

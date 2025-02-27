@@ -14,9 +14,8 @@ from game.objects.decor.breakable import Breakable
 from game.objects.oneuse import OneUse
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Heart(OneUse):
-    def __init__(self, path):
-        super().__init__(path)
-       
+    def __init__(self):
+        super().__init__("heart/spritesheet.png")
         # Definir el tamaño de cada fotograma de la sprite sheet
         self.width = self.spritesheet.get_width()/4
         self.height = self.spritesheet.get_height()

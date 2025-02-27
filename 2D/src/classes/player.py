@@ -14,6 +14,8 @@ from game.objects.stone import Stone
 from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
+from game.objects.decor.chest import Chest
+from game.objects.prize import Prize
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -56,8 +58,7 @@ class Player(pygame.sprite.Sprite):
             "death": [(( self.width* 15 ) + ( i * self.width), 0) for i in range(3)],     
         }
         self.current_action = "idle"  # Acción inicial
-        stone_path = f"../Art/{self.art_path}/stone/001.png"
-        self.projectiles = Stone(path=stone_path) 
+        self.projectiles = Stone() 
         self.death_timer = 0
         self.group = pygame.sprite.Group()
         self.group.add(self.projectiles)
@@ -186,7 +187,22 @@ class Player(pygame.sprite.Sprite):
             if isinstance(hit, Switch):
                 if self.pos.y == hit.rect.topleft[1]+1:
                     hit.change_position()
-        
+            if isinstance(hit, Chest):
+                hit_result = hit.open()
+                if hit_result is not None:
+                    self.group.add(hit_result)                
+                if self.jumping:
+                    if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
+                        self.rect.right = hit.rect.left  
+                    elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
+                        self.rect.left = hit.rect.right  
+                else:
+                    if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
+                        self.rect.right = hit.rect.left     
+                    elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
+                        self.rect.left = hit.rect.right  
+                
+                
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):
         self.animation_timer += 1

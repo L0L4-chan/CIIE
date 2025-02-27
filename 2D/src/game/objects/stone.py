@@ -16,8 +16,8 @@ from game.objects.oneuse import OneUse
 class Stone(OneUse):
     
     #funcion de inicializacion de plataformas (modificar para pasar la altura por parametros cuando se tengan los escenarios)
-    def __init__(self, path):
-        super().__init__(path) 
+    def __init__(self):
+        super().__init__("stone/001.png") 
         self.height = ConfigManager.get_instance().get_player_H()/5
         self.width = ConfigManager.get_instance().get_player_H()/5
         

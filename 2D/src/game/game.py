@@ -16,7 +16,6 @@ from game.camera import Camera
 from game.objects.lifes import Lifes
 from game.base import Base
 from ui.button import Button
-from ui.pausa import Pausa
 vec = pygame.math.Vector2  
 
 
@@ -97,7 +96,7 @@ class Game(Base):
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
-            self.group_lives.add(Lifes(path=(f"../Art/{self.path}/avatar/live.png"), x = 400 + (i * 30), y = 50))#todo make dinamic
+            self.group_lives.add(Lifes( x = 400 + (i * 30), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 

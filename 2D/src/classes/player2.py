@@ -20,8 +20,7 @@ class Player2(Player1):
         super().__init__(x,y, lifes)        
         self.bombing = False 
         self.frames.update( {"bomb": [( self.width * 9 + (i * self.width), 0) for i in range(4)]})
-        heart_path = f"../Art/{self.art_path}/heart/spritesheet.png"
-        self.heart = Heart(heart_path)
+        self.heart = Heart()
         self.bomb_counter = 300
         self.action_map.update({pygame.K_s: self.handle_bomb})
         self.group.add(self.heart)

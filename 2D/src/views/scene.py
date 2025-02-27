@@ -12,6 +12,7 @@ import pygame, utils.auxiliar as auxiliar
 from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
+from game.objects.decor.chest import Chest
 
 
 class Scene():
@@ -24,23 +25,27 @@ class Scene():
         self.create_scene()
         
     def create_scene(self):    
-        if self.items["platform"]:
+        if self.items.get("platform"):
             for (x, y, w, h) in self.items["platform"]:
                 platform = Platforms(x, y, w, h)
                 self.sprites.add(platform)
                 
-        if self.items["spikes"]:
+        if self.items.get("spikes"):
             for (x, y, w, h) in self.items["spikes"]:
                 spikes = Spikes(x, y, w, h)
                 self.sprites.add(spikes)
         
-        if self.items["switch"]:
-             for (x, y, dx,dy) in self.items["switch"]:
+        if self.items.get("switch"):
+            for (x, y, dx,dy) in self.items["switch"]:
                 switch = Switch(x, y, dx,dy)
                 self.sprites.add(switch)
                 self.sprites.add(switch.get_door())
                 
-       
+        if self.items.get("chest"):
+            for (x, y, pz) in self.items["chest"]:
+                chest = Chest(x,y,pz)
+                self.sprites.add(chest)
+
                 
         #todo chest and traps
         #if self.items["chest"]:

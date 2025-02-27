@@ -6,7 +6,7 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Door(Platforms):
    def __init__(self, x = 0, y = 0 ):
-      self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/metalicdoor/metalicdoor.PNG")
+      self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/metallicdoor/metallicdoor.PNG")
       super().__init__(x,y,self.surf.get_width(), self.surf.get_height()) 
       self.initial_y = y
       self.on_screen = True
