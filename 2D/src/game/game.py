@@ -53,9 +53,9 @@ class Game(Base):
        self.enemy = GameManager().get_instance().enemy
        
        #empieza la musica del nivel
-       pygame.mixer.music.stop() #paramos la anterior
-       pygame.mixer.music.load(self.sound)
-       pygame.mixer.music.play(-1) #indicamos loop infinito
+       #pygame.mixer.music.stop() #paramos la anterior
+       #pygame.mixer.music.load(self.sound)
+       #pygame.mixer.music.play(-1) #indicamos loop infinito
 
        self.sprites.add(self.player)
        self.sprites.add(self.enemy)
@@ -63,6 +63,7 @@ class Game(Base):
        self.floor = self.scene.sprites
        self.sprites.add(self.floor)
        self.run()
+       
     
     #game loop se modificara si es necesario cuando se tengan los niveles
     def handle_events(self):
@@ -89,6 +90,7 @@ class Game(Base):
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
         self.items.update(self.sprites)
         self.enemy.update()
+        self.floor.update()
         # Capa informacion se actualiza
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values(): #carga botones
@@ -106,7 +108,7 @@ class Game(Base):
         #capa escenario se actualiza
         for platform in self.floor: #carga plataformas
             if platform.on_screen:
-                platform.update(self.screen)        
+                platform.draw(self.screen)        
         self.screen.blit(self.player.surf, self.camera.apply(self.player.rect).topleft)
         self.screen.blit(self.enemy.surf, self.camera.apply(self.enemy.rect).topleft)
         
@@ -114,7 +116,7 @@ class Game(Base):
             item.draw(screen = self.screen, position = self.camera.apply(item.rect).topleft)           
         
         for item in self.group_lives:
-            item.update(self.screen)
+            item.draw(self.screen)
         
         for btn in self.buttons.values(): #carga botones
             btn.render(self.screen)
@@ -124,7 +126,7 @@ class Game(Base):
     
     def cleanup(self):
         # Detener la música
-        pygame.mixer.music.stop()
+        #pygame.mixer.music.stop()
         # Vaciar grupos de sprites
         self.sprites.empty()
         self.floor.empty()

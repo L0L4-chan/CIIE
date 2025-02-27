@@ -11,8 +11,9 @@ Version: 1.0.0
 import pygame
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
-from game.objects.platforms import Platforms
-from game.objects.spikes import Spikes
+from game.objects.decor.platforms import Platforms
+from game.objects.decor.spikes import Spikes
+from game.objects.decor.switch import Switch
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -182,7 +183,9 @@ class Player(pygame.sprite.Sprite):
                     self.pos.y = hits[0].rect.top + 1 
                     self.current_action = "death"
                     self.animation_timer = self.frame_rate + 1
-    
+            if isinstance(hit, Switch):
+                if self.pos.y == hit.rect.topleft[1]+1:
+                    hit.change_position()
         
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):

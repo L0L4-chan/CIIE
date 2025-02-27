@@ -10,7 +10,7 @@ Version: 1.0.0
 '''
 
 import pygame
-from game.configManager import ConfigManager
+from game.objects.decor.breakable import Breakable
 from game.objects.oneuse import OneUse
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Heart(OneUse):
@@ -18,9 +18,9 @@ class Heart(OneUse):
         super().__init__(path)
        
         # Definir el tamaño de cada fotograma de la sprite sheet
-        self.width = ConfigManager.get_instance().get_heart_W()
-        self.height = ConfigManager.get_instance().get_heart_H()
-        # Cargar la imagen de la sprite sheet del corazón
+        self.width = self.spritesheet.get_width()/4
+        self.height = self.spritesheet.get_height()
+        # Cargar la imagen de la spritesheet del corazón
         self.image =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         # Diccionario de animaciones 
         self.frames = {
@@ -34,34 +34,34 @@ class Heart(OneUse):
         
         self.vel_y = 0  # Reiniciar velocidad vertical
         self.acc = 0.5  # Aceleración inicial (gravedad)
-        
-        self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
-        
+        #recurso sonido explosión
+        #self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
+    
+    #funcion que lo activa para reutilización    
     def active(self,  x, y ,direction):
         self.direction = direction
-        super().active(x,y)
+        super().active(x,y)#posicion
         self.rect = pygame.Rect(x, y, self.width, self.height)
         self.index = 0
-        super().set_use()
-        
+        super().set_use()#activación
+     
+    #funcion que controla los cambios de la animación   
     def animation(self):
         if self.index < len(self.frames["bomb"]):
             frame_rect = pygame.Rect(self.frames["bomb"][self.index])
             self.image = self.spritesheet.subsurface(frame_rect)
-            self.image = self.image
             self.index += 1
             if self.direction == 0:
                 self.image = pygame.transform.flip(self.image, True, False)
             self.animation_timer = 0
         else:
-            self.sound.play
+            #self.sound.play
             super().set_use()
 
             
     def update(self, object = None):
         if(self.inUse):
             self.animation_timer += 1
-            # Aplicar gravedad acumulativa
             self.vel_y += self.acc  # Aumenta la velocidad con la gravedad
             self.rect.y += self.vel_y  # Aplica la velocidad a la posición
             #manejo de collisiones 
@@ -69,9 +69,11 @@ class Heart(OneUse):
             #if hits.breakable and self.index >= self.frames[self.index]:
             #    hits.to_break() #desaparecera por lo tanto 
             if self.acc > 0:      
-                if hits:
+                for hit in hits:
                     if self.rect.y + self.height > hits[0].rect.top:  # Si toca la plataforma
                         self.rect.y = hits[0].rect.top - self.height  # Ajustar posición
                         self.acc = 0  # Detener caída
+                    if isinstance(hits, Breakable):
+                        hits.start_break()   
             if self.animation_timer > self.frame_rate:
                 self.animation()     

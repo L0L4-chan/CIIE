@@ -46,9 +46,9 @@ class GameManager():
     
     def music_on(self):
         if(not self.music):
-                pygame.mixer.music.stop()
-                pygame.mixer.music.load("../Sound/BSO/Credits.wav")
-                pygame.mixer.music.play()
+                #pygame.mixer.music.stop()
+                #pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+                #pygame.mixer.music.play()
                 self.music = True
    
     
@@ -90,9 +90,9 @@ class GameManager():
         if self.scene:
             self.scene.cleanup()
         self.music = False
-        pygame.mixer.music.stop()
-        pygame.mixer.music.load("../Sound/BSO/Credits.wav")
-        pygame.mixer.music.play()
+        #pygame.mixer.music.stop()
+        #pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+        #pygame.mixer.music.play()
         from views.credits import Credits
         self.scene =  Credits()
     
@@ -106,9 +106,9 @@ class GameManager():
         from views.gameOver import GameOver
         self.player = None
         self.music = False
-        pygame.mixer.music.stop()
-        pygame.mixer.music.load("../Sound/BSO/game_over.wav")
-        pygame.mixer.music.play()
+        #pygame.mixer.music.stop()
+        #pygame.mixer.music.load("../Sound/BSO/game_over.wav")
+        #pygame.mixer.music.play()
         self.scene =  GameOver()
 
     def load_start(self):

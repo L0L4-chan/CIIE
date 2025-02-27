@@ -9,9 +9,9 @@ Lola Suárez González
 Version: 1.0.0
 '''
 import pygame, utils.auxiliar as auxiliar
-from game.objects.platforms import Platforms
-from game.objects.spikes import Spikes
-from game.objects.switch import Switch
+from game.objects.decor.platforms import Platforms
+from game.objects.decor.spikes import Spikes
+from game.objects.decor.switch import Switch
 
 
 class Scene():
@@ -35,9 +35,10 @@ class Scene():
                 self.sprites.add(spikes)
         
         if self.items["switch"]:
-             for (x, y, dx,dy,dw, dh) in self.items["switch"]:
-                switch = Switch(x, y, dx,dy,dw, dh)
+             for (x, y, dx,dy) in self.items["switch"]:
+                switch = Switch(x, y, dx,dy)
                 self.sprites.add(switch)
+                self.sprites.add(switch.get_door())
                 
        
                 

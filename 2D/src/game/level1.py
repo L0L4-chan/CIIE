@@ -12,8 +12,8 @@ Version: 1.0.0
 import pygame
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
-from game.objects.platforms import Platforms
-from game.objects.spikes import Spikes
+from objects.decor.platforms import Platforms
+from objects.decor.spikes import Spikes
 from objects.lifes import Lives
 from ui.button import Button
 from ui.pausa import Pausa
@@ -51,9 +51,9 @@ class Level1():
 
         }
        #empieza la musica del nivel
-       pygame.mixer.music.stop() #paramos la anterior
-       pygame.mixer.music.load(self.sound)
-       pygame.mixer.music.play(-1) #indicamos loop infinito
+       #pygame.mixer.music.stop() #paramos la anterior
+       #pygame.mixer.music.load(self.sound)
+       #pygame.mixer.music.play(-1) #indicamos loop infinito
 
        self.sprites.add(GameManager().get_instance().player)
        self.sprites.add(GameManager().get_instance().enemy)

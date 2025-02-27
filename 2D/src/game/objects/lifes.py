@@ -18,7 +18,7 @@ class Lifes(OneUse):
         self.rect = pygame.Rect(x, y,self.image.get_width(), self.image.get_height())
         self.set_use()
                
-    def update(self, screen):
-        self.draw(screen = screen, position=self.rect.topleft)
+    def draw(self, screen):
+        super().draw(screen = screen, position=self.rect.topleft)
     
     

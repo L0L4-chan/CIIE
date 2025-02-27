@@ -13,24 +13,22 @@ import pygame, random
 
 class Platforms(pygame.sprite.Sprite):
     
-    def __init__(self, x=0, y=0, width=0, height=18):
+    def __init__(self, x=0, y=0, width=0, height=0):
         super().__init__()
-        self.height = height
         self.x_pos = x
         self.y_pos = y
         self.on_screen = False
-        if width == 0:
-            width = random.randint(50, 120)
-        
+        self.height = height
+        self.width = width
+        self.init_surf()
+    
+    def init_surf(self):
         # Se crea una superficie transparente, ignorando cualquier imagen o textura.
-        self.surf = pygame.Surface((width, self.height), pygame.SRCALPHA)
-        self.surf.fill((0, 0, 0, 0))  # Color totalmente transparente
-        
+        self.surf = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        self.surf.fill((0, 0, 0, 0))  # Color totalmente transparente      
         self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
+              
+    def draw(self, screen):
+        pass  
         
-    def update(self, screen):
-        pass
-
-        
- 
     

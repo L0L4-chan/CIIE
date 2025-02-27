@@ -30,7 +30,7 @@ class OneUse(pygame.sprite.Sprite):
     def get_inUse(self):
         return self.inUse
         
-    def draw(self, screen , position):
+    def draw(self, screen, position):
         if self.inUse:
             screen.blit(self.image ,position)
         

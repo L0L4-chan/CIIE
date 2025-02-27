@@ -24,13 +24,13 @@ class Start(Base):
       self.animation = AnimationPlayer(path = path, start = 100, amount = 1, event = 1)
       self.screen_width = ConfigManager().get_instance().get_width()
       self.screen_height =  ConfigManager().get_instance().get_height()
-      pygame.mixer.music.stop()
-      pygame.mixer.music.load(sound)
-      pygame.mixer.music.play()
+      #pygame.mixer.music.stop()
+      #pygame.mixer.music.load(sound)
+      #pygame.mixer.music.play()
       self.run()
       
    def cleanup(self):
-      pygame.mixer.music.stop() 
+      #pygame.mixer.music.stop() 
 
       if self.animation:
          self.animation = None

@@ -33,7 +33,7 @@ class GameOver(Base):
           GameManager().get_instance().load_menu()
   
   def cleanup(self):
-    pygame.mixer.music.stop()  
+    #pygame.mixer.music.stop()  
     import gc
     gc.collect()
   
