@@ -15,7 +15,7 @@ class Door(Platforms):
       self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))    
                   
    def switch_position(self):     
-      self.rect.y += self.height
+      self.rect.y -= self.height
    
    def reset_back(self):
       self.rect.y = self.initial_y

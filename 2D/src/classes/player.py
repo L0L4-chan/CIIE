@@ -15,7 +15,7 @@ from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
 from game.objects.decor.chest import Chest
-from game.objects.prize import Prize
+from game.event import Event
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -201,7 +201,10 @@ class Player(pygame.sprite.Sprite):
                         self.rect.right = hit.rect.left     
                     elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
                         self.rect.left = hit.rect.right  
-                
+            if isinstance(hit,Event):
+                print("I`m fuck!")
+                #tengo que poner el ciclo de la pantalla anterior False o ver porque me crea este ciclico.
+                #hit.on_collision(self)    
                 
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):

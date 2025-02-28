@@ -42,7 +42,6 @@ class Chest(Platforms):
         self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
      
     def on_discover(self):
-        print("hola") 
         if self.active and self.animation_timer >= self.frame_rate:
             self.surf = self.spritesheet.subsurface(self.frames["position"][self.index][0], self.frames["position"][self.index][1],self.width, self.height)
             self.animation_timer = 0

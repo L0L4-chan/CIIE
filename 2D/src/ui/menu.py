@@ -35,7 +35,7 @@ class Menu(Base):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["play"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
-                    GameManager().get_instance().load_start() 
+                    GameManager().get_instance().load_start("st1.json") 
                 if self.buttons["load"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False 
                     GameManager().get_instance().load_loading()   
@@ -81,4 +81,5 @@ class Menu(Base):
         # Forzar al recolector de basura a limpiar
         import gc
         gc.collect()
+        remove(self)
    

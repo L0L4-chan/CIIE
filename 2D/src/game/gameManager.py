@@ -60,6 +60,7 @@ class GameManager():
     def load_menu(self):
         if self.scene:
             self.scene.cleanup()
+            self.scene = None
         self.music_on() 
         from ui.menu import Menu
         self.scene =  Menu()
@@ -67,28 +68,45 @@ class GameManager():
     def load_options(self):
         if self.scene:
             self.scene.cleanup()
+            self.scene = None
         from ui.options import Options
         self.scene = Options()
     
-    def load_game(self, scene, sound):
+    def load_game(self, scene, sound, level):
         if self.scene:
             self.scene.cleanup()
-        if self.player == None:
-            from classes.player2 import Player2
-            self.player = Player2(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2,3)
-        self.music= False
+            self.scene = None
+        if self.player == None:    
+            self.load_player(level)
+        else:
+            self.load_player(level, self.player.get_lifes())
         from game.game import Game
         self.scene = Game(scene, sound)
+
+    def load_player(self, level, lifes=3):
+        if level == 1:
+            from classes.player import Player
+            self.player = Player(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2)    
+        elif level == 2: 
+            from classes.player1 import Player1
+            self.player = Player1(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2,lifes)
+        else:
+            from classes.player2 import Player2
+            self.player = Player2(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2,lifes)
+    
+
 
     def load_loading(self):
         if self.scene:
             self.scene.cleanup()
+            self.scene = None
         from utils.load import Load
         self.scene =  Load()
         
     def load_credits(self):
         if self.scene:
             self.scene.cleanup()
+            self.scene = None
         self.music = False
         #pygame.mixer.music.stop()
         #pygame.mixer.music.load("../Sound/BSO/Credits.wav")
@@ -103,6 +121,7 @@ class GameManager():
     def end_game(self):
         if self.scene:
             self.scene.cleanup()
+            self.scene = None
         from views.gameOver import GameOver
         self.player = None
         self.music = False
@@ -111,10 +130,11 @@ class GameManager():
         #pygame.mixer.music.play()
         self.scene =  GameOver()
 
-    def load_start(self):
+    def load_start(self, path):
         if self.scene:
             self.scene.cleanup()
+            self.scene = None
         from views.start import Start
-        self.scene = Start(path = "1animation", sound = "../Sound/BSO/levels-_1_.wav", event = 1)
+        self.scene = Start(path =path)
  
     

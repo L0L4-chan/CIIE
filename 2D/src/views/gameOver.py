@@ -20,7 +20,7 @@ class GameOver(Base):
   def __init__(self):
     super().__init__()
     self.button = Button (pos=((self.screen_width/2), (self.screen_height/2)), text_input= ConfigManager().get_instance().get_text_button(key ="GAMEOVER"))
-    self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/gameover.png")
+    self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/gameover.PNG")
     self.run()
   
   def handle_events(self): 
@@ -33,7 +33,7 @@ class GameOver(Base):
           GameManager().get_instance().load_menu()
   
   def cleanup(self):
-    #pygame.mixer.music.stop()  
+    pygame.mixer.music.stop()  
     import gc
     gc.collect()
   

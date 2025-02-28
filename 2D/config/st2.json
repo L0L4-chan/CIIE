@@ -1,0 +1,11 @@
+{
+    "ani_path" : "2animation",
+    "ani_sound" : "../Sound/BSO/levels-_1_.wav",
+    "ani_amount" : 1,
+    "ani_start" : 100,
+    "ani_event" :2,
+
+    "scene_level" : 2,
+    "scene_bg" : "level2.jpg",
+    "scene_file" : "levels/level1.json",
+    "scene_sound" : "../Sound/BSO/levels-_2_.wav"}

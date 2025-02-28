@@ -9,6 +9,8 @@ Lola Suárez González
 Version: 1.0.0
 '''
 import pygame, utils.auxiliar as auxiliar
+from game.event import Event
+from game.configManager import ConfigManager
 from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
@@ -16,11 +18,10 @@ from game.objects.decor.chest import Chest
 
 
 class Scene():
-    def __init__(self, background, pt_skin, file):
+    def __init__(self, background,file):
         super().__init__() 
         self.background = background
-        self.pt_skin = pt_skin
-        self.items = auxiliar.load_json(file)
+        self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/{file}")
         self.sprites = pygame.sprite.Group()
         self.create_scene()
         
@@ -45,6 +46,11 @@ class Scene():
             for (x, y, pz) in self.items["chest"]:
                 chest = Chest(x,y,pz)
                 self.sprites.add(chest)
+                
+        if self.items.get("event"):
+            for (x, y, h, w, path, lvl) in self.items["event"]:
+                event = Event(x,y,h,w,path,lvl)
+                self.sprites.add(event)
 
                 
         #todo chest and traps
