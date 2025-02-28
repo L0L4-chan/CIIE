@@ -4,18 +4,13 @@ from game.configManager import ConfigManager
 
 class DialogBox:
     
-    def __init__(self, bg_image=None, event = 0):
+    def __init__(self, event = 0):
         self.screen = GameManager.get_instance().screen
         self.config = ConfigManager().get_instance()
         self.dialog = next((d for d in self.config.get_text(key="dialogues") if d["event"] == event), None)
         name = self.dialog["character"]
         self.icon = pygame.image.load(f"../Art/{self.config.get_artpath()}/avatar/{name}.png") # Carga el icono del personaje
-        if bg_image: # Carga el fondo del cuadro de diálogo
-            self.bg_image = pygame.image.load(bg_image)
-        else: # Carga el fondo negro
-            self.bg_image = pygame.Surface((100, 100))  # Tamaño inicial arbitrario
-            self.bg_image.fill((255,255,255))  # Color negro
-  
+        self.bg_image = pygame.image.load("../Art/varios/dialog.png" ,)
         self.width = (self.config.get_width() / 6) * 4 # Ancho del cuadro de diálogo
         self.margin = 20  # Espacio interno
         self.line_height = self.config.get_font_dialog().get_height() + 5  # Altura de cada línea de texto

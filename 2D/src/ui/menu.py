@@ -25,7 +25,6 @@ class Menu(Base):
         self.screen_height =  ConfigManager().get_instance().get_height()
         # Botones del menu
         self.new_buttons() #create buttons
-        self.run()
         
     # to handle events from the mouse input
     def handle_events(self):
@@ -75,11 +74,12 @@ class Menu(Base):
 
     def cleanup(self):
         # Liberar recursos de imágenes y botones
+        self.running = False 
         self.bg = None
         self.buttons.clear()
         self.screen = None
         # Forzar al recolector de basura a limpiar
         import gc
         gc.collect()
-        remove(self)
+       
    

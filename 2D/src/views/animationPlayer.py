@@ -35,7 +35,7 @@ class AnimationPlayer():
        self.boxes = []
        
        for i in range(event, event + self.amount): 
-        self.boxes.append(DialogBox(bg_image = "../Art/varios/dialog.png" ,event = i))  # Pasamos el número actual del loop
+        self.boxes.append(DialogBox(event = i))  # Pasamos el número actual del loop
 
     
     def show_dialog(self):   

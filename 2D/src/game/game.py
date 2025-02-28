@@ -28,7 +28,6 @@ class Game(Base):
        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
        self.sound = sound
        self.path = ConfigManager().get_instance().get_artpath()
-       self.running = False
        self.sprites = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
        self.items = pygame.sprite.Group()
@@ -37,16 +36,10 @@ class Game(Base):
        self.FPS = ConfigManager().get_instance().get_fps()
        self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
        self.world_height = self.bg.get_height()   # O la altura máxima del escenario
-       self.width = ConfigManager().get_instance().get_width()
-       self.height = ConfigManager().get_instance().get_height()
-       self.camera = Camera(self.world_width, self.world_height,self.width, self.height)
+       self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
        self.buttons = {
             "pause": Button(pos=(self.screen_width - 100, self.screen_height / 8), 
-                text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE")),
-
-            "quit": Button(pos=(self.screen_width / 16, self.screen_height / 8), 
-                text_input=ConfigManager().get_instance().get_text_button(key ="QUIT")),
-
+                text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE")), 
         } 
        self.player = GameManager().get_instance().player
        self.enemy = GameManager().get_instance().enemy
@@ -61,7 +54,7 @@ class Game(Base):
        
        self.floor = self.scene.sprites
        self.sprites.add(self.floor)
-       self.run()
+
        
     
     #game loop se modificara si es necesario cuando se tengan los niveles
@@ -76,11 +69,6 @@ class Game(Base):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                     GameManager().get_instance().load_pause()
-                if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
-                    self.running = False
-                    GameManager().get_instance().running = False  
-    
-    
     
     def update(self):
                         
@@ -124,6 +112,10 @@ class Game(Base):
         pygame.display.flip()
     
     def cleanup(self):
+        # Detener el bucle de juego
+        self.running = False
+        # Limpiar eventos pendientes
+        pygame.event.clear()
         # Detener la música
         #pygame.mixer.music.stop()
         # Vaciar grupos de sprites
@@ -136,10 +128,7 @@ class Game(Base):
         self.enemy = None
         self.scene = None
         self.sound = None
-        # Detener el bucle de juego
-        self.running = False
-        # Limpiar eventos pendientes
-        pygame.event.clear()
+        
         self.bg = None
         self.buttons.clear()
         # Forzar al recolector de basura a limpiar

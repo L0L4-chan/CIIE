@@ -44,6 +44,10 @@ class GameManager():
             self.music = False
             self.music_on()
     
+    def first_scene(self):
+        from ui.menu import Menu
+        self.scene = Menu()
+    
     def music_on(self):
         if(not self.music):
                 #pygame.mixer.music.stop()
@@ -59,29 +63,29 @@ class GameManager():
     #functions to load different scenes
     def load_menu(self):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         self.music_on() 
         from ui.menu import Menu
-        self.scene =  Menu()
+        self.next_scene =  Menu()
+        
         
     def load_options(self):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         from ui.options import Options
-        self.scene = Options()
+        self.next_scene = Options()
+       
     
     def load_game(self, scene, sound, level):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         if self.player == None:    
             self.load_player(level)
         else:
             self.load_player(level, self.player.get_lifes())
         from game.game import Game
-        self.scene = Game(scene, sound)
+        self.next_scene = Game(scene, sound)
+        
 
     def load_player(self, level, lifes=3):
         if level == 1:
@@ -98,43 +102,56 @@ class GameManager():
 
     def load_loading(self):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         from utils.load import Load
-        self.scene =  Load()
+        self.next_scene =  Load()
         
     def load_credits(self):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         self.music = False
         #pygame.mixer.music.stop()
         #pygame.mixer.music.load("../Sound/BSO/Credits.wav")
         #pygame.mixer.music.play()
         from views.credits import Credits
-        self.scene =  Credits()
+        self.next_scene =  Credits()
+        
     
     def load_pause(self):
         from ui.pausa import Pausa
-        Pausa()
+        Pausa().run()
                  
     def end_game(self):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         from views.gameOver import GameOver
         self.player = None
         self.music = False
         #pygame.mixer.music.stop()
         #pygame.mixer.music.load("../Sound/BSO/game_over.wav")
         #pygame.mixer.music.play()
-        self.scene =  GameOver()
+        self.next_scene =  GameOver()
+       
 
     def load_start(self, path):
         if self.scene:
-            self.scene.cleanup()
-            self.scene = None
+            self.scene.stop()
         from views.start import Start
-        self.scene = Start(path =path)
+        self.next_scene = Start(path =path)
+        
  
-    
+    def run(self):
+        self.first_scene()
+        while self.scene is not None:
+            self.scene.run()
+            
+            # Verificar si la escena terminó
+            if not self.scene.get_running():
+                self.scene.cleanup()
+                
+                # Verificar si hay una nueva escena o salir
+                if self.next_scene is not None:
+                    self.scene = self.next_scene
+                    self.next_scene = None
+                else:
+                    break 

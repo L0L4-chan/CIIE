@@ -115,7 +115,6 @@ class Player(pygame.sprite.Sprite):
                 for key, action in self.action_map.items():
                     if pressed_keys[key] and action:
                         action()
-                        break
 
             # Cálculos de posición
             self.acc.x += self.vel.x * self.FRIC
@@ -202,9 +201,9 @@ class Player(pygame.sprite.Sprite):
                     elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
                         self.rect.left = hit.rect.right  
             if isinstance(hit,Event):
-                print("I`m fuck!")
+                #print("I`m fuck!")
                 #tengo que poner el ciclo de la pantalla anterior False o ver porque me crea este ciclico.
-                #hit.on_collision(self)    
+                hit.on_collision(self)    
                 
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):

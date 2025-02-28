@@ -35,7 +35,6 @@ class Options(Base):
         self. BACK = ConfigManager().get_instance().get_text_button(key ="BACK")
         # Botones del menú
         self.new_buttons()
-        super().run()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -126,6 +125,7 @@ class Options(Base):
 
     def cleanup(self):
         # Liberar recursos
+        self.running = False 
         self.bg = None
         self.buttons.clear()
         self.font = None

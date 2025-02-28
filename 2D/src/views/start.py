@@ -28,11 +28,11 @@ class Start(Base):
       #pygame.mixer.music.stop()
       #pygame.mixer.music.load(self.info["ani_sound"])
       #pygame.mixer.music.play()
-      self.run()
+
       
    def cleanup(self):
-      #pygame.mixer.music.stop() 
-
+      #pygame.mixer.music.stop()
+      self.running = False 
       if self.animation:
          self.animation = None
       import gc

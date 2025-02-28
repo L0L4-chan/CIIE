@@ -8,8 +8,6 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-
-import pygame, sys
 from game.configManager import ConfigManager
 from game.gameManager import GameManager
 
@@ -21,7 +19,13 @@ class Base():
         self.screen_width = ConfigManager().get_instance().get_width()
         self.screen_height =  ConfigManager().get_instance().get_height()
         self.running = False
-        
+     
+    def stop(self):
+        self.running = False 
+    
+    def get_running(self):
+        return self.running
+         
     def cleanup(Self):
         pass
     

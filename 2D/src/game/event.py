@@ -19,9 +19,12 @@ class Event(Platforms):
         super().__init__(x,y,w,h)
         self.path = path
         self.level = level
-           
+        self.triggered = False 
+          
     def on_collision(self, player):
-        
-        data = {"level": self.level, "player_lifes":player.get_lifes() }
-        auxiliar.save_json(f"level_{self.level}.json", data)
-        GameManager().get_instance().load_start(self.path)
+        if not self.triggered:
+            self.triggered = True
+            data = {"level": self.level, "player_lifes":player.get_lifes() }
+            auxiliar.save_json(f"level_{self.level}.json", data)
+            GameManager.get_instance().scene.running = False
+            GameManager().get_instance().load_start(self.path)

@@ -18,7 +18,7 @@ if __name__ == "__main__":
     #pygame.mixer.init()
     #pygame.mixer.set_num_channels(8)
     game = GameManager()  #create the singleton
-    game.load_menu() #load first screen
+    game.run()
     pygame.quit()
     sys.exit()
     
