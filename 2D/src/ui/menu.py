@@ -65,11 +65,9 @@ class Menu(Base):
     def render(self):
         self.screen.blit(self.bg, (0, 0)) #background
         menu_text = ConfigManager().get_instance().get_font_title().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
-        self.screen.blit(menu_text, (self.screen_width/14, (self.screen_height/6))) # add to buffer
-        
+        self.screen.blit(menu_text, (self.screen_width/14, (self.screen_height/6))) # add to buffer     
         for btn in self.buttons.values(): #add the buttons
             btn.render(self.screen)
-
         pygame.display.update() # show
 
     def cleanup(self):

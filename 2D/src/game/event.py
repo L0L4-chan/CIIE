@@ -25,6 +25,6 @@ class Event(Platforms):
         if not self.triggered:
             self.triggered = True
             data = {"level": self.level, "player_lifes":player.get_lifes() }
-            auxiliar.save_json(f"level_{self.level}.json", data)
+            auxiliar.save_json(f"save/level_{self.level}.json", data)
             GameManager.get_instance().scene.running = False
             GameManager().get_instance().load_start(self.path)

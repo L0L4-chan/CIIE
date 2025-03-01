@@ -7,5 +7,5 @@
 
     "scene_level" : 2,
     "scene_bg" : "level2.jpg",
-    "scene_file" : "levels/level1.json",
+    "scene_file" : "level2.json",
     "scene_sound" : "../Sound/BSO/levels-_2_.wav"}

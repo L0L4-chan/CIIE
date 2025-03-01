@@ -25,50 +25,45 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.width =  ConfigManager().get_instance().get_player_W()
-        self.height =  ConfigManager().get_instance().get_player_H()
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos la imagen de inicio
+        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos las imagenes 
+        self.width = self.spritesheet.get_width()/18 # existen 18 imagenes diferentes
+        self.height =  self.spritesheet.get_height()
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
-        self.pos = vec(x, y) #posicion de inicio
-        self.respawn_x = x
-        self.respawn_y = y
+        self.pos = vec(x, y) #posicion 
+        self.respawn_x = x #coordenada x para reaparecer
+        self.respawn_y = y #coordenada y para reaparecer
         self.vel = vec(0, 0) # vector velocidad para los movimientos
-        self.local = vec(x,y)
         self.ACC =  ConfigManager().get_instance().get_player_Acc()  # constante aceleracion
         self.FRIC =  ConfigManager().get_instance().get_player_fric() # constante friccion (suaviza el movimiento)
         self.speed =  ConfigManager().get_instance().get_player_speed #velocidad de movimiento
-        self.jump_Max = ConfigManager().get_instance().get_player_jump()
+        self.jump_Max = ConfigManager().get_instance().get_player_jump() #
         self.y_acc_value =  ConfigManager().get_instance().get_player_Acc()
-        self.screen_width = ConfigManager().get_instance().get_width()
-        self.screen_height =  ConfigManager().get_instance().get_height()
-        self.art_path = ConfigManager().get_instance().get_artpath()
-        self.index = 0
-        self.lifes = 3
-        self.power_up_counter = 0
+        self.index = 0 #para cambios en los frames
+        self.lifes = 3 # vidas del personaje
+        #para calculo de tiempo entre acciones
+        self.power_up_counter = 0 #para contar cuando el efecto debe desaparecer del power up  (max jump)
+        self.death_timer = 0
+        self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
+        self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación
+        #Bools para manejo de acciones
         self.power_up = False
-        #Bools para manejod e acciones
         self.jumping = False 
         self.shooting = False
         self.die = False 
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
-        #accedemos a los archivos (abria que cambiarlo si se cambio el numero de archivos pero de momento como solo es necesario para derecha e izquiera y ambos comparten
-        # nombre y numero solo se llama una vez)
-        self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
-        self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación
         self.frames = {
             "idle": [(0, 0)],  # Una sola imagen para idle
             "walk": [( self.width + (i * self.width), 0) for i in range(4)],  # 4 imágenes para caminar
             "shoot": [(( self.width* 5 ) + ( i * self.width), 0) for i in range(4)],  # 3 imágenes para disparo
-            "death": [(( self.width* 15 ) + ( i * self.width), 0) for i in range(3)],     
+            "death": [(( self.width* 15 ) + ( i * self.width), 0) for i in range(3)],   # 3 imágenes para morir  
         }
         self.current_action = "idle"  # Acción inicial
-        self.projectiles = Stone() 
-        self.death_timer = 0
-        self.group = pygame.sprite.Group()
+        self.projectiles = Stone() # piedra para lanzar
+        self.group = pygame.sprite.Group() #grupo donde se guardaran los elementos para pasar a la clase game y renderizarlos
         self.group.add(self.projectiles)
-        self.platform = pygame.sprite.Group()
-        
+        self.platform = pygame.sprite.Group() #local para las plataformas y las colisiones, si se revisa en otra clase se eliminará
+        #diccionario de acciones
         self.action_map = {
                 pygame.K_LEFT: self.handle_walk_left,
                 pygame.K_RIGHT: self.handle_walk_right,
@@ -76,10 +71,12 @@ class Player(pygame.sprite.Sprite):
                 pygame.K_q: self.handle_shoot      
             }
     
-    
+    #funciones 
+    #para pasar la vida a la clase game
     def get_lifes(self):
         return self.lifes
-
+    
+    #funciones relacionadas con las acciones
     def handle_idle(self):
         self.acc.x = 0
         self.current_action = "idle"
@@ -108,8 +105,9 @@ class Player(pygame.sprite.Sprite):
             self.shooting = True
             self.current_action = "shoot"
 
+    #función que responde a los inputs cambiando la posicion del personaje
     def move(self, platforms):
-        if not self.shooting and not self.die:
+        if not self.shooting and not self.die: #estas acciones inmovilizan al personaje
             self.acc = vec(0, self.y_acc_value)
             pressed_keys = pygame.key.get_pressed()
             self.platform = platforms
@@ -131,7 +129,7 @@ class Player(pygame.sprite.Sprite):
         self.action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
         self.end_index = len(self.action_frames)
             
-    #funcion que nos cambia la imagen a mostrar, la carga y la asigna a la superficie
+    #funcion que nos cambia la imagen a mostrar, la carga y la asigna (ver de convertirlo en diccionario)
     def draw(self):
         if self.current_action == "shoot" and self.index >= self.end_index -1:
             self.shooting = False
@@ -149,11 +147,10 @@ class Player(pygame.sprite.Sprite):
                 self.rect.topleft = [self.respawn_x , self.respawn_y]
                 self.current_action= "idle"   
         elif self.current_action == "idle" or self.index == self.end_index:
-            self.index = 0
+            self.index = 0    
         frame = self.action_frames[self.index]
         # Cargamos la imagen del sprite de acuerdo con la acción actual
         sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width,self.height))
-        
         # Si la dirección es izquierda, reflejamos la imagen
         if self.direction == 0:
             sprite_image = pygame.transform.flip(sprite_image, True, False)
@@ -170,6 +167,7 @@ class Player(pygame.sprite.Sprite):
         stone_y = self.rect.y  + ((self.height) /2)
         self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)      
     
+    #PROVISIONAL funcion de manejo de collisiones (se manejara en game)
     def collision_managment(self, platforms):
         hits = pygame.sprite.spritecollide(self, platforms, False) #comprueba colisiones con las plataformas del suelo, posiblemente requiera modificacion cualdo haya mas
               
@@ -201,28 +199,31 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
                         self.rect.right = hit.rect.left     
                     elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
-                        self.rect.left = hit.rect.right  
+                        self.rect.left = hit.rect.right 
+                self.respawn_x = self.rect.x
+                self.respawn_y = self.rect.y         
             if isinstance(hit,Event):
+                pygame.time.wait(5000)
                 hit.on_collision(self)    
             if isinstance(hit, Lungs): 
-                print("lungs")
-                self.jump_Max -= 5
+                self.jump_Max = round(self.jump_Max * 1.5)
                 self.power_up_counter = 0
                 self.power_up = True
-                hit.kill() 
             if isinstance(hit, Key):
                 print("todo key")
                 
             if isinstance(hit, Extra):
                 self.get_life()
     
+    #Comprobamos si se acaba el powerup (más salto)
     def check_power_up(self):
         if self.power_up_counter >= 300:
-            self.jump_Max +=5
+            self.jump_Max = ConfigManager().get_instance().get_player_jump()
             self.power_up= False 
     
+    #aumenta el numero de vidas
     def get_life(self):
-        if self.lifes >= 3:
+        if self.lifes < 3:
             self.lifes += 1
                 
     #funcion de actualizacion para ser llamada desde el game loop    
@@ -234,7 +235,6 @@ class Player(pygame.sprite.Sprite):
             self.check_power_up()
         self.move(platforms) # llama a move para gestionar las entradas del teclado
         self.collision_managment(platforms)
-       
         if self.animation_timer > self.frame_rate:
             self.draw()
         #self.projectiles.update(screen) # actualiza los proyectiles en la pantalla se maneja en el game loop de momento

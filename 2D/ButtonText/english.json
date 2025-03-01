@@ -16,5 +16,8 @@
     "medium": "MEDIUM",
     "hard": "DIFFICULT",
     "small": "720X405",
-    "big": "1280X720"
+    "big": "1280X720",
+    "2" : "LEVEL 2",
+    "3" : "LEVEL 3",
+    "BATTLE" : "BATTLE"
 }

@@ -14,7 +14,7 @@ from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from objects.decor.platforms import Platforms
 from objects.decor.spikes import Spikes
-from objects.lifes import Lives
+from objects.lifes import lives
 from ui.button import Button
 from ui.pausa import Pausa
 from game.camera import Camera
@@ -154,7 +154,7 @@ class Level1():
                 btn.update(GameManager().get_instance().screen)
             
             for i in range(GameManager().get_instance().player.get_lives()): 
-                self.group_lives.add(Lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
+                self.group_lives.add(lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
 
             self.group_lives.update(GameManager().get_instance().screen)
             

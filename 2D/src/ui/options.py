@@ -69,7 +69,7 @@ class Options(Base):
         self.op_2 = ConfigManager().get_instance().get_text_button(key ="english")
         self.op_3 = ConfigManager().get_instance().get_text_button(key ="spanish")
         self.DIFFICULTY = ConfigManager().get_instance().get_text_button(key ="DIFFICULTY")
-        self_easy = ConfigManager().get_instance().get_text_button(key ="easy")
+        self.easy = ConfigManager().get_instance().get_text_button(key ="easy")
         self.meddium= ConfigManager().get_instance().get_text_button(key ="medium")
         self.hard = ConfigManager().get_instance().get_text_button(key ="hard")
         self.RESOLUTION = ConfigManager().get_instance().get_text_button(key ="RESOLUTION")

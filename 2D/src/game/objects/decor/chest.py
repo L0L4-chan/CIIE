@@ -14,6 +14,8 @@ import pygame
 from game.configManager import ConfigManager
 from game.objects.decor.platforms import Platforms
 from game.objects.lungs import Lungs
+from game.objects.extra import Extra
+from game.objects.key import Key
 
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
@@ -30,10 +32,14 @@ class Chest(Platforms):
         self.index = 1
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
-    
+        #self.sound = pygame.mixer.Sound("../Sound/FX/OpenChest.wav")
     def set_prize(self,x,y, prize):
         if prize == "lungs":
             return Lungs(x,y)
+        elif prize == "life":
+            return Extra(x,y)
+        else:
+            return Key(x,y)
     
         
     def init_surf(self):
@@ -46,6 +52,7 @@ class Chest(Platforms):
             self.animation_timer = 0
             self.index += 1
         if self.index == 4:
+            #self.sound.play
             self.active = False
             self.prize.set_use()         
     

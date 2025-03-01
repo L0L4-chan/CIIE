@@ -93,18 +93,6 @@ class ConfigManager:
     def get_text_button(self, key):
         return self.btn_text[key]
     
-    def get_player_W(self):
-        return self.conf["pw"]
-    
-    def get_player_H(self):
-        return self.conf["ph"]
-    
-    def get_heart_W(self):
-        return self.conf["heartw"]
-    
-    def get_heart_H(self):
-        return self.conf["hearth"]
-    
     def get_player_Acc(self):
         return self.conf["Acc"]
     
@@ -117,8 +105,4 @@ class ConfigManager:
     def get_player_fric(self):
         return self.conf["fric"]
     
-    def get_lasso_W(self):
-        return self.conf["lasso_SW"]
-    
-    def get_lasso_H(self):
-        return self.conf["lasso_SH"]
+   

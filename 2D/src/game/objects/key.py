@@ -14,4 +14,5 @@ from game.objects.prize import Prize
 
 class Key(Prize):
     def __init__(self,x,y):
-       super().__init__(x,y, "prize/001.png")#cambiar por llave
+       super().__init__(x,y, "prize/002.png")
+       #self.sound = pygame.mixer.Sound("../Sound/FX/OpenChest.wav")

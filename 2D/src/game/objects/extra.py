@@ -14,4 +14,5 @@ from game.objects.prize import Prize
 
 class Extra(Prize):
     def __init__(self,x,y):
-       super().__init__(x,y, "prize/001.png")#cambiar por vida
+       super().__init__(x,y, "prize/003.png")
+       #self.sound = pygame.mixer.Sound("../Sound/FX/Life.wav")

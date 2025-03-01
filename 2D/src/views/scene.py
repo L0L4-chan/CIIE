@@ -21,7 +21,7 @@ class Scene():
     def __init__(self, background,file):
         super().__init__() 
         self.background = background
-        self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/{file}")
+        self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/levels/{ConfigManager().get_instance().get_difficulty()}/{file}")
         self.sprites = pygame.sprite.Group()
         self.create_scene()
         
