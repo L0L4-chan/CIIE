@@ -19,8 +19,6 @@ class Heart(OneUse):
         # Definir el tamaño de cada fotograma de la sprite sheet
         self.width = self.spritesheet.get_width()/4
         self.height = self.spritesheet.get_height()
-        # Cargar la imagen de la spritesheet del corazón
-        self.image =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         # Diccionario de animaciones 
         self.frames = {
             "bomb": [(i * self.width, 0, self.width, self.height) for i in range(4)]  # 4 fotogramas para la animación 'bomb'
@@ -29,8 +27,7 @@ class Heart(OneUse):
         self.frame_rate = 10  # Cada cuántos frames cambiamos la animación
         self.index = 0  # Índice para las animaciones
         self.direction = 0  # Dirección (0: izquierda, 1: derecha)
-        self.image = self.spritesheet.subsurface(self.frames["bomb"][0])
-        
+        self.image = self.spritesheet.subsurface(self.frames["bomb"][0]) 
         self.vel_y = 0  # Reiniciar velocidad vertical
         self.acc = 0.5  # Aceleración inicial (gravedad)
         #recurso sonido explosión

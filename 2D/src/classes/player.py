@@ -16,6 +16,9 @@ from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
 from game.objects.decor.chest import Chest
 from game.event import Event
+from game.objects.lungs import Lungs
+from game.objects.key import Key
+from game.objects.extra import Extra
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -42,6 +45,8 @@ class Player(pygame.sprite.Sprite):
         self.art_path = ConfigManager().get_instance().get_artpath()
         self.index = 0
         self.lifes = 3
+        self.power_up_counter = 0
+        self.power_up = False
         #Bools para manejod e acciones
         self.jumping = False 
         self.shooting = False
@@ -163,10 +168,7 @@ class Player(pygame.sprite.Sprite):
         else:
             stone_x = self.pos.x - (self.rect.width)
         stone_y = self.rect.y  + ((self.height) /2)
-        self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction) 
-      
-    def level_up(self):
-        self.jump_Max *=2
+        self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)      
     
     def collision_managment(self, platforms):
         hits = pygame.sprite.spritecollide(self, platforms, False) #comprueba colisiones con las plataformas del suelo, posiblemente requiera modificacion cualdo haya mas
@@ -176,7 +178,7 @@ class Player(pygame.sprite.Sprite):
                 if self.vel.y > 0 and self.pos.y < hit.rect.bottom:         
                     self.pos.y = hits[0].rect.top + 1
                     self.vel.y = 0
-                    self.jumping = False
+                    self.jumping = False 
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:
                     self.die =  True
@@ -201,14 +203,35 @@ class Player(pygame.sprite.Sprite):
                     elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
                         self.rect.left = hit.rect.right  
             if isinstance(hit,Event):
-                #print("I`m fuck!")
-                #tengo que poner el ciclo de la pantalla anterior False o ver porque me crea este ciclico.
                 hit.on_collision(self)    
+            if isinstance(hit, Lungs): 
+                print("lungs")
+                self.jump_Max -= 5
+                self.power_up_counter = 0
+                self.power_up = True
+                hit.kill() 
+            if isinstance(hit, Key):
+                print("todo key")
+                
+            if isinstance(hit, Extra):
+                self.get_life()
+    
+    def check_power_up(self):
+        if self.power_up_counter >= 300:
+            self.jump_Max +=5
+            self.power_up= False 
+    
+    def get_life(self):
+        if self.lifes >= 3:
+            self.lifes += 1
                 
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):
         self.animation_timer += 1
         self.death_timer += 1
+        self.power_up_counter += 1
+        if self.power_up:
+            self.check_power_up()
         self.move(platforms) # llama a move para gestionar las entradas del teclado
         self.collision_managment(platforms)
        

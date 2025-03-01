@@ -25,10 +25,6 @@ class Camera:
         self.bottom_margin = screen_height * 0.15
 
     def update(self, target):
-        """
-        Ajusta el offset de la cámara para mantener al 'target' (por ejemplo, el jugador)
-        dentro de la zona segura.
-        """
         # Posición del target en pantalla (en coordenadas del mundo menos el offset)
         player_screen_x = target.rect.centerx - self.offset.x
         player_screen_y = target.rect.centery - self.offset.y
@@ -57,15 +53,14 @@ class Camera:
         self.offset.y = max(0, min(self.offset.y, self.world_height - self.screen_height))
 
     def apply(self, rect):
-        """
-        Devuelve una copia de 'rect' desplazada según el offset de la cámara.
-        """
         return rect.move(-self.offset.x, -self.offset.y)
 
+    
      # Verificar si el rect del elemento está dentro de la vista de la cámara
     def check_elements_on_screen(self, elements):
         for element in elements:
-            if self.apply(element.rect).colliderect(pygame.Rect(0, 0, self.screen_width, self.screen_height)):
-                element.on_scene = True
+            aux = self.apply(element.rect)
+            if aux.colliderect(pygame.Rect(0,0, self.screen_width, self.screen_height)):
+                element.on_screen = True
             else:
-                element.on_scene = False
+                element.on_screen = False

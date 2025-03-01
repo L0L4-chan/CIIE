@@ -25,7 +25,6 @@ class Chest(Platforms):
         self.frames = {"position": [(i * self.width, 0, self.width, self.height) for i in range(4)]}
         super().__init__(x,y, self.width, self.height)
         self.prize = self.set_prize(x,y,prize)
-        self.on_screen = True
         self.active = True
         self.discovered = False
         self.index = 1
@@ -66,6 +65,6 @@ class Chest(Platforms):
     def get_prize(self):
         return self.prize
        
-    def draw(self, screen):
+    def draw(self, screen, position):
         if self.on_screen and self.active:
-            screen.blit(self.surf,self.rect.topleft) 
+            screen.blit(self.surf,position) 

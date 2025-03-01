@@ -28,7 +28,7 @@ class Platforms(pygame.sprite.Sprite):
         self.surf.fill((0, 0, 0, 0))  # Color totalmente transparente      
         self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
               
-    def draw(self, screen):
+    def draw(self, screen, position =[0,0]):
         pass  
         
     

@@ -95,7 +95,7 @@ class Game(Base):
         #capa escenario se actualiza
         for platform in self.floor: #carga plataformas
             if platform.on_screen:
-                platform.draw(self.screen)        
+                platform.draw(self.screen, self.camera.apply(platform.rect).topleft)        
         self.screen.blit(self.player.surf, self.camera.apply(self.player.rect).topleft)
         self.screen.blit(self.enemy.surf, self.camera.apply(self.enemy.rect).topleft)
         

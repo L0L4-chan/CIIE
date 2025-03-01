@@ -25,7 +25,6 @@ class Switch(Platforms):
         super().__init__(x,y, self.width, self.height)
         self.time = 300
         self.counter = 0
-        self.on_screen = True
         self.door = Door(door_x, door_y)
         self.pressed = False
          
@@ -53,11 +52,9 @@ class Switch(Platforms):
         if self.pressed and self.counter >= self.time:
             self.reset()
             
-
-    
     def get_door(self):
         return self.door
        
-    def draw(self, screen):
+    def draw(self, screen, position):
         if self.on_screen:
-            screen.blit(self.surf,self.rect.topleft) 
+            screen.blit(self.surf,position) 

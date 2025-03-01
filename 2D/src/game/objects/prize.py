@@ -16,9 +16,12 @@ class Prize(OneUse):
     def __init__(self,x,y,path):
        super().__init__(path)
        super().active(x,y)
-       self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
+       self.width = self.spritesheet.get_width()
+       self.height = self.spritesheet.get_height()
+       self.rect = pygame.Rect(self.x_pos, self.y_pos, self.width, self.height)
        self.counter = 0
         
+    
     
     def update(self,  object = None):
         if self.inUse:

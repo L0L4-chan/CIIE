@@ -46,6 +46,7 @@ class Scene():
             for (x, y, pz) in self.items["chest"]:
                 chest = Chest(x,y,pz)
                 self.sprites.add(chest)
+                self.sprites.add(chest.get_prize())
                 
         if self.items.get("event"):
             for (x, y, h, w, path, lvl) in self.items["event"]:
