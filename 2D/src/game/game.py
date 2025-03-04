@@ -15,6 +15,9 @@ from game.configManager import ConfigManager
 from game.camera import Camera
 from game.objects.lifes import Lifes
 from game.base import Base
+from classes.enemy import Enemy
+from enemies.devil import Devil
+
 from ui.button import Button
 vec = pygame.math.Vector2  
 
@@ -22,40 +25,41 @@ vec = pygame.math.Vector2
 class Game(Base):
 
     def __init__(self, scene = None, sound = None):
-       super().__init__()   
-       #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
-       self.scene = scene
-       self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
-       self.sound = sound
-       self.path = ConfigManager().get_instance().get_artpath()
-       self.sprites = pygame.sprite.Group()
-       self.floor = pygame.sprite.Group()
-       self.items = pygame.sprite.Group()
-       self.group_lives = pygame.sprite.Group()
-       self.clock =  GameManager().get_instance().clock
-       self.FPS = ConfigManager().get_instance().get_fps()
-       self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
-       self.world_height = self.bg.get_height()   # O la altura máxima del escenario
-       self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
-       self.buttons = {
+        super().__init__()   
+        #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
+        self.scene = scene
+        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
+        self.sound = sound
+        self.path = ConfigManager().get_instance().get_artpath()
+        self.sprites = pygame.sprite.Group()
+        self.floor = pygame.sprite.Group()
+        self.items = pygame.sprite.Group()
+        self.group_lives = pygame.sprite.Group()
+        self.clock =  GameManager().get_instance().clock
+        self.FPS = ConfigManager().get_instance().get_fps()
+        self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
+        self.world_height = self.bg.get_height()   # O la altura máxima del escenario
+        self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
+        self.buttons = {
             "pause": Button(pos=(self.screen_width - 100, self.screen_height / 8), 
                 text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE")), 
         } 
-       self.player = GameManager().get_instance().player
-       self.enemy = GameManager().get_instance().enemy
-       
-       #empieza la musica del nivel
-       #pygame.mixer.music.stop() #paramos la anterior
-       #pygame.mixer.music.load(self.sound)
-       #pygame.mixer.music.play(-1) #indicamos loop infinito
+        self.player = GameManager().get_instance().player
+        self.enemies=[]
+        for sprite in self.scene.sprites:
+            if isinstance(sprite, Enemy):
+                self.enemies.append(sprite)
+                self.scene.sprites.remove(sprite)
 
-       self.sprites.add(self.player)
-       self.sprites.add(self.enemy)
-       
-       self.floor = self.scene.sprites
-       self.sprites.add(self.floor)
+        #empieza la musica del nivel
+        #pygame.mixer.music.stop() #paramos la anterior
+        #pygame.mixer.music.load(self.sound)
+        #pygame.mixer.music.play(-1) #indicamos loop infinito   
+        self.sprites.add(self.player)
 
-       
+        self.floor = self.scene.sprites
+        self.sprites.add(self.floor)
+
     
     #game loop se modificara si es necesario cuando se tengan los niveles
     def handle_events(self):
@@ -70,13 +74,14 @@ class Game(Base):
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                     GameManager().get_instance().load_pause()
     
-    def update(self):
-                        
+    def update(self):       
         #Capa jugador se actualiza
         self.player.update(self.floor) #actualiza al player
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
         self.items.update(self.sprites)
-        self.enemy.update()
+        for enemy in self.enemies:
+            enemy.update()
+
         self.floor.update()
         # Capa informacion se actualiza
         mouse_pos = pygame.mouse.get_pos()
@@ -84,20 +89,22 @@ class Game(Base):
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
-            self.group_lives.add(Lifes( x = 400 + (i * 30), y = 50))#todo make dinamic
+            self.group_lives.add(Lifes( x = 100 + (i * 30), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 
     def render(self):
-        
-       # Dibujado: el fondo y cada objeto se dibujan desplazados
+        # Dibujado: el fondo y cada objeto se dibujan desplazados
         self.screen.blit(self.bg, (-self.camera.offset.x, -self.camera.offset.y))
         #capa escenario se actualiza
         for platform in self.floor: #carga plataformas
             if platform.on_screen:
                 platform.draw(self.screen, self.camera.apply(platform.rect).topleft)        
         self.screen.blit(self.player.surf, self.camera.apply(self.player.rect).topleft)
-        self.screen.blit(self.enemy.surf, self.camera.apply(self.enemy.rect).topleft)
+        
+        for enemy in self.enemies:
+            #if enemy.on_screen:
+            self.screen.blit(enemy.surf, self.camera.apply(enemy.rect).topleft)
         
         for item in self.items:
             item.draw(screen = self.screen, position = self.camera.apply(item.rect).topleft)           

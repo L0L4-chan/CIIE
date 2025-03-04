@@ -24,7 +24,7 @@ class AnimationPlayer():
         self.frames = sorted(os.listdir(f"../Art/{self.art_path}/{path}"))
         self.frame_index = 0
         self.end = len(self.frames) -1
-        self.fps = 24
+        self.fps = 60
         self.running = True
         self.start = start # cuando sea mostrado el primer texto
         self.amount = amount

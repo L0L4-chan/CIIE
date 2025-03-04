@@ -15,7 +15,6 @@ from game.configManager import ConfigManager
 from game.base import Base
 from views.scene import Scene
 from views.animationPlayer import AnimationPlayer
-from enemies.devil import Devil
 
 class Start(Base):
 
@@ -41,5 +40,4 @@ class Start(Base):
    def run(self):
       #de momento para probar.
       self.animation.run()
-      GameManager().get_instance().enemy = Devil(200,200)
       GameManager().get_instance().load_game(Scene(self.info["scene_bg"], self.info["scene_file"]), self.info["scene_sound"], self.info["scene_level"]  )

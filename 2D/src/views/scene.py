@@ -15,6 +15,13 @@ from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
 from game.objects.decor.chest import Chest
+from enemies.devil import Devil
+from enemies.bug import Bug
+from enemies.ghost import Ghost
+from enemies.bat import Bat
+from enemies.boss import Boss
+
+
 
 
 class Scene():
@@ -52,8 +59,26 @@ class Scene():
             for (x, y, h, w, path, lvl) in self.items["event"]:
                 event = Event(x,y,h,w,path,lvl)
                 self.sprites.add(event)
+        
+        if self.items.get("devil"):
+            for (x,y) in self.items["devil"]:
+                self.sprites.add(Devil(x,y))
 
-                
+        if self.items.get("bat"):
+            for (x,y) in self.items["bat"]:
+                self.sprites.add(Bat(x,y))
+        
+        if self.items.get("bug"):
+            for (x,y) in self.items["bug"]:
+                self.sprites.add(Bug(x,y))
+
+        if self.items.get("ghost"):
+            for (x,y) in self.items["ghost"]:
+                self.sprites.add(Ghost(x,y))
+
+        if self.items.get("boss"):
+            for (x,y) in self.items["boss"]:
+                self.sprites.add(Boss(x,y))
         #todo chest and traps
         #if self.items["chest"]:
             

@@ -77,6 +77,7 @@ class GameManager():
        
     
     def load_game(self, scene, sound, level):
+
         if self.scene:
             self.scene.stop()
         if self.player == None:    

@@ -1,67 +1,64 @@
 import pygame
 from classes.enemy import Enemy
 from game.configManager import ConfigManager
-vec = pygame.math.Vector2 #2 for two dimensional
+
+vec = pygame.math.Vector2  # 2 for two dimensional
+
 class Devil(Enemy):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_spritesheet.png")  # Cargar la hoja de sprites
+        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_spritesheet.png")
         self.rect = self.spritesheet.get_rect()
         self.pos = vec(x, y)
-        self.vel = vec(0, 0)  # Velocidad inicial
-        self.speed = 3 
+        self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
+        self.speed = 0.5 
         self.frames = {
-            "idle": [(0, 0)],  # Una imagen para estar quieto
-            "walk": [(i * 64, 0) for i in range(3)],  # 3 imágenes para caminar (por ejemplo, de izquierda a derecha)
+            "idle": [(0, 0)],
+            "walk": [(i * 64, 0) for i in range(3)],
         }
-        self.current_action = "walk"  # Acción inicial
-        self.animation_timer = 0  # Temporizador para manejar el cambio de imágenes
-        self.frame_rate = 6  # Cada cuántos frames cambia la imagen
+        self.current_action = "walk"
+        self.animation_timer = 0
+        self.frame_rate = 10
         self.index = 0
+        self.screen_width = pygame.display.get_surface().get_width()  # Obtener el ancho de la pantalla
+        self.move_distance = 0  # Distancia recorrida en una dirección
 
     def move(self):
-        # Si el diablo se está moviendo de izquierda a derecha o de derecha a izquierda
         self.pos.x += self.vel.x * self.speed
         self.pos.y += self.vel.y * self.speed
+        self.move_distance += abs(self.vel.x * self.speed)
 
-        # Rebotar en los límites de la pantalla
-        if self.pos.x > self.screen_width - self.rect.width:
-            self.vel.x = -self.vel.x  # Cambia la dirección a izquierda
-        elif self.pos.x < 0:
-            self.vel.x = -self.vel.x  # Cambia la dirección a derecha
+        if self.move_distance >= 20:
+            self.vel.x = -self.vel.x  # Cambiar de dirección
+            self.move_distance = 0  # Reiniciar la distancia recorrida
 
         self.rect.center = self.pos
         
-    def draw(self):
-        # Seleccionamos la imagen actual de la animación
-        action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
-        frame = action_frames[self.index]  # Obtenemos el fotograma actual
+    def draw(self, surface):
+        action_frames = self.frames[self.current_action]
+        frame = action_frames[self.index]
 
-        # Cargamos la imagen del sprite de acuerdo con la acción actual
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 64, 64))  # Usamos el tamaño de los fotogramas (64x64 por ejemplo)
+        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 64, 64))
 
-        # Si la dirección es izquierda, reflejamos la imagen
-        if self.vel.x < 0:  # Si se mueve hacia la izquierda
+        if self.vel.x < 0:
             sprite_image = pygame.transform.flip(sprite_image, True, False)
 
-        # Establecer la superficie para dibujar
         self.surf = sprite_image
 
-        # Actualizamos el temporizador de la animación
         self.animation_timer += 1
         if self.animation_timer > self.frame_rate:
             self.index += 1
             if self.index >= len(action_frames):
-                self.index = 0  # Volver al principio de la animación si se ha acabado
+                self.index = 0
             self.animation_timer = 0
 
+        surface.blit(self.surf, self.rect.topleft)
+
     def update(self):
-        # Cambiar la acción de la animación dependiendo del movimiento del diablo
-        if self.vel.x != 0:  # Si el diablo se está moviendo
+        if self.vel.x != 0:
             self.current_action = "walk"
-        else:  # Si el diablo está quieto
+        else:
             self.current_action = "idle"
 
-        # Actualizar el movimiento y la animación
         self.move()
-        self.draw()
+        self.draw(pygame.display.get_surface())
