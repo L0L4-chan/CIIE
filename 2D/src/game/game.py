@@ -40,9 +40,16 @@ class Game(Base):
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
         self.world_height = self.bg.get_height()   # O la altura máxima del escenario
         self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
+        path_button = f"../Art/{ConfigManager().get_instance().get_artpath()}/avatar/pause_button.png"
+        path_hover = f"../Art/{ConfigManager().get_instance().get_artpath()}/avatar/pause_button_hover.png"
+
+        pauseb = Button(pos=(self.screen_width - 100, self.screen_height / 8), 
+                text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE"),
+                image_path = path_button,
+                hover_image_path=path_hover
+                )
         self.buttons = {
-            "pause": Button(pos=(self.screen_width - 100, self.screen_height / 8), 
-                text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE")), 
+            "pause": pauseb
         } 
         self.player = GameManager().get_instance().player
         self.enemies=[]
@@ -89,7 +96,7 @@ class Game(Base):
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
-            self.group_lives.add(Lifes( x = 100 + (i * 30), y = 50))#todo make dinamic
+            self.group_lives.add(Lifes( x = 50 + (i * 30), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 
