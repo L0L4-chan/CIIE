@@ -61,5 +61,3 @@ class Pausa(Base):
       self.handle_events()
       self.update()
       self.render()      
-
-         

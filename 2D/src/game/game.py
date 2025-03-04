@@ -96,7 +96,7 @@ class Game(Base):
             btn.changeColor(mouse_pos)
         self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
-            self.group_lives.add(Lifes( x = 50 + (i * 30), y = 50))#todo make dinamic
+            self.group_lives.add(Lifes( x = 50 + (i * 40), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 
