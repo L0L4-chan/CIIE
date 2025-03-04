@@ -168,29 +168,37 @@ class Player(pygame.sprite.Sprite):
         self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)
 
     def collision_managment(self, platforms):
-        # Detectamos todas las colisiones del jugador con los objetos de la lista "platforms"
+        # --- RESOLUCIÓN DE COLISIONES HORIZONTALES ---
         hits = pygame.sprite.spritecollide(self, platforms, False)
-        
         for hit in hits:
-            # --- COLISIONES CON PLATAFORMAS (vertical y horizontal) ---
-            if isinstance(hit, Platforms):
-                # Resolución vertical: si el jugador cae y se choca con el tope de la plataforma...
-                if self.vel.y > 0 and self.pos.y < hit.rect.bottom:
-                    self.pos.y = hit.rect.top + 1
-                    self.vel.y = 0
-                    self.jumping = False
-
-                # Resolución horizontal:
-                # Si se mueve a la derecha y el lado derecho del jugador sobrepasa el lado izquierdo del objeto...
+            # Procesamos plataformas (y chest, que se comporta de forma similar)
+            if isinstance(hit, Platforms) or isinstance(hit, Chest):
+                # Si se mueve a la derecha y colisiona con el lado izquierdo del objeto...
                 if self.vel.x > 0 and self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
                     self.rect.right = hit.rect.left
                     self.pos.x = self.rect.centerx
                     self.vel.x = 0
-                # Si se mueve a la izquierda y el lado izquierdo del jugador sobrepasa el lado derecho del objeto...
+                # Si se mueve a la izquierda y colisiona con el lado derecho del objeto...
                 elif self.vel.x < 0 and self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
                     self.rect.left = hit.rect.right
                     self.pos.x = self.rect.centerx
-                    self.vel.x = 0                
+                    self.vel.x = 0
+
+        # --- RESOLUCIÓN DE COLISIONES VERTICALES ---
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        for hit in hits:
+            if isinstance(hit, Platforms):
+                # Si el jugador cae y su parte inferior choca con la parte superior de la plataforma...
+                if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
+                    self.rect.bottom = hit.rect.top + 1
+                    self.pos.y = self.rect.bottom
+                    self.vel.y = 0
+                    self.jumping = False
+                # Si el jugador salta y su parte superior choca con la parte inferior de la plataforma...
+                elif self.vel.y < 0 and self.rect.top < hit.rect.bottom and self.rect.bottom > hit.rect.bottom:
+                    self.rect.top = hit.rect.bottom
+                    self.pos.y = self.rect.bottom
+                    self.vel.y = 0
 
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
@@ -210,27 +218,26 @@ class Player(pygame.sprite.Sprite):
                 hit_result = hit.open()
                 if hit_result is not None:
                     self.group.add(hit_result)
-                # Colisiones laterales con el chest
-                if self.jumping:
-                    if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
-                        self.rect.right = hit.rect.left
-                    elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
-                        self.rect.left = hit.rect.right
-                else:
-                    if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
-                        self.rect.right = hit.rect.left     
-                    elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
-                        self.rect.left = hit.rect.right 
+                # Resolución vertical para el chest (similar a las plataformas)
+                if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
+                    self.rect.bottom = hit.rect.top + 1
+                    self.pos.y = self.rect.bottom
+                    self.vel.y = 0
+                    self.jumping = False
+                elif self.vel.y < 0 and self.rect.top < hit.rect.bottom and self.rect.bottom > hit.rect.bottom:
+                    self.rect.top = hit.rect.bottom
+                    self.pos.y = self.rect.bottom
+                    self.vel.y = 0
                 self.respawn_x = self.rect.x
-                self.respawn_y = self.rect.y         
+                self.respawn_y = self.rect.y
 
             # --- COLISIONES CON EVENT ---
             if isinstance(hit, Event):
                 pygame.time.wait(5000)
-                hit.on_collision(self)    
+                hit.on_collision(self)
 
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---
-            if isinstance(hit, Lungs): 
+            if isinstance(hit, Lungs):
                 self.jump_Max = round(self.jump_Max * 1.5)
                 self.power_up_counter = 0
                 self.power_up = True
@@ -238,10 +245,11 @@ class Player(pygame.sprite.Sprite):
             # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
                 print("todo key")
-                    
+
             # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                 self.get_life()
+
 
 
     #Comprobamos si se acaba el powerup (más salto)
