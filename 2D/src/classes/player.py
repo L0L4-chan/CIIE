@@ -165,36 +165,57 @@ class Player(pygame.sprite.Sprite):
         else:
             stone_x = self.pos.x - (self.rect.width)
         stone_y = self.rect.y  + ((self.height) /2)
-        self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)      
-    
-    #PROVISIONAL funcion de manejo de collisiones (se manejara en game)
+        self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)
+
     def collision_managment(self, platforms):
-        hits = pygame.sprite.spritecollide(self, platforms, False) #comprueba colisiones con las plataformas del suelo, posiblemente requiera modificacion cualdo haya mas
-              
+        # Detectamos todas las colisiones del jugador con los objetos de la lista "platforms"
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        
         for hit in hits:
-            if isinstance(hit, Platforms): 
-                if self.vel.y > 0 and self.pos.y < hit.rect.bottom:         
-                    self.pos.y = hits[0].rect.top + 1
+            # --- COLISIONES CON PLATAFORMAS (vertical y horizontal) ---
+            if isinstance(hit, Platforms):
+                # Resolución vertical: si el jugador cae y se choca con el tope de la plataforma...
+                if self.vel.y > 0 and self.pos.y < hit.rect.bottom:
+                    self.pos.y = hit.rect.top + 1
                     self.vel.y = 0
-                    self.jumping = False 
+                    self.jumping = False
+
+                # Resolución horizontal:
+                # Si se mueve a la derecha y el lado derecho del jugador sobrepasa el lado izquierdo del objeto...
+                if self.vel.x > 0 and self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
+                    self.rect.right = hit.rect.left
+                    self.pos.x = self.rect.centerx
+                    self.vel.x = 0
+                # Si se mueve a la izquierda y el lado izquierdo del jugador sobrepasa el lado derecho del objeto...
+                elif self.vel.x < 0 and self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
+                    self.rect.left = hit.rect.right
+                    self.pos.x = self.rect.centerx
+                    self.vel.x = 0                
+
+            # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:
-                    self.die =  True
-                    self.pos.y = hits[0].rect.top + 1 
+                    self.die = True
+                    self.pos.y = hit.rect.top + 1
                     self.current_action = "death"
                     self.animation_timer = self.frame_rate + 1
+
+            # --- COLISIONES CON SWITCH ---
             if isinstance(hit, Switch):
-                if self.pos.y == hit.rect.topleft[1]+1:
+                if self.pos.y == hit.rect.topleft[1] + 1:
                     hit.change_position()
+
+            # --- COLISIONES CON CHEST ---
             if isinstance(hit, Chest):
                 hit_result = hit.open()
                 if hit_result is not None:
-                    self.group.add(hit_result)                
+                    self.group.add(hit_result)
+                # Colisiones laterales con el chest
                 if self.jumping:
                     if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
-                        self.rect.right = hit.rect.left  
+                        self.rect.right = hit.rect.left
                     elif self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
-                        self.rect.left = hit.rect.right  
+                        self.rect.left = hit.rect.right
                 else:
                     if self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
                         self.rect.right = hit.rect.left     
@@ -202,19 +223,27 @@ class Player(pygame.sprite.Sprite):
                         self.rect.left = hit.rect.right 
                 self.respawn_x = self.rect.x
                 self.respawn_y = self.rect.y         
-            if isinstance(hit,Event):
+
+            # --- COLISIONES CON EVENT ---
+            if isinstance(hit, Event):
                 pygame.time.wait(5000)
                 hit.on_collision(self)    
+
+            # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs): 
                 self.jump_Max = round(self.jump_Max * 1.5)
                 self.power_up_counter = 0
                 self.power_up = True
+
+            # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
                 print("todo key")
-                
+                    
+            # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                 self.get_life()
-    
+
+
     #Comprobamos si se acaba el powerup (más salto)
     def check_power_up(self):
         if self.power_up_counter >= 300:
@@ -225,7 +254,7 @@ class Player(pygame.sprite.Sprite):
     def get_life(self):
         if self.lifes < 3:
             self.lifes += 1
-                
+                  
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):
         self.animation_timer += 1
