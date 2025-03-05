@@ -22,6 +22,7 @@ class Platforms(pygame.sprite.Sprite):
         self.width = width
         self.init_surf()
     
+    
     def init_surf(self):
         # Se crea una superficie transparente, ignorando cualquier imagen o textura.
         self.surf = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
@@ -31,4 +32,17 @@ class Platforms(pygame.sprite.Sprite):
     def draw(self, screen, position =[0,0]):
         pass  
         
+    """
+    #PRUEBA PARA COMPROBAR Y TESTEAR POSICIÓN PLATAFORMAS
+    def init_surf(self):
+        # Creamos una superficie sin canal alfa
+        self.surf = pygame.Surface((self.width, self.height))
+        # Rellenamos la superficie con un color rojo liso (RGB: 255, 0, 0)
+        self.surf.fill((255, 0, 0))
+        self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
+              
+    def draw(self, screen, position=[0, 0]):
+        screen.blit(self.surf, position)
+    """
+    
     

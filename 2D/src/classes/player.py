@@ -168,37 +168,47 @@ class Player(pygame.sprite.Sprite):
         self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)
 
     def collision_managment(self, platforms):
+        # Definimos un margen vertical (en píxeles) que se considerará como "sobre" la plataforma.
+        vertical_margin = 10
+
         # --- RESOLUCIÓN DE COLISIONES HORIZONTALES ---
         hits = pygame.sprite.spritecollide(self, platforms, False)
         for hit in hits:
-            # Procesamos plataformas (y chest, que se comporta de forma similar)
             if isinstance(hit, Platforms) or isinstance(hit, Chest):
-                # Si se mueve a la derecha y colisiona con el lado izquierdo del objeto...
-                if self.vel.x > 0 and self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
-                    self.rect.right = hit.rect.left
-                    self.pos.x = self.rect.centerx
-                    self.vel.x = 0
-                # Si se mueve a la izquierda y colisiona con el lado derecho del objeto...
-                elif self.vel.x < 0 and self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
-                    self.rect.left = hit.rect.right
-                    self.pos.x = self.rect.centerx
-                    self.vel.x = 0
+                # Calculamos la diferencia vertical entre el fondo del jugador y el tope de la plataforma.
+                vertical_gap = abs(self.rect.bottom - hit.rect.top)
+                # Si la diferencia es mayor que el margen, se procede a corregir la colisión horizontal.
+                if vertical_gap > vertical_margin:
+                    # Si se mueve a la derecha y colisiona con el lado izquierdo del objeto...
+                    if self.vel.x > 0 and self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
+                        self.rect.right = hit.rect.left
+                        self.pos.x = self.rect.centerx
+                        self.vel.x = 0
+                    # Si se mueve a la izquierda y colisiona con el lado derecho del objeto...
+                    elif self.vel.x < 0 and self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
+                        self.rect.left = hit.rect.right
+                        self.pos.x = self.rect.centerx
+                        self.vel.x = 0
 
         # --- RESOLUCIÓN DE COLISIONES VERTICALES ---
         hits = pygame.sprite.spritecollide(self, platforms, False)
         for hit in hits:
             if isinstance(hit, Platforms):
-                # Si el jugador cae y su parte inferior choca con la parte superior de la plataforma...
-                if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
-                    self.rect.bottom = hit.rect.top + 1
-                    self.pos.y = self.rect.bottom
-                    self.vel.y = 0
-                    self.jumping = False
-                # Si el jugador salta y su parte superior choca con la parte inferior de la plataforma...
-                elif self.vel.y < 0 and self.rect.top < hit.rect.bottom and self.rect.bottom > hit.rect.bottom:
-                    self.rect.top = hit.rect.bottom
-                    self.pos.y = self.rect.bottom
-                    self.vel.y = 0
+                # Calculamos el solapamiento horizontal entre el jugador y la plataforma.
+                horizontal_overlap = min(self.rect.right, hit.rect.right) - max(self.rect.left, hit.rect.left)
+                # Solo consideramos la colisión vertical si hay algún solapamiento horizontal.
+                if horizontal_overlap > 0:
+                    # Si el jugador cae (velocidad positiva) y su parte inferior choca con la parte superior de la plataforma...
+                    if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
+                        self.rect.bottom = hit.rect.top + 1
+                        self.pos.y = self.rect.bottom
+                        self.vel.y = 0
+                        self.jumping = False
+                    # Si el jugador sube (velocidad negativa) y su parte superior choca con la parte inferior de la plataforma...
+                    elif self.vel.y < 0 and self.rect.top < hit.rect.bottom and self.rect.bottom > hit.rect.bottom:
+                        self.rect.top = hit.rect.bottom
+                        self.pos.y = self.rect.bottom
+                        self.vel.y = 0
 
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
@@ -218,7 +228,7 @@ class Player(pygame.sprite.Sprite):
                 hit_result = hit.open()
                 if hit_result is not None:
                     self.group.add(hit_result)
-                # Resolución vertical para el chest (similar a las plataformas)
+                # Se resuelve la colisión vertical para el chest, similar a las plataformas
                 if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
                     self.rect.bottom = hit.rect.top + 1
                     self.pos.y = self.rect.bottom
@@ -249,6 +259,7 @@ class Player(pygame.sprite.Sprite):
             # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                 self.get_life()
+
 
 
 
