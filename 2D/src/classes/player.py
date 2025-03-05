@@ -124,8 +124,10 @@ class Player(pygame.sprite.Sprite):
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
 
-            # Colocamos el collisionador
+            print(self.pos)
+            # Colocamos la posicion abajo
             self.rect.midbottom = self.pos
+            
         self.action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
         self.end_index = len(self.action_frames)
             
@@ -248,9 +250,10 @@ class Player(pygame.sprite.Sprite):
 
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs):
-                self.jump_Max = round(self.jump_Max * 1.5)
-                self.power_up_counter = 0
-                self.power_up = True
+                if not self.power_up:
+                    self.jump_Max = self.jump_Max +(-5)
+                    self.power_up_counter = 0
+                    self.power_up = True
 
             # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
