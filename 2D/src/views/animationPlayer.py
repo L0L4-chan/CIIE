@@ -46,7 +46,6 @@ class AnimationPlayer():
     
     
     def run(self):
-      #de momento para probar.
         while(self.running):
             self.clock.tick(self.fps)
             self.frame_path = os.path.join(f"../Art/{self.art_path}/{self.path}", self.frames[self.frame_index])

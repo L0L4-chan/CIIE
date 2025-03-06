@@ -33,7 +33,7 @@ class GameOver(Base):
           GameManager().get_instance().load_menu()
   
   def cleanup(self):
-    #pygame.mixer.music.stop()  
+    pygame.mixer.music.stop()  
     self.running = False 
     import gc
     gc.collect()
@@ -43,7 +43,6 @@ class GameOver(Base):
     self.button.changeColor(mouse_pos)   
 
   def render(self):               
-    # Dibuja el fondo negro (cambiamos por algo??)
     self.screen.blit(self.bg,(0,0))
     self.button.render(self.screen) # Dibuja el botón
     pygame.display.flip()  # Actualiza la pantalla

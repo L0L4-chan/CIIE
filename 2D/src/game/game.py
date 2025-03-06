@@ -34,7 +34,7 @@ class Game(Base):
         self.sprites = pygame.sprite.Group()
         self.floor = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
-        self.group_lives = pygame.sprite.Group()
+        self.group_lifes = pygame.sprite.Group()
         self.clock =  GameManager().get_instance().clock
         self.FPS = ConfigManager().get_instance().get_fps()
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
@@ -59,9 +59,9 @@ class Game(Base):
                 self.scene.sprites.remove(sprite)
 
         #empieza la musica del nivel
-        #pygame.mixer.music.stop() #paramos la anterior
-        #pygame.mixer.music.load(self.sound)
-        #pygame.mixer.music.play(-1) #indicamos loop infinito   
+        pygame.mixer.music.stop() #paramos la anterior
+        pygame.mixer.music.load(self.sound)
+        pygame.mixer.music.play(-1) #indicamos loop infinito   
         self.sprites.add(self.player)
 
         self.floor = self.scene.sprites
@@ -94,9 +94,9 @@ class Game(Base):
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values(): #carga botones
             btn.changeColor(mouse_pos)
-        self.group_lives.empty()  # Limpia las vidas actuales antes de agregar las nuevas
+        self.group_lifes.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
-            self.group_lives.add(Lifes( x = 50 + (i * 40), y = 50))#todo make dinamic
+            self.group_lifes.add(Lifes( x = 50 + (i * 40), y = 50))#todo make dinamic
         self.camera.update(self.player)
         self.camera.check_elements_on_screen(self.floor)
                 
@@ -116,7 +116,7 @@ class Game(Base):
         for item in self.items:
             item.draw(screen = self.screen, position = self.camera.apply(item.rect).topleft)           
         
-        for item in self.group_lives:
+        for item in self.group_lifes:
             item.draw(self.screen)
         
         for btn in self.buttons.values(): #carga botones
@@ -131,12 +131,12 @@ class Game(Base):
         # Limpiar eventos pendientes
         pygame.event.clear()
         # Detener la música
-        #pygame.mixer.music.stop()
+        pygame.mixer.music.stop()
         # Vaciar grupos de sprites
         self.sprites.empty()
         self.floor.empty()
         self.items.empty()
-        self.group_lives.empty()
+        self.group_lifes.empty()
         # Limpiar referencias a objetos importantes
         self.player = None
         self.enemy = None

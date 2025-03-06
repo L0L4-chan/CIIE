@@ -31,7 +31,7 @@ class Heart(OneUse):
         self.vel_y = 0  # Reiniciar velocidad vertical
         self.acc = 0.5  # Aceleración inicial (gravedad)
         #recurso sonido explosión
-        #self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
+        self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
     
     #funcion que lo activa para reutilización    
     def active(self,  x, y ,direction):
@@ -62,7 +62,7 @@ class Heart(OneUse):
             self.rect.y += self.vel_y  # Aplica la velocidad a la posición
             #manejo de collisiones 
             hits = pygame.sprite.spritecollide(self, object, False)
-            #if hits.breakable and self.index >= self.frames[self.index]:
+            #if isInstace(hit, Breakable)>= self.frames[self.index]:
             #    hits.to_break() #desaparecera por lo tanto 
             if self.acc > 0:      
                 for hit in hits:

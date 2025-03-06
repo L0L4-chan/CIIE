@@ -17,9 +17,9 @@ if __name__ == "__main__":
     path_icon = f"../Art/varios/life2.png"
     icon = pygame.image.load(path_icon)
     pygame.display.set_icon(icon)
-    #pygame.mixer.pre_init(44100,16,2,4096) #initialize the mixer (sound)
-    #pygame.mixer.init()
-    #pygame.mixer.set_num_channels(8)
+    pygame.mixer.pre_init(44100,16,2,4096) #initialize the mixer (sound)
+    pygame.mixer.init()
+    pygame.mixer.set_num_channels(8)
     game = GameManager()  #create the singleton
     game.run()
     pygame.quit()

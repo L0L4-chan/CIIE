@@ -50,9 +50,9 @@ class GameManager():
     
     def music_on(self):
         if(not self.music):
-                #pygame.mixer.music.stop()
-                #pygame.mixer.music.load("../Sound/BSO/Credits.wav")
-                #pygame.mixer.music.play()
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+                pygame.mixer.music.play()
                 self.music = True
    
     
@@ -91,13 +91,13 @@ class GameManager():
     def load_player(self, level, lifes=3):
         if level == 1:
             from classes.player import Player
-            self.player = Player(125, 360)    
+            self.player = Player(ConfigManager().get_instance().get_width()/10, (ConfigManager().get_instance().get_height()/6)*5)    
         elif level == 2: 
             from classes.player1 import Player1
-            self.player = Player1(125,1600,lifes)
+            self.player = Player1(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*6,lifes)
         else:
             from classes.player2 import Player2
-            self.player = Player2(ConfigManager().get_instance().get_width()/2, ConfigManager().get_instance().get_height()/2,lifes)
+            self.player = Player2(ConfigManager().get_instance().get_width()/10, (ConfigManager().get_instance().get_height()/6)*5,lifes)
     
 
 
@@ -111,9 +111,9 @@ class GameManager():
         if self.scene:
             self.scene.stop()
         self.music = False
-        #pygame.mixer.music.stop()
-        #pygame.mixer.music.load("../Sound/BSO/Credits.wav")
-        #pygame.mixer.music.play()
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+        pygame.mixer.music.play()
         from views.credits import Credits
         self.next_scene =  Credits()
         
@@ -128,9 +128,9 @@ class GameManager():
         from views.gameOver import GameOver
         self.player = None
         self.music = False
-        #pygame.mixer.music.stop()
-        #pygame.mixer.music.load("../Sound/BSO/game_over.wav")
-        #pygame.mixer.music.play()
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("../Sound/BSO/game_over.wav")
+        pygame.mixer.music.play()
         self.next_scene =  GameOver()
        
 

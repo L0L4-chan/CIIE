@@ -51,6 +51,7 @@ class Player(pygame.sprite.Sprite):
         self.jumping = False 
         self.shooting = False
         self.die = False 
+        self.got_key = False
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
         self.frames = {
             "idle": [(0, 0)],  # Una sola imagen para idle
@@ -243,8 +244,8 @@ class Player(pygame.sprite.Sprite):
 
             # --- COLISIONES CON EVENT ---
             if isinstance(hit, Event):
-                pygame.time.wait(5000)
-                hit.on_collision(self)
+                if self.got_key:
+                    hit.on_collision(self)
 
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs):
@@ -252,14 +253,18 @@ class Player(pygame.sprite.Sprite):
                     self.jump_Max = self.jump_Max +(-5)
                     self.power_up_counter = 0
                     self.power_up = True
+                    
 
             # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
-                print("todo key")
+                if not self.got_key:
+                    self.got_key = True
+                    
 
             # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                 self.get_life()
+                
 
 
 

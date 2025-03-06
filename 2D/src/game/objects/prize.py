@@ -20,16 +20,16 @@ class Prize(OneUse):
        self.height = self.spritesheet.get_height()
        self.rect = pygame.Rect(self.x_pos, self.y_pos, self.width, self.height)
        self.counter = 0
-       #self.sound = pygame.mixer.Sound("../Sound/FX/Prize.wav")
+       self.sound = pygame.mixer.Sound("../Sound/FX/Prize.wav")
         
     
     
     def update(self,  object = None):
         if self.inUse:
             self.counter += 1
-            if self.counter >= 300:
+            if self.counter >= 100:
                 self.inUse = False
-                #self.sound.play
+                self.sound.play
                 self.kill()
                 
             

@@ -14,7 +14,7 @@ from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from objects.decor.platforms import Platforms
 from objects.decor.spikes import Spikes
-from objects.lifes import lives
+from objects.lifes import lifes
 from ui.button import Button
 from ui.pausa import Pausa
 from game.camera import Camera
@@ -32,7 +32,7 @@ class Level1():
        self.sprites = pygame.sprite.Group()
        self.floor = pygame.sprite.Group()
        self.stones = pygame.sprite.Group()
-       self.group_lives = pygame.sprite.Group()
+       self.group_lifes = pygame.sprite.Group()
        self.world_width = 5120   # O la dimensión que abarque todo el escenario
        self.world_height = 2160  # O la altura máxima del escenario
        self.camera = Camera(self.world_width, self.world_height,
@@ -51,9 +51,9 @@ class Level1():
 
         }
        #empieza la musica del nivel
-       #pygame.mixer.music.stop() #paramos la anterior
-       #pygame.mixer.music.load(self.sound)
-       #pygame.mixer.music.play(-1) #indicamos loop infinito
+       pygame.mixer.music.stop() #paramos la anterior
+       pygame.mixer.music.load(self.sound)
+       pygame.mixer.music.play(-1) #indicamos loop infinito
 
        self.sprites.add(GameManager().get_instance().player)
        self.sprites.add(GameManager().get_instance().enemy)
@@ -123,7 +123,7 @@ class Level1():
             
             GameManager().get_instance().clock.tick(ConfigManager().get_instance().get_fps()) # indicamos el numero de frames por segundo
 
-            if GameManager().get_instance().player.get_lives() == 0:
+            if GameManager().get_instance().player.get_lifes() == 0:
                 GameManager().get_instance().end_game()
 
             # Se manejan los eventos
@@ -153,10 +153,10 @@ class Level1():
             for btn in self.buttons.values(): #carga botones
                 btn.update(GameManager().get_instance().screen)
             
-            for i in range(GameManager().get_instance().player.get_lives()): 
-                self.group_lives.add(lives(path= "../Art/big/avatar/live.png", x = 400 + (i * 30), y = 50))#todo make dinamic
+            for i in range(GameManager().get_instance().player.get_lifes()): 
+                self.group_lifes.add(lifes(path= "../Art/big/avatar/life.png", x = 400 + (i * 30), y = 50))#todo make dinamic
 
-            self.group_lives.update(GameManager().get_instance().screen)
+            self.group_lifes.update(GameManager().get_instance().screen)
             
             for platform in self.floor: #carga plataformas
                 platform.update(GameManager().get_instance().screen)
@@ -168,7 +168,7 @@ class Level1():
             screen.blit(GameManager().get_instance().enemy.surf, self.camera.apply(GameManager().get_instance().enemy.rect))
             
             # Otros elementos (vidas, etc.)
-            self.group_lives.update(screen)
+            self.group_lifes.update(screen)
             
             #Muestra por pantalla
             pygame.display.flip()

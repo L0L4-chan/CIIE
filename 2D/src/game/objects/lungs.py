@@ -15,4 +15,4 @@ from game.objects.prize import Prize
 class Lungs(Prize):
     def __init__(self,x,y):
        super().__init__(x,y, "prize/001.png")
-       #self.sound = pygame.mixer.Sound("../Sound/FX/PowerUp.wav")
+       self.sound = pygame.mixer.Sound("../Sound/FX/PowerUp.wav")

@@ -20,9 +20,6 @@ class Menu(Base):
     def __init__(self):
         super().__init__()
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Menu.jpg") #add background
-        self.screen = GameManager().get_instance().screen
-        self.screen_width = ConfigManager().get_instance().get_width()
-        self.screen_height =  ConfigManager().get_instance().get_height()
         # Botones del menu
         self.new_buttons() #create buttons
         

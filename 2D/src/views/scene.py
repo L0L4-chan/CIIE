@@ -10,6 +10,7 @@ Version: 1.0.0
 '''
 import pygame, utils.auxiliar as auxiliar
 from game.event import Event
+from game.lastevent import LastEvent
 from game.configManager import ConfigManager
 from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
@@ -60,6 +61,12 @@ class Scene():
                 event = Event(x,y,h,w,path,lvl)
                 self.sprites.add(event)
         
+        if self.items.get("last_event"):
+            for (x, y, h, w, path, lvl) in self.items["last_event"]:
+                event = LastEvent(x,y,h,w,path,lvl)
+                print("yep")
+                self.sprites.add(event)
+        
         if self.items.get("devil"):
             for (x,y) in self.items["devil"]:
                 self.sprites.add(Devil(x,y))
@@ -79,6 +86,5 @@ class Scene():
         if self.items.get("boss"):
             for (x,y) in self.items["boss"]:
                 self.sprites.add(Boss(x,y))
-        #todo chest and traps
-        #if self.items["chest"]:
+        
             
