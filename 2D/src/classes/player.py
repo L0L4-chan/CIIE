@@ -19,21 +19,27 @@ from game.event import Event
 from game.objects.lungs import Lungs
 from game.objects.key import Key
 from game.objects.extra import Extra
+from game.entity import Entity
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
-class Player(pygame.sprite.Sprite):
+class Player(Entity):
     def __init__(self, x, y):
-        super().__init__()
+        #super().__init__()
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos las imagenes 
         self.width = self.spritesheet.get_width()/18 # existen 18 imagenes diferentes
         self.height =  self.spritesheet.get_height()
+        #self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
+        #self.pos = vec(x, y) #posicion 
+
+        # Llamamos al constructor de Entity con la posición y dimensiones.
+        super().__init__(x, y, self.width, self.height)
+
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
-        self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
-        self.pos = vec(x, y) #posicion 
         self.respawn_x = x #coordenada x para reaparecer
         self.respawn_y = y #coordenada y para reaparecer
         self.vel = vec(0, 0) # vector velocidad para los movimientos
+
         self.ACC =  ConfigManager().get_instance().get_player_Acc()  # constante aceleracion
         self.FRIC =  ConfigManager().get_instance().get_player_fric() # constante friccion (suaviza el movimiento)
         self.speed =  ConfigManager().get_instance().get_player_speed #velocidad de movimiento
@@ -41,17 +47,18 @@ class Player(pygame.sprite.Sprite):
         self.y_acc_value =  ConfigManager().get_instance().get_player_Acc()
         self.index = 0 #para cambios en los frames
         self.lifes = 3 # vidas del personaje
+       
         #para calculo de tiempo entre acciones
         self.power_up_counter = 0 #para contar cuando el efecto debe desaparecer del power up  (max jump)
         self.death_timer = 0
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación
+        
         #Bools para manejo de acciones
         self.power_up = False
         self.jumping = False 
         self.shooting = False
         self.die = False 
-        self.got_key = False
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
         self.frames = {
             "idle": [(0, 0)],  # Una sola imagen para idle
@@ -124,12 +131,17 @@ class Player(pygame.sprite.Sprite):
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
+
+            print(self.pos)
             # Colocamos la posicion abajo
             self.rect.midbottom = self.pos
+            # Actualizamos el rectángulo de colisión según la nueva posición.
+            #self.update_rect()
             
         self.action_frames = self.frames[self.current_action]  # Lista de fotogramas para la acción actual
         self.end_index = len(self.action_frames)
-            
+
+
     #funcion que nos cambia la imagen a mostrar, la carga y la asigna (ver de convertirlo en diccionario)
     def draw(self):
         if self.current_action == "shoot" and self.index >= self.end_index -1:
@@ -169,47 +181,16 @@ class Player(pygame.sprite.Sprite):
         self.projectiles.active(x= stone_x, y = stone_y, direction= self.direction)
 
     def collision_managment(self, platforms):
-        # Definimos un margen vertical (en píxeles) que se considerará como "sobre" la plataforma.
-        vertical_margin = 10
+        """
+        Gestiona las colisiones genéricas llamando al método de la clase padre y
+        agrega las colisiones específicas del jugador.
+        """
+        # Llamamos al método genérico implementado en Entity.
+        self.resolve_collisions(platforms, vertical_margin=10)
 
-        # --- RESOLUCIÓN DE COLISIONES HORIZONTALES ---
+        # Colisiones específicas de Player:
         hits = pygame.sprite.spritecollide(self, platforms, False)
         for hit in hits:
-            if isinstance(hit, Platforms) or isinstance(hit, Chest):
-                # Calculamos la diferencia vertical entre el fondo del jugador y el tope de la plataforma.
-                vertical_gap = abs(self.rect.bottom - hit.rect.top)
-                # Si la diferencia es mayor que el margen, se procede a corregir la colisión horizontal.
-                if vertical_gap > vertical_margin:
-                    # Si se mueve a la derecha y colisiona con el lado izquierdo del objeto...
-                    if self.vel.x > 0 and self.rect.right > hit.rect.left and self.rect.left < hit.rect.left:
-                        self.rect.right = hit.rect.left
-                        self.pos.x = self.rect.centerx
-                        self.vel.x = 0
-                    # Si se mueve a la izquierda y colisiona con el lado derecho del objeto...
-                    elif self.vel.x < 0 and self.rect.left < hit.rect.right and self.rect.right > hit.rect.right:
-                        self.rect.left = hit.rect.right
-                        self.pos.x = self.rect.centerx
-                        self.vel.x = 0
-
-        # --- RESOLUCIÓN DE COLISIONES VERTICALES ---
-        hits = pygame.sprite.spritecollide(self, platforms, False)
-        for hit in hits:
-            if isinstance(hit, Platforms):
-                # Calculamos el solapamiento horizontal entre el jugador y la plataforma.
-                horizontal_overlap = min(self.rect.right, hit.rect.right) - max(self.rect.left, hit.rect.left)
-                # Solo consideramos la colisión vertical si hay algún solapamiento horizontal.
-                if horizontal_overlap > 0:
-                    # Si el jugador cae (velocidad positiva) y su parte inferior choca con la parte superior de la plataforma...
-                    if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
-                        self.rect.bottom = hit.rect.top + 1
-                        self.pos.y = self.rect.bottom
-                        self.vel.y = 0
-                        self.jumping = False
-                    # Si el jugador sube (velocidad negativa) y su parte superior choca con la parte inferior de la plataforma...
-                    elif self.vel.y < 0 and self.rect.top < hit.rect.bottom and self.rect.bottom > hit.rect.bottom:
-                        self.rect.top = hit.rect.bottom
-                        self.pos.y = self.rect.bottom
-                        self.vel.y = 0
 
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
@@ -244,8 +225,8 @@ class Player(pygame.sprite.Sprite):
 
             # --- COLISIONES CON EVENT ---
             if isinstance(hit, Event):
-                if self.got_key:
-                    hit.on_collision(self)
+                pygame.time.wait(5000)
+                hit.on_collision(self)
 
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs):
@@ -253,25 +234,21 @@ class Player(pygame.sprite.Sprite):
                     self.jump_Max = self.jump_Max +(-5)
                     self.power_up_counter = 0
                     self.power_up = True
-                    
 
             # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
-                if not self.got_key:
-                    self.got_key = True
-                    
+                print("todo key")
 
             # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                 self.get_life()
-                
 
 
 
 
     #Comprobamos si se acaba el powerup (más salto)
     def check_power_up(self):
-        if self.power_up_counter >= 3000:
+        if self.power_up_counter >= 300:
             self.jump_Max = ConfigManager().get_instance().get_player_jump()
             self.power_up= False 
     
