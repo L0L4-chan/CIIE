@@ -44,7 +44,78 @@ jobs:
         git commit -m "Auto-generated UML diagram"
         git push
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}name: Pylint & UML Generator
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9"]
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint graphviz
+
+    - name: Check installed tools
+      run: |
+        python --version
+        pip list
+        which pyreverse
+        which dot
+
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py') > pylint-report.txt
+
+    - name: Generate UML with Pyreverse
+      run: |
+        pyreverse -o dot $(git ls-files '*.py') -p ProjectUML
+        dot -Tpng classes.dot -o uml-diagram.png
+
+    - name: Upload UML as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: uml-diagram
+        path: uml-diagram.png
+
+    - name: Commit and push UML to repo
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add uml-diagram.png
+        git commit -m "Auto-generated UML diagram"
+        git push
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Comment PR with Pylint results
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v3
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          **Resultados de Pylint**  
+          ```  
+          $(cat pylint-report.txt)  
+          ```
+
+
 
     - name: Comment PR with Pylint results
       if: github.event_name == 'pull_request'
