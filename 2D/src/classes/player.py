@@ -132,7 +132,6 @@ class Player(Entity):
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
 
-            print(self.pos)
             # Colocamos la posicion abajo
             self.rect.midbottom = self.pos
             # Actualizamos el rectángulo de colisión según la nueva posición.

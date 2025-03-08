@@ -13,6 +13,7 @@ from game.event import Event
 from game.lastevent import LastEvent
 from game.configManager import ConfigManager
 from game.objects.decor.platforms import Platforms
+from game.objects.decor.breakable import Breakable
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
 from game.objects.decor.chest import Chest
@@ -55,6 +56,11 @@ class Scene():
                 chest = Chest(x,y,pz)
                 self.sprites.add(chest)
                 self.sprites.add(chest.get_prize())
+        
+        if self.items.get("breakable"):
+            for (x, y) in self.items["breakable"]:
+                breakable = Breakable(x,y)
+                self.sprites.add(breakable)
                 
         if self.items.get("event"):
             for (x, y, h, w, path, lvl) in self.items["event"]:

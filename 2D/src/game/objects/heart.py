@@ -80,7 +80,7 @@ class Heart(OneUse):
                         if self.rect.y + self.height > hit.rect.top:  # Si toca la plataforma
                             self.rect.y = hit.rect.top - self.height  # Ajustar posición
                             self.acc = 0  # Detener caída
-                    if isinstance(hits, Breakable):
-                        hits.start_break()   
+                    if isinstance(hit, Breakable):
+                        hit.on_bomb_Collision()  
             if self.animation_timer > self.frame_rate:
                 self.animation()     
