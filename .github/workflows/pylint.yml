@@ -31,7 +31,7 @@ jobs:
         dot -Tpng classes.dot -o uml-diagram.png
 
     - name: Upload UML as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: uml-diagram
         path: uml-diagram.png
