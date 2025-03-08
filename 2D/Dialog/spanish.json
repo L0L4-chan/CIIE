@@ -8,7 +8,7 @@
     {
       "event": 2,
       "character": "Soulie",
-      "text": "Has recuperado algo de ti, pero aún queda un largo camino. La oscuridad se vuelve más densa conforme avanzas."
+      "text": "Por fin un modo de protegernos de esos molestos ataques. Úsalo para repeler los ataques de los enemigos."
     },
     {
       "event": 3,
@@ -32,11 +32,6 @@
     },
     {
       "event": 7,
-      "character": "Soulie",
-      "text": "Por fin un modo de protegernos de esos molestos ataques. Úsalo para repeler los ataques de los enemigos."
-    },
-    {
-      "event": 8,
       "character": "Soulie",
       "text": "Lo has logrado. Estás completo una vez más... Pero dime, ¿qué harás ahora que recuerdas quién eres?"
     }

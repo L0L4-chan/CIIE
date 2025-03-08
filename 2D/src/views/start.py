@@ -40,4 +40,7 @@ class Start(Base):
 
    def run(self):
       self.animation.run()
-      GameManager().get_instance().load_game(Scene(self.info["scene_bg"], self.info["scene_file"]), self.info["scene_sound"], self.info["scene_level"]  )
+      if self.info["scene_level"] == 5 :
+         GameManager().get_instance().load_credits()
+      else:   
+         GameManager().get_instance().load_game(Scene(self.info["scene_bg"], self.info["scene_file"]), self.info["scene_sound"], self.info["scene_level"]  )

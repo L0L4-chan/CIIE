@@ -1,0 +1,10 @@
+{"ani_path" : "5animation",
+"ani_sound" : "../Sound/BSO/levels-_1_.wav",
+"ani_amount" : 1,
+"ani_start" : 100,
+"ani_event" :7,
+
+"scene_level" : 5,
+"scene_bg" : "",
+"scene_file" : "",
+"scene_sound" : ""}

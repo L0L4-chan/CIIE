@@ -62,8 +62,8 @@ class Load(Base):
                 elif filename == "level_3.json":
                     self.buttons["3"] = Button(pos=(self.screen_width / 2, (self.screen_height / 8) * 4),
                                         text_input=ConfigManager().get_instance().get_text_button(key="3"))
-                elif filename == "level_battle.json":
-                    self.buttons["battle"] = Button(pos=(self.screen_width / 2, (self.screen_height / 8) * 5),
+                elif filename == "level_4.json":
+                    self.buttons["4"] = Button(pos=(self.screen_width / 2, (self.screen_height / 8) * 5),
                                             text_input=ConfigManager().get_instance().get_text_button(key="BATTLE"))
 
     # Conseguir el número de vidasque tenia el jugador cuando guardo

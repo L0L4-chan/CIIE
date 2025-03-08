@@ -8,7 +8,7 @@
       {
         "event": 2,
         "character": "Soulie",
-        "text": "You have recovered a part of yourself, but there is still a long way to go. The darkness grows denser as you move forward."
+        "text": "Finally, a way to protect us from those annoying attacks. Use it to repel enemy strikes."
       },
       {
         "event": 3,
@@ -32,11 +32,6 @@
       },
       {
         "event": 7,
-        "character": "Soulie",
-        "text": "Finally, a way to protect us from those annoying attacks. Use it to repel enemy strikes."
-      },
-      {
-        "event": 8,
         "character": "Soulie",
         "text": "You did it. You are whole once more... But tell me, what will you do now that you remember who you are?"
       }
