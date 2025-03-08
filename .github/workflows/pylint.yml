@@ -1,4 +1,4 @@
-name: Pylint
+name: Pylint & UML Generator
 
 on: [push]
 
@@ -10,17 +10,42 @@ jobs:
         python-version: ["3.8", "3.9", "3.10"]
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
+        pip install pylint graphviz
+
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')  > pylint-report.txt || true
+        pylint $(git ls-files '*.py') > pylint-report.txt || true
+
+    - name: Generate UML with Pyreverse
+      run: |
+        pyreverse -o dot $(git ls-files '*.py') -p ProjectUML
+        dot -Tpng classes.dot -o uml-diagram.png
+
+    - name: Upload UML as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: uml-diagram
+        path: uml-diagram.png
+
+    - name: Commit and push UML to repo
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add uml-diagram.png
+        git commit -m "Auto-generated UML diagram"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Comment PR with Pylint results
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v3
@@ -28,6 +53,7 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           **Resultados de Pylint**  
+          ```  
+          $(cat pylint-report.txt)  
           ```
-          $(cat pylint-report.txt)
-          ```
+
