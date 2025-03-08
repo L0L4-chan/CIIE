@@ -11,6 +11,7 @@ Version: 1.0.0
 
 import pygame
 from game.objects.decor.breakable import Breakable
+from game.objects.decor.platforms import Platforms
 from game.objects.oneuse import OneUse
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Heart(OneUse):
@@ -51,9 +52,18 @@ class Heart(OneUse):
                 self.image = pygame.transform.flip(self.image, True, False)
             self.animation_timer = 0
         else:
-            #self.sound.play
+            self.sound.play
             super().set_use()
-
+    '''
+     def onCollision(self, hit):
+        if isinstance(hit, Platforms):
+            if self.acc > 0:
+                if self.rect.y + self.height > hit.rect.top:  # Si toca la plataforma
+                    self.rect.y = hit.rect.top - self.height  # Ajustar posición
+                    self.acc = 0  # Detener caída
+        elif isinstance(hit, Breakable):
+            hit.start_break() 
+    '''
             
     def update(self, object = None):
         if(self.inUse):
@@ -66,9 +76,10 @@ class Heart(OneUse):
             #    hits.to_break() #desaparecera por lo tanto 
             if self.acc > 0:      
                 for hit in hits:
-                    if self.rect.y + self.height > hits[0].rect.top:  # Si toca la plataforma
-                        self.rect.y = hits[0].rect.top - self.height  # Ajustar posición
-                        self.acc = 0  # Detener caída
+                    if isinstance(hit, Platforms):
+                        if self.rect.y + self.height > hit.rect.top:  # Si toca la plataforma
+                            self.rect.y = hit.rect.top - self.height  # Ajustar posición
+                            self.acc = 0  # Detener caída
                     if isinstance(hits, Breakable):
                         hits.start_break()   
             if self.animation_timer > self.frame_rate:

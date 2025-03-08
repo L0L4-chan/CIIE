@@ -33,6 +33,8 @@ class Chest(Platforms):
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
         self.sound = pygame.mixer.Sound("../Sound/FX/OpenChest.wav")
+    
+    #Coloca el contenido del cofre
     def set_prize(self,x,y, prize):
         if prize == "lungs":
             return Lungs(x,y)
@@ -52,7 +54,7 @@ class Chest(Platforms):
             self.animation_timer = 0
             self.index += 1
         if self.index == 4:
-            #self.sound.play
+            self.sound.play
             self.active = False
             self.prize.set_use()         
     
