@@ -81,6 +81,7 @@ class Heart(OneUse):
                             self.rect.y = hit.rect.top - self.height  # Ajustar posición
                             self.acc = 0  # Detener caída
                     if isinstance(hit, Breakable):
+                        print("heart collisioned")
                         hit.on_bomb_Collision()  
             if self.animation_timer > self.frame_rate:
                 self.animation()     
