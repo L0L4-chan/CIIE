@@ -23,7 +23,7 @@ class Switch(Platforms):
         self.height = self.spritesheet.get_height()
         self.frames = {"position": [(i * self.width, 0, self.width, self.height) for i in range(2)]}
         super().__init__(x,y, self.width, self.height)
-        self.time = 500
+        self.time = 1000
         self.counter = 0
         self.door = Door(door_x, door_y)
         self.pressed = False

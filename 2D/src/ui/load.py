@@ -41,7 +41,6 @@ class Load(Base):
                     GameManager().get_instance().load_start("st3.json")
                 if "4" in self.buttons and self.buttons["4"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
-                    print("being touch")
                     GameManager().get_instance().load_player(3, self.get_player_lifes("level_4.json"))
                     GameManager().get_instance().load_start("st4.json")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):

@@ -97,7 +97,7 @@ class GameManager():
             self.player = Player(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*5)    
         elif level == 2: 
             from classes.player1 import Player1
-            self.player = Player1(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()*1.5),lifes)
+            self.player = Player1(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()*2.5),lifes)
         else:
             from classes.player2 import Player2
             self.player = Player2(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*5,lifes)

@@ -6,9 +6,12 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Boss(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y)
-        self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/boss_front.png")
+        self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/boss/spritesheet.png")
         self.rect = self.surf.get_rect()
+        super().__init__(x, y)
+        print("estoy en ", x , y )
+        
+        
 
     def move(self):
         # Movimiento del jefe: se mueve lentamente y hace un patrón en zig-zag
