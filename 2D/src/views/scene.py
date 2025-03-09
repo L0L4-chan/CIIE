@@ -32,6 +32,10 @@ class Scene():
         self.background = background
         self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/levels/{ConfigManager().get_instance().get_difficulty()}/{file}")
         self.sprites = pygame.sprite.Group()
+        self.chest = 0
+        self.chest_list = []
+        self.chestgroup = pygame.sprite.Group()
+        self.respawn_timer = {}
         self.create_scene()
         
     def create_scene(self):    
@@ -56,6 +60,8 @@ class Scene():
                 chest = Chest(x,y,pz)
                 self.sprites.add(chest)
                 self.sprites.add(chest.get_prize())
+                self.chest +=1
+                self.chest_list.append((x,y,pz))
         
         if self.items.get("breakable"):
             for (x, y) in self.items["breakable"]:
@@ -87,4 +93,32 @@ class Scene():
             for (x,y) in self.items["boss"]:
                 self.sprites.add(Boss(x,y))
         
-            
+    
+    def spawn_chest(self, x, y):
+        chest = Chest(x, y, "lungs")
+        self.sprites.add(chest)
+        self.chestgroup.add(chest)
+        self.sprites.add(chest.get_prize())
+        
+    def update(self):
+        if len(self.chestgroup) == self.chest:
+            return
+        current_chests = [(chest.rect.x, chest.rect.y) for chest in self.chestgroup]
+        missing_chests = [(x, y, pz) for (x, y, pz) in self.chest_list if (x, y) not in current_chests]
+
+        for x, y, pz in missing_chests:
+            pos = (x, y)
+            if pos not in self.respawn_timer:
+                self.respawn_timer[pos] = pygame.time.get_ticks() + 60000
+
+        current_time = pygame.time.get_ticks()
+        for pos, respawn_time in list(self.respawn_timer.items()):
+            if current_time >= respawn_time:
+                x, y, pz = next((cx, cy, cpz) for cx, cy, cpz in self.chest_list if (cx, cy) == pos)
+                self.spawn_chest(x, y)
+                del self.respawn_timer[pos]
+                
+
+        
+
+                

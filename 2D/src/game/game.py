@@ -77,7 +77,8 @@ class Game(Base):
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                     GameManager().get_instance().load_pause()
     
-    def update(self):       
+    def update(self):  
+        self.scene.update()     
         #Capa jugador se actualiza
         self.player.update(self.floor) #actualiza al player
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
