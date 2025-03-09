@@ -58,7 +58,15 @@ class GameManager():
                 pygame.mixer.music.play()
                 self.music = True
    
-    
+    def changeMusic(self, path = None):
+        if path is None:
+            self.music_on()
+        else: 
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(path)
+            pygame.mixer.music.play()
+            self.music = True
+             
     #change the resolution of the screen
     def change_resolution(self):
         self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height())) 

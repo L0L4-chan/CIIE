@@ -24,7 +24,7 @@ vec = pygame.math.Vector2
 
 class Game(Base):
 
-    def __init__(self, scene = None, sound = None):
+    def __init__(self, scene, sound ):
         super().__init__()   
         #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
         self.scene = scene
@@ -39,6 +39,7 @@ class Game(Base):
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
         self.world_height = self.bg.get_height()   # O la altura máxima del escenario
         self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
+        self.sound = sound
         path_button = f"../Art/{ConfigManager().get_instance().get_artpath()}/avatar/pause_button.png"
         path_hover = f"../Art/{ConfigManager().get_instance().get_artpath()}/avatar/pause_button_hover.png"
 
@@ -56,17 +57,12 @@ class Game(Base):
             if isinstance(sprite, Enemy):
                 self.enemies.append(sprite)
                 self.scene.sprites.remove(sprite)
-
-        #empieza la musica del nivel
-        pygame.mixer.music.stop() #paramos la anterior
-        pygame.mixer.music.load(sound)
-        pygame.mixer.music.play(-1) #indicamos loop infinito   
-        
+     
         self.sprites.add(self.player)
 
         self.floor = self.scene.sprites
         self.sprites.add(self.floor)
-
+       
     
     #game loop se modificara si es necesario cuando se tengan los niveles
     def handle_events(self):
@@ -132,6 +128,7 @@ class Game(Base):
         pygame.event.clear()
         # Detener la música
         pygame.mixer.music.stop()
+        pygame.mixer.stop()
         # Vaciar grupos de sprites
         self.sprites.empty()
         self.floor.empty()
@@ -150,14 +147,15 @@ class Game(Base):
         gc.collect()
     
        
-    def run(self):    
+    def run(self):
+        GameManager().get_instance().changeMusic(self.sound)    
         self.running = True
         while self.running:           
             self.clock.tick(self.FPS) # indicamos el numero de frames por segundo
             self.handle_events()
             self.update()
             self.render()
-
+        
             
             
             
