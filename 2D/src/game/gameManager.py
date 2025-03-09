@@ -33,6 +33,9 @@ class GameManager():
 
     def __init__(self):
         if not self._initialized:
+            pygame.mixer.pre_init(44100,16,2,4096) #initialize the mixer (sound)
+            pygame.mixer.init()
+            pygame.mixer.set_num_channels(8)
             ConfigManager().get_instance().load_fonts()
             self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window

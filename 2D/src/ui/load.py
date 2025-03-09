@@ -39,10 +39,11 @@ class Load(Base):
                     self.running = False
                     GameManager().get_instance().load_player(3, self.get_player_lifes("level_3.json"))
                     GameManager().get_instance().load_start("st3.json")
-                if "battle" in self.buttons and self.buttons["battle"].checkForInput(pygame.mouse.get_pos()):
+                if "4" in self.buttons and self.buttons["4"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
-                    GameManager().get_instance().load_player(3, self.get_player_lifes("level_battle.json"))
-                    GameManager().get_instance().load_start("stbattle.json")
+                    print("being touch")
+                    GameManager().get_instance().load_player(3, self.get_player_lifes("level_4.json"))
+                    GameManager().get_instance().load_start("st4.json")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
                     GameManager().get_instance().load_menu()

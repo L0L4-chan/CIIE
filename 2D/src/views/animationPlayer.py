@@ -24,7 +24,7 @@ class AnimationPlayer():
         self.frames = sorted(os.listdir(f"../Art/{self.art_path}/{path}"))
         self.frame_index = 0
         self.end = len(self.frames) -1
-        self.fps = 60
+        self.fps = 24
         self.running = True
         self.start = start # cuando sea mostrado el primer texto
         self.amount = amount
@@ -33,7 +33,6 @@ class AnimationPlayer():
     
     def get_boxes(self, event):
        self.boxes = []
-       
        for i in range(event, event + self.amount): 
         self.boxes.append(DialogBox(event = i))  # Pasamos el número actual del loop
 
@@ -42,6 +41,8 @@ class AnimationPlayer():
         frames = (self.start - (self.end + 50)) / self.amount 
         for i in range(self.amount):
             if (self.frame_index >= (self.start + (frames * i))) and (self.frame_index <= (self.end - 50)):  
+                print(self.start + (frames * i))
+                print(i)
                 self.boxes[i].draw()
     
     

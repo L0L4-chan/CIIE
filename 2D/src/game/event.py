@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import utils.auxiliar as auxiliar
+import utils.auxiliar as auxiliar, pygame
 from game.gameManager import GameManager
 from game.objects.decor.platforms import Platforms
 
@@ -19,7 +19,8 @@ class Event(Platforms):
         super().__init__(x,y,w,h)
         self.path = path
         self.level = level
-        self.triggered = False 
+        self.triggered = False
+        self.sound = pygame.mixer.Sound("../Sound/FX/noKey.wav")  #suena cuando se pisa sin la llave
           
     def on_collision(self, player):
         if not self.triggered:

@@ -23,10 +23,11 @@ class Switch(Platforms):
         self.height = self.spritesheet.get_height()
         self.frames = {"position": [(i * self.width, 0, self.width, self.height) for i in range(2)]}
         super().__init__(x,y, self.width, self.height)
-        self.time = 300
+        self.time = 500
         self.counter = 0
         self.door = Door(door_x, door_y)
         self.pressed = False
+        self.sound = pygame.mixer.Sound("../Sound/FX/switch.wav")
          
     def init_surf(self):
         self.surf = self.spritesheet.subsurface(self.frames["position"][0][0], self.frames["position"][0][1],self.width, self.height)
@@ -34,6 +35,7 @@ class Switch(Platforms):
           
     def change_position(self):
         if not self.pressed:
+            self.sound.play()
             self.surf = self.spritesheet.subsurface(self.frames["position"][1][0], self.frames["position"][1][1],self.width, self.height)   
             self.rect.y += (self.height / 2)
             self.door.switch_position()
@@ -45,6 +47,7 @@ class Switch(Platforms):
         self.rect.y -= (self.height / 2)
         self.door.reset_back()
         self.counter = 0
+        self.sound.play()
         self.pressed = False
     
     def update(self):

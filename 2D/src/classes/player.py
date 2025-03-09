@@ -39,7 +39,7 @@ class Player(Entity):
         self.respawn_x = x #coordenada x para reaparecer
         self.respawn_y = y #coordenada y para reaparecer
         self.vel = vec(0, 0) # vector velocidad para los movimientos
-
+        self.got_key = False
         self.ACC =  ConfigManager().get_instance().get_player_Acc()  # constante aceleracion
         self.FRIC =  ConfigManager().get_instance().get_player_fric() # constante friccion (suaviza el movimiento)
         self.speed =  ConfigManager().get_instance().get_player_speed #velocidad de movimiento
@@ -47,7 +47,8 @@ class Player(Entity):
         self.y_acc_value =  ConfigManager().get_instance().get_player_Acc()
         self.index = 0 #para cambios en los frames
         self.lifes = 3 # vidas del personaje
-       
+        self.death_sound = pygame.mixer.Sound("../Sound/FX/death.wav")
+        self.power_up_sound = pygame.mixer.Sound("../Sound/FX/ticktock.wav")
         #para calculo de tiempo entre acciones
         self.power_up_counter = 0 #para contar cuando el efecto debe desaparecer del power up  (max jump)
         self.death_timer = 0
@@ -150,6 +151,7 @@ class Player(Entity):
             self.index = 0
         elif self.current_action == "death" and self.index >= self.end_index -1:
             if self.lifes >= 0 :
+                self.death_sound.play()
                 self.index = 0
                 self.lifes -=1
                 self.die = False
@@ -190,7 +192,6 @@ class Player(Entity):
         # Colisiones específicas de Player:
         hits = pygame.sprite.spritecollide(self, platforms, False)
         for hit in hits:
-
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:
@@ -224,22 +225,30 @@ class Player(Entity):
 
             # --- COLISIONES CON EVENT ---
             if isinstance(hit, Event):
-                hit.on_collision(self)
-
+                if self.got_key:
+                    hit.on_collision(self)
+                else:
+                    hit.sound.play()
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs):
                 if not self.power_up:
+                    hit.sound.play()
                     self.jump_Max = self.jump_Max +(-5)
                     self.power_up_counter = 0
+                    self.power_up_sound.play()
                     self.power_up = True
 
             # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
-                print("todo key")
+                if not self.got_key:
+                    hit.sound.play()
+                    self.got_key = True
+                
 
             # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                 self.get_life()
+                hit.sound.play()
 
 
     #Comprobamos si se acaba el powerup (más salto)

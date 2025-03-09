@@ -29,7 +29,6 @@ class Game(Base):
         #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
         self.scene = scene
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
-        self.sound = sound
         self.path = ConfigManager().get_instance().get_artpath()
         self.sprites = pygame.sprite.Group()
         self.floor = pygame.sprite.Group()
@@ -60,8 +59,9 @@ class Game(Base):
 
         #empieza la musica del nivel
         pygame.mixer.music.stop() #paramos la anterior
-        pygame.mixer.music.load(self.sound)
+        pygame.mixer.music.load(sound)
         pygame.mixer.music.play(-1) #indicamos loop infinito   
+        
         self.sprites.add(self.player)
 
         self.floor = self.scene.sprites
