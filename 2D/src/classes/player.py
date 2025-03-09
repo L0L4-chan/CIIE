@@ -253,7 +253,7 @@ class Player(Entity):
 
     #Comprobamos si se acaba el powerup (más salto)
     def check_power_up(self):
-        if self.power_up_counter >= 3000:
+        if self.power_up_counter >= 2000:
             self.jump_Max = ConfigManager().get_instance().get_player_jump()
             self.power_up= False 
     

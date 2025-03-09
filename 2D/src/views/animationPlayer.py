@@ -34,17 +34,18 @@ class AnimationPlayer():
     def get_boxes(self, event):
        self.boxes = []
        for i in range(event, event + self.amount): 
-        self.boxes.append(DialogBox(event = i))  # Pasamos el número actual del loop
+           self.boxes.append(DialogBox(event = i))  # Pasamos el número actual del loop
 
     
-    def show_dialog(self):   
-        frames = (self.start - (self.end + 50)) / self.amount 
-        for i in range(self.amount):
-            if (self.frame_index >= (self.start + (frames * i))) and (self.frame_index <= (self.end - 50)):  
-                print(self.start + (frames * i))
-                print(i)
-                self.boxes[i].draw()
-    
+    def show_dialog(self):  
+        if self.amount == 1:
+            self.boxes[0].draw()
+        else:          
+            frames = ( (self.end - (self.start + 50)) / self.amount ) #350 frames   50 - 400 /2 = 125
+            if (self.frame_index <= (self.end - (frames + 50))):  
+                self.boxes[0].draw()
+            elif (self.frame_index <= (self.end - (50))):    
+                self.boxes[1].draw()
     
     def run(self):
         while(self.running):
