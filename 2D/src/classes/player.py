@@ -25,16 +25,13 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Player(Entity):
     def __init__(self, x, y):
-        #super().__init__()
+        # Llamamos al constructor de Entity con la posición y dimensiones.
+        super().__init__(x, y, self.width, self.height)
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos las imagenes 
         self.width = self.spritesheet.get_width()/18 # existen 18 imagenes diferentes
         self.height =  self.spritesheet.get_height()
         #self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
         #self.pos = vec(x, y) #posicion 
-
-        # Llamamos al constructor de Entity con la posición y dimensiones.
-        super().__init__(x, y, self.width, self.height)
-
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
         self.respawn_x = x #coordenada x para reaparecer
         self.respawn_y = y #coordenada y para reaparecer
@@ -54,7 +51,6 @@ class Player(Entity):
         self.death_timer = 0
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación
-        
         #Bools para manejo de acciones
         self.power_up = False
         self.jumping = False 
@@ -273,5 +269,4 @@ class Player(Entity):
         self.collision_managment(platforms)
         if self.animation_timer > self.frame_rate:
             self.draw()
-        #self.projectiles.update(screen) # actualiza los proyectiles en la pantalla se maneja en el game loop de momento
-            
+
