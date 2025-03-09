@@ -67,12 +67,6 @@ class Scene():
                 event = Event(x,y,h,w,path,lvl)
                 self.sprites.add(event)
         
-        if self.items.get("last_event"):
-            for (x, y, h, w, path, lvl) in self.items["last_event"]:
-                event = LastEvent(x,y,h,w,path,lvl)
-                print("yep")
-                self.sprites.add(event)
-        
         if self.items.get("devil"):
             for (x,y) in self.items["devil"]:
                 self.sprites.add(Devil(x,y))

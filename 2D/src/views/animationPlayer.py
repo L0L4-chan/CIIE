@@ -38,14 +38,15 @@ class AnimationPlayer():
 
     
     def show_dialog(self):  
-        if self.amount == 1:
-            self.boxes[0].draw()
-        else:          
-            frames = ( (self.end - (self.start + 50)) / self.amount ) #350 frames   50 - 400 /2 = 125
-            if (self.frame_index <= (self.end - (frames + 50))):  
+        if (self.frame_index >= self.start):
+            if self.amount == 1:
                 self.boxes[0].draw()
-            elif (self.frame_index <= (self.end - (50))):    
-                self.boxes[1].draw()
+            else:          
+                frames = ( (self.end - (self.start + 50)) / self.amount ) #350 frames   50 - 400 /2 = 125
+                if (self.frame_index <= (self.end - (frames + 50))):  
+                    self.boxes[0].draw()
+                elif (self.frame_index <= (self.end - (50))):    
+                    self.boxes[1].draw()
     
     def run(self):
         while(self.running):

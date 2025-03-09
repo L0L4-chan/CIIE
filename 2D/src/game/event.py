@@ -14,6 +14,7 @@ from game.gameManager import GameManager
 from game.objects.decor.platforms import Platforms
 
 
+
 class Event(Platforms):
     def __init__(self, x, y, w, h, path, level):
         super().__init__(x,y,w,h)
@@ -29,3 +30,11 @@ class Event(Platforms):
             auxiliar.save_json(f"save/level_{self.level}.json", data)
             GameManager.get_instance().scene.running = False
             GameManager().get_instance().load_start(self.path)
+    
+    def no_key(self, life):
+        if (self.level-1) == 3:
+            GameManager().get_instance().load_player(3, life)
+            GameManager().get_instance().scene.running = False
+            from views.scene import Scene
+            GameManager().get_instance().load_game(Scene("level3.jpg", "level3.json"), "../Sound/BSO/levels-_2_.wav", 3)
+           

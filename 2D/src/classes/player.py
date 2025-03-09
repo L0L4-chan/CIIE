@@ -25,11 +25,11 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Player(Entity):
     def __init__(self, x, y):
-        # Llamamos al constructor de Entity con la posición y dimensiones.
-        super().__init__(x, y, self.width, self.height)
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png") #cargamos las imagenes 
         self.width = self.spritesheet.get_width()/18 # existen 18 imagenes diferentes
         self.height =  self.spritesheet.get_height()
+        # Llamamos al constructor de Entity con la posición y dimensiones.
+        super().__init__(x, y, self.width, self.height)
         #self.rect = pygame.Rect(x, y,self.width, self.height) #obtenemos el collisionador
         #self.pos = vec(x, y) #posicion 
         self.surf =  self.spritesheet.subsurface(pygame.Rect(0,0, self.width,self.height))
@@ -56,6 +56,7 @@ class Player(Entity):
         self.jumping = False 
         self.shooting = False
         self.die = False 
+        self.got_life = False
         self.direction = 1 # direccion 1 sera derecha y 0 izquierda
         self.frames = {
             "idle": [(0, 0)],  # Una sola imagen para idle
@@ -225,6 +226,7 @@ class Player(Entity):
                     hit.on_collision(self)
                 else:
                     hit.sound.play()
+                    hit.no_key(self.lifes-1)
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs):
                 if not self.power_up:
@@ -239,13 +241,13 @@ class Player(Entity):
                 if not self.got_key:
                     hit.sound.play()
                     self.got_key = True
+                    hit.kill()
                 
 
             # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
-                self.get_life()
-                hit.sound.play()
-
+                    self.get_life(hit)
+                                
 
     #Comprobamos si se acaba el powerup (más salto)
     def check_power_up(self):
@@ -254,9 +256,12 @@ class Player(Entity):
             self.power_up= False 
     
     #aumenta el numero de vidas
-    def get_life(self):
-        if self.lifes < 3:
-            self.lifes += 1
+    def get_life(self, hit):
+        if hit.get_can_pick():
+            if self.lifes < 3:
+                self.lifes += 1
+                hit.sound.play()
+            hit.being_pick()
                   
     #funcion de actualizacion para ser llamada desde el game loop    
     def update(self, platforms= None):

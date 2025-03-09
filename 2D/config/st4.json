@@ -1,7 +1,7 @@
 {"ani_path" : "4animation",
 "ani_sound" : "../Sound/BSO/levels-_1_.wav",
 "ani_amount" : 2,
-"ani_start" : 150,
+"ani_start" : 200,
 "ani_event" :5,
 
 "scene_level" : 4,
