@@ -28,6 +28,7 @@ class Heart(OneUse):
         self.frame_rate = 10  # Cada cuántos frames cambiamos la animación
         self.direction = 0  # Dirección (0: izquierda, 1: derecha)
         self.image = self.spritesheet.subsurface(self.frames["bomb"][0]) 
+        self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
         self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
     
