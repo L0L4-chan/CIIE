@@ -224,7 +224,6 @@ class Player(Entity):
 
             # --- COLISIONES CON EVENT ---
             if isinstance(hit, Event):
-                pygame.time.wait(5000)
                 hit.on_collision(self)
 
             # --- COLISIONES CON LUNGS (Power-Up de salto) ---

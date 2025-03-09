@@ -26,11 +26,8 @@ class Heart(OneUse):
         } 
         self.animation_timer = 0  # Medir el tiempo para cambiar la animación
         self.frame_rate = 10  # Cada cuántos frames cambiamos la animación
-        self.index = 0  # Índice para las animaciones
         self.direction = 0  # Dirección (0: izquierda, 1: derecha)
         self.image = self.spritesheet.subsurface(self.frames["bomb"][0]) 
-        self.vel_y = 0  # Reiniciar velocidad vertical
-        self.acc = 0.5  # Aceleración inicial (gravedad)
         #recurso sonido explosión
         self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
     
@@ -41,7 +38,8 @@ class Heart(OneUse):
         self.rect = pygame.Rect(x, y, self.width, self.height)
         self.index = 0
         super().set_use()#activación
-     
+        self.acc = 0.5
+        
     #funcion que controla los cambios de la animación   
     def animation(self):
         if self.index < len(self.frames["bomb"]):
@@ -81,7 +79,6 @@ class Heart(OneUse):
                             self.rect.y = hit.rect.top - self.height  # Ajustar posición
                             self.acc = 0  # Detener caída
                     if isinstance(hit, Breakable):
-                        print("heart collisioned")
                         hit.on_bomb_Collision()  
             if self.animation_timer > self.frame_rate:
                 self.animation()     

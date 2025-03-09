@@ -36,6 +36,7 @@ class Scene():
         
     def create_scene(self):    
         if self.items.get("platform"):
+            print(self.items["platform"])
             for (x, y, w, h) in self.items["platform"]:
                 platform = Platforms(x, y, w, h)
                 self.sprites.add(platform)
