@@ -57,6 +57,7 @@ class Game(Base):
         self.sprites.add(self.enemies)
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
         self.items.add(self.scene.projectil)
+        self.sprites.add(self.items)
         self.floor = self.scene.sprites
         self.sprites.add(self.floor)
        
