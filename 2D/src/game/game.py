@@ -33,6 +33,7 @@ class Game(Base):
         self.sprites = pygame.sprite.Group()
         self.floor = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
+        self.items_enemies = pygame.sprite.Group()
         self.group_lifes = pygame.sprite.Group()
         self.clock =  GameManager().get_instance().clock
         self.FPS = ConfigManager().get_instance().get_fps()
@@ -52,12 +53,9 @@ class Game(Base):
             "pause": pauseb
         } 
         self.player = GameManager().get_instance().player
-        self.enemies= self.scene.enemies
+        self.enemies=self.scene.enemies
         self.sprites.add(self.player)
         self.sprites.add(self.enemies)
-        self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
-        self.items.add(self.scene.projectil)
-        self.sprites.add(self.items)
         self.floor = self.scene.sprites
         self.sprites.add(self.floor)
        
@@ -75,14 +73,19 @@ class Game(Base):
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                     GameManager().get_instance().load_pause()
     
-    def update(self):  
+    def update(self): 
+        it_aux = pygame.sprite.Group() 
         self.scene.update()     
         #Capa jugador se actualiza
         self.player.update(self.sprites) #actualiza al player
-        self.items.update(self.sprites)
+        self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
+        
         for enemy in self.enemies:
             enemy.update()
-
+            it_aux.add(enemy.group)
+        self.items.add(it_aux)
+        
+        self.items.update(self.sprites)
         self.floor.update()
         # Capa informacion se actualiza
         mouse_pos = pygame.mouse.get_pos()
@@ -153,7 +156,6 @@ class Game(Base):
             self.handle_events()
             self.update()
             self.render()
-    
         
             
             
