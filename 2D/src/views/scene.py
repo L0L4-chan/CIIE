@@ -32,6 +32,8 @@ class Scene():
         self.background = background
         self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/levels/{ConfigManager().get_instance().get_difficulty()}/{file}")
         self.sprites = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+        self.projectil = pygame.sprite.Group()
         self.chest = 0
         self.chest_list = []
         self.chestgroup = pygame.sprite.Group()
@@ -75,23 +77,25 @@ class Scene():
         
         if self.items.get("devil"):
             for (x,y) in self.items["devil"]:
-                self.sprites.add(Devil(x,y))
+                devil = Devil(x,y)
+                self.enemies.add(devil)
+                self.projectil.add(devil.group)
 
         if self.items.get("bat"):
             for (x,y) in self.items["bat"]:
-                self.sprites.add(Bat(x,y))
+                self.enemies.add(Bat(x,y))
         
         if self.items.get("bug"):
             for (x,y) in self.items["bug"]:
-                self.sprites.add(Bug(x,y))
+                self.enemies.add(Bug(x,y))
 
         if self.items.get("ghost"):
             for (x,y) in self.items["ghost"]:
-                self.sprites.add(Ghost(x,y))
+                self.enemies.add(Ghost(x,y))
 
         if self.items.get("boss"):
             for (x,y) in self.items["boss"]:
-                self.sprites.add(Boss(x,y))
+                self.enemies.add(Boss(x,y))
         
     
     def spawn_chest(self, x, y):

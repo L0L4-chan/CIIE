@@ -76,4 +76,4 @@ class Ghost(Enemy):
             self.current_action = "idle"
 
         self.move()
-        self.draw(pygame.display.get_surface())
+        self.draw(pygame.display.get_surface()) 

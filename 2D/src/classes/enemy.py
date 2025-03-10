@@ -59,6 +59,7 @@ class Enemy(Entity):
             "walk": [(i * 64, 0) for i in range(3)],  # Ejemplo: tres fotogramas de 64x64
         }
         self.current_action = "walk"
+        self.group = pygame.sprite.Group()
 
     def move(self):
         """

@@ -24,7 +24,6 @@ class Devil(Enemy):
         self.screen_width = pygame.display.get_surface().get_width()  # Obtener el ancho de la pantalla
         self.move_distance = 0  # Distancia recorrida en una dirección
         self.projectiles = Stone()
-        self.group = pygame.sprite.Group()
         self.group.add(self.projectiles)
         self.direction = 0
 

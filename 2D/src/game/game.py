@@ -52,14 +52,11 @@ class Game(Base):
             "pause": pauseb
         } 
         self.player = GameManager().get_instance().player
-        self.enemies=[]
-        for sprite in self.scene.sprites:
-            if isinstance(sprite, Enemy):
-                self.enemies.append(sprite)
-                #self.scene.sprites.remove(sprite)
-     
+        self.enemies= self.scene.enemies
         self.sprites.add(self.player)
-
+        self.sprites.add(self.enemies)
+        self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
+        self.items.add(self.scene.projectil)
         self.floor = self.scene.sprites
         self.sprites.add(self.floor)
        
@@ -80,8 +77,7 @@ class Game(Base):
     def update(self):  
         self.scene.update()     
         #Capa jugador se actualiza
-        self.player.update(self.floor) #actualiza al player
-        self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
+        self.player.update(self.sprites) #actualiza al player
         self.items.update(self.sprites)
         for enemy in self.enemies:
             enemy.update()
@@ -156,6 +152,7 @@ class Game(Base):
             self.handle_events()
             self.update()
             self.render()
+    
         
             
             
