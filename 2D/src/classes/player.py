@@ -178,11 +178,9 @@ class Player(Entity):
         # Luego, comprobamos colisiones específicas:
         hits = pygame.sprite.spritecollide(self, collidables, False)
         for hit in hits:
-
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:
-                    print("Colisión con Spikes detectada")
                     self.die = True
                     self.pos.y = hit.rect.top + 1
                     self.current_action = "death"
@@ -194,7 +192,6 @@ class Player(Entity):
             from classes.enemy import Enemy  # Importación local
             if isinstance(hit, Enemy):
                 if not self.die and self.death_timer > 100:
-                    print("Colisión con Enemy detectada")
                     self.die = True
                     self.pos.y = hit.rect.top + 1
                     self.current_action = "death"

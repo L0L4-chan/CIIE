@@ -77,13 +77,16 @@ class Game(Base):
         it_aux = pygame.sprite.Group() 
         self.scene.update()     
         #Capa jugador se actualiza
-        self.player.update(self.sprites) #actualiza al player
+        it_aux.add(self.items)
+        it_aux.add(self.sprites)
+        self.player.update(it_aux) #actualiza al player
         self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
-        
+        it_aux.add(self.items)
+        it_aux.add(self.sprites)
+        it_aux = pygame.sprite.Group() 
         for enemy in self.enemies:
-            enemy.update(self.sprites)
+            enemy.update(it_aux)
             it_aux.add(enemy.group)
-            
         self.items.add(it_aux)
         
         self.items.update(self.sprites)

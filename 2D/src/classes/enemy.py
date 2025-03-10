@@ -85,6 +85,7 @@ class Enemy(Entity):
         # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
         hits = pygame.sprite.spritecollide(self, platforms, False)
         for hit in hits:
+            print(hits)
             # Importación local para evitar circular imports.
             from classes.player import Player
             if isinstance(hit, Player):
