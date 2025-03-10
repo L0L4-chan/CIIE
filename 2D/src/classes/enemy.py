@@ -47,7 +47,8 @@ class Enemy(Entity):
         self.index = 0
         self.frames = {
             "idle": [(0, 0)],
-            "walk": [(i * 64, 0) for i in range(3)],  # Ejemplo: tres fotogramas de 64x64
+            "walk": [(0, 0)],
+            "death": [(0, 0)]
         }
         self.current_action = "walk"
         self.group = pygame.sprite.Group()
@@ -98,33 +99,28 @@ class Enemy(Entity):
                 self.current_action = "death"
                 
     def update(self, platforms=None):
-        """
-        Actualiza el estado del enemigo: mueve la entidad, resuelve colisiones y actualiza la animación.
-        """
+        self.animation_timer += 1
         self.move()
+        if self.vel.x != 0:
+            self.current_action = "walk"
+        else:
+            self.current_action = "idle"       
         if platforms is not None:
             self.collision_managment(platforms)
-        if self.animation_timer > self.frame_rate:
-            self.draw()
+        self.draw()
 
     def draw(self):
-        """
-        Actualiza la imagen del enemigo según la animación.
-        """
         action_frames = self.frames[self.current_action]
-        frame = action_frames[self.index]
-        # Extraemos el fotograma del sprite sheet.
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 64, 64))
-        # Si se mueve hacia la izquierda, reflejamos la imagen.
-        if self.vel.x < 0:
-            sprite_image = pygame.transform.flip(sprite_image, True, False)
-        self.surf = sprite_image
-
-        self.animation_timer += 1
         if self.animation_timer > self.frame_rate:
             self.index += 1
-            if self.index >= len(action_frames):
+            if self.index >= len(action_frames)-1:
                 self.index = 0
             self.animation_timer = 0
+            frame = action_frames[self.index]
+            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
+            if self.vel.x < 0:
+                sprite_image = pygame.transform.flip(sprite_image, True, False)
+            self.surf = sprite_image  
+        
 
 

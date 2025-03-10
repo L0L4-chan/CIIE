@@ -15,10 +15,10 @@ class Devil(Enemy):
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(i * self.width, 0) for i in range(4)],
+            "death": [(0, 0)]
         }
         self.frame_rate = 16
         self.move_distance = 0  # Distancia recorrida en una dirección
-
         self.frame_rate = 16
         self.projectiles = Stone()
         self.group.add(self.projectiles)
@@ -36,35 +36,7 @@ class Devil(Enemy):
 
         self.rect.center = self.pos
         
-    def draw(self):
-        action_frames = self.frames[self.current_action]
-        frame = action_frames[self.index]
-
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 64, 64))
-
-        if self.vel.x < 0:
-            sprite_image = pygame.transform.flip(sprite_image, True, False)
-
-        self.surf = sprite_image
-
-        self.animation_timer += 1
-        if self.animation_timer > self.frame_rate:
-            self.index += 1
-            if self.index >= len(action_frames):
-                self.index = 0
-            self.animation_timer = 0
-
-    def update(self):
-        if self.vel.x != 0:
-            self.current_action = "walk"
-        else:
-            self.current_action = "idle"
-
-        self.move()
-        self.draw()
-        
-        self.projectiles.update(self.group)
-    
+ 
 
     def shoot(self):
         if self.direction:

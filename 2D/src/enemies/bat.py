@@ -34,34 +34,20 @@ class Bat(Enemy):
             self.vel.x = -self.vel.x  # Cambiar de dirección en X
         
         if self.pos.y > 300 or self.pos.y < 100:
-            self.vel.y = -self.vel.y
-
-        
+            self.vel.y = -self.vel.y 
         self.rect.center = self.pos
         
     def draw(self):
         action_frames = self.frames[self.current_action]
-        frame = action_frames[self.index]
-
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 53, 45))
-
-        if self.vel.x < 0:
-            sprite_image = pygame.transform.flip(sprite_image, True, False)
-
-        self.surf = sprite_image
-
-        self.animation_timer += 1
         if self.animation_timer > self.frame_rate:
             self.index += 1
-            if self.index >= len(action_frames):
+            if self.index >= len(action_frames)-1:
                 self.index = 0
             self.animation_timer = 0
+            frame = action_frames[self.index]
+            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
+            if self.vel.x < 0:
+                sprite_image = pygame.transform.flip(sprite_image, True, False)
+            self.surf = sprite_image  
+        
 
-    def update(self):
-        if self.vel.x != 0:
-            self.current_action = "walk"
-        else:
-            self.current_action = "idle"
-
-        self.move()
-        self.draw()

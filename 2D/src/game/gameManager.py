@@ -102,7 +102,7 @@ class GameManager():
     def load_player(self, level, lifes=3):
         if level == 1:
             from classes.player import Player
-            self.player = Player(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*5)    
+            self.player = Player(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*4)    
         elif level == 2: 
             from classes.player1 import Player1
             self.player = Player1(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()*2.5),lifes)

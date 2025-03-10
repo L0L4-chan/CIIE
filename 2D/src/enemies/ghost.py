@@ -36,32 +36,6 @@ class Ghost(Enemy):
 
         
         self.rect.center = self.pos
-        
-    def draw(self):
-        action_frames = self.frames[self.current_action]
-        frame = action_frames[self.index]
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 60, 50))
-        if self.vel.x < 0:
-            sprite_image = pygame.transform.flip(sprite_image, True, False)
 
-        self.surf = sprite_image
-
-        self.animation_timer += 1
-        if self.animation_timer > self.frame_rate:
-            self.index += 1
-            if self.index >= len(action_frames):
-                self.index = 0
-            self.animation_timer = 0
-
-
-    def collision_managment(self, platforms):
-        return super().collision_managment(platforms)
     
-    def update(self):
-        if self.vel.x != 0:
-            self.current_action = "walk"
-        else:
-            self.current_action = "idle"
-
-        self.move()
-        self.draw() 
+   
