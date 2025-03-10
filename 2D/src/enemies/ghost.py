@@ -21,7 +21,7 @@ class Ghost(Enemy):
         }
         self.current_action = "walk"
         self.animation_timer = 0
-        self.frame_rate = 10
+        self.frame_rate = 16
         self.index = 0
         self.screen_width = pygame.display.get_surface().get_width()  # Obtener el ancho de la pantalla
         self.move_distance = 0  # Distancia recorrida en una dirección
@@ -68,6 +68,7 @@ class Ghost(Enemy):
 
     def collision_managment(self, platforms):
         return super().collision_managment(platforms)
+    
     def update(self):
         if self.vel.x != 0:
             self.current_action = "walk"
