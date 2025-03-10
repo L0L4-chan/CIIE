@@ -109,7 +109,7 @@ class Options(Base):
 
     def render(self):
         self.screen.blit(self.bg, (0, 0))
-        menu_text =self.font.render("OPTIONS", True, (255, 255, 255))
+        menu_text =self.font.render(ConfigManager().get_instance().get_text_button(key="OPTIONS"), True, (255, 255, 255))
         self.screen.blit(menu_text, ((self.screen_width/8)*4, (self.screen_height/10)*1))
         language_text =self.font.render(self.LANGUAGE, True, (255, 255, 255))
         self.screen.blit(language_text, ((self.screen_width/8)*4, (self.screen_height/10)*2))

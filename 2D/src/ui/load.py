@@ -57,13 +57,13 @@ class Load(Base):
         for filename in os.listdir("../src/save"):
             if filename.lower().endswith('.json'):
                 if filename == "level_2.json":
-                    self.buttons["2"] = Button(pos=(self.screen_width / 2, (self.screen_height / 8) * 3),
+                    self.buttons["2"] = Button(pos=(self.screen_width / 6, (self.screen_height / 8) * 3),
                                         text_input=ConfigManager().get_instance().get_text_button(key="2"))
                 elif filename == "level_3.json":
-                    self.buttons["3"] = Button(pos=(self.screen_width / 2, (self.screen_height / 8) * 4),
+                    self.buttons["3"] = Button(pos=(self.screen_width / 6, (self.screen_height / 8) * 4),
                                         text_input=ConfigManager().get_instance().get_text_button(key="3"))
                 elif filename == "level_4.json":
-                    self.buttons["4"] = Button(pos=(self.screen_width / 2, (self.screen_height / 8) * 5),
+                    self.buttons["4"] = Button(pos=(self.screen_width / 6, (self.screen_height / 8) * 5),
                                             text_input=ConfigManager().get_instance().get_text_button(key="BATTLE"))
 
     # Conseguir el número de vidasque tenia el jugador cuando guardo
@@ -80,7 +80,7 @@ class Load(Base):
     # Renderizar la pantalla
     def render(self):
         self.screen.blit(self.bg, (0, 0))  # Fondo
-        menu_text = ConfigManager().get_instance().get_font_title().render("SAVE", True, (255, 255, 255))  # Título
+        menu_text = ConfigManager().get_instance().get_font_title().render(ConfigManager().get_instance().get_text_button(key="LOAD"), True, (255, 255, 255))  # Título
         self.screen.blit(menu_text, (self.screen_width / 2, 50))  # Añadir al buffer
         for btn in self.buttons.values():  # Renderizar los botones
             btn.render(self.screen)
