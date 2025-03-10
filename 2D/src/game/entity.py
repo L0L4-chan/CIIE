@@ -54,12 +54,6 @@ class Entity(pygame.sprite.Sprite):
                         self.rect.left = hit.rect.right
                         self.pos.x = self.rect.centerx
                         self.vel.x = 0
-
-        # --- Resolución de colisiones verticales ---
-        hits = pygame.sprite.spritecollide(self, collidables, False)
-        for hit in hits:
-            if hasattr(hit, 'rect'):
-                # Calcula el solapamiento horizontal.
                 horizontal_overlap = min(self.rect.right, hit.rect.right) - max(self.rect.left, hit.rect.left)
                 if horizontal_overlap > 0:
                     # Si la entidad cae y su parte inferior choca con el tope del objeto...

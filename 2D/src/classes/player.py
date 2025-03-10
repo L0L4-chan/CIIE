@@ -185,8 +185,6 @@ class Player(Entity):
                     self.pos.y = hit.rect.top + 1
                     self.current_action = "death"
                     self.animation_timer = self.frame_rate + 1
-                    for sprite in collidables:
-                        print(type(sprite).__name__, sprite.rect)
             
             # --- COLISIONES CON ENEMY ---
             from classes.enemy import Enemy  # Importación local

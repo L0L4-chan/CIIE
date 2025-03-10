@@ -36,5 +36,6 @@ class Stone(OneUse):
             #manejo de collisiones 
             hits = pygame.sprite.spritecollide(self, object, False)
             if hits:
+                print(hits)
                 super().set_use()
  
