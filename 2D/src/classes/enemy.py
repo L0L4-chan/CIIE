@@ -12,6 +12,7 @@ Version: 1.0.0
 import pygame
 from game.configManager import ConfigManager
 from game.entity import Entity
+from game.objects.stone import Stone
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Enemy(Entity):
@@ -22,34 +23,24 @@ class Enemy(Entity):
       - Si cae sobre una plataforma, se asienta sobre ella.
       - Si colisiona con un jugador, se comporta igual que con los spikes.
     """
-    def __init__(self, x, y):
+    def __init__(self, x, y, width, height, path = True):
         # Cargamos el sprite sheet del enemigo (por ejemplo, un murciélago).
-        self.spritesheet = pygame.image.load(
-            f"../Art/{ConfigManager().get_instance().get_artpath()}/bat/bat_spritesheet.png"
-        )
-        # Determinamos el ancho y alto; aquí se usa la imagen completa.
-        width = self.spritesheet.get_width()
-        height = self.spritesheet.get_height()
-        
+        if path:
+           self.spritesheet = pygame.Surface((60, 60))
+           self.spritesheet.fill((0, 0, 0))
+
         # Llamamos al constructor de Entity para establecer posición y el rectángulo de colisión.
         super().__init__(x, y, width, height)
-        
         # Asignamos la imagen completa como superficie inicial.
-        self.surf = self.spritesheet.copy()
-        # Actualizamos el rectángulo para la posición inicial.
-        self.rect = self.surf.get_rect(topleft=(x, y))
-        self.pos = vec(x, y)
-        
+        self.surf = self.spritesheet.subsurface(pygame.Rect(0,0,self.width, self.height))
         # Configuración de velocidad y movimiento.
         self.vel = vec(1, 1)      # Velocidad inicial genérica.
         self.speed = 2            # Factor de velocidad.
         self.change_direction_interval = 60  # Opcional: intervalos para cambiar dirección.
-        self.frame_counter = 0
-        
+        self.frame_counter = 0 
         # Dimensiones de la pantalla (para rebotar en los bordes).
         self.screen_width = ConfigManager().get_instance().get_width()
         self.screen_height = ConfigManager().get_instance().get_height()
-        
         # Variables para animación.
         self.animation_timer = 0
         self.frame_rate = 10
@@ -100,7 +91,12 @@ class Enemy(Entity):
                 # Al colisionar con un jugador, invertimos la velocidad.
                 self.vel = -self.vel
                 self.current_action = "death"
-
+            if isinstance(hit, Stone):
+                print("Enemy Colisión con Stone detectada")
+                # Al colisionar con un jugador, invertimos la velocidad.
+                self.vel = -self.vel
+                self.current_action = "death"
+                
     def update(self, platforms=None):
         """
         Actualiza el estado del enemigo: mueve la entidad, resuelve colisiones y actualiza la animación.

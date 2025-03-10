@@ -6,24 +6,17 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Ghost(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y)
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/ghost/spritesheet.png")
-        self.rect = self.spritesheet.get_rect()
-        self.width = self.spritesheet.get_width() / 10
-        self.height = self.spritesheet.get_height()
+        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/ghost/sprite_sheet.png")
+        super().__init__(x,y, (self.spritesheet.get_width() / 5), self.spritesheet.get_height(), False )
         self.pos = vec(x, y)
         self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = 0.5 
         self.frames = {
             "idle": [(0, 0)],
-            "walk": [(i * self.width, 0) for i in range(4)],
-            "death": [((self.width * 8) + (i * self.width), 0) for i in range(2)]
+            "walk": [(i * self.width, 0) for i in range(2)],
+            "death": [((self.width * 2) + (i * self.width), 0) for i in range(3)]
         }
-        self.current_action = "walk"
-        self.animation_timer = 0
         self.frame_rate = 16
-        self.index = 0
-        self.screen_width = pygame.display.get_surface().get_width()  # Obtener el ancho de la pantalla
         self.move_distance = 0  # Distancia recorrida en una dirección
 
     def move(self):
@@ -47,9 +40,7 @@ class Ghost(Enemy):
     def draw(self):
         action_frames = self.frames[self.current_action]
         frame = action_frames[self.index]
-
         sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], 60, 50))
-
         if self.vel.x < 0:
             sprite_image = pygame.transform.flip(sprite_image, True, False)
 

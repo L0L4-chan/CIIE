@@ -7,22 +7,19 @@ vec = pygame.math.Vector2  # 2 for two dimensional
 
 class Devil(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y)
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_spritesheet.png")
-        self.rect = self.spritesheet.get_rect()
+        super().__init__(x,y, (self.spritesheet.get_width() /4), self.spritesheet.get_height(), False )
         self.pos = vec(x, y)
         self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = 0.5 
         self.frames = {
             "idle": [(0, 0)],
-            "walk": [(i * 64, 0) for i in range(3)],
+            "walk": [(i * self.width, 0) for i in range(4)],
         }
-        self.current_action = "walk"
-        self.animation_timer = 0
         self.frame_rate = 16
-        self.index = 0
-        self.screen_width = pygame.display.get_surface().get_width()  # Obtener el ancho de la pantalla
         self.move_distance = 0  # Distancia recorrida en una dirección
+
+        self.frame_rate = 16
         self.projectiles = Stone()
         self.group.add(self.projectiles)
         self.direction = 0
