@@ -39,9 +39,7 @@ class Devil(Enemy):
 
         self.rect.center = self.pos
         
-    def draw(
-        self, surface, bgsurf=None, special_flags=0
-    ):
+    def draw(self):
         action_frames = self.frames[self.current_action]
         frame = action_frames[self.index]
 
@@ -59,8 +57,6 @@ class Devil(Enemy):
                 self.index = 0
             self.animation_timer = 0
 
-        surface.blit(self.surf, self.rect.topleft)
-
     def update(self):
         if self.vel.x != 0:
             self.current_action = "walk"
@@ -68,7 +64,7 @@ class Devil(Enemy):
             self.current_action = "idle"
 
         self.move()
-        self.draw(pygame.display.get_surface())
+        self.draw()
         
         self.projectiles.update(self.group)
     
