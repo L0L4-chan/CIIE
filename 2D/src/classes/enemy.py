@@ -98,6 +98,7 @@ class Enemy(Entity):
                 print("Enemy Colisión con Player detectada")
                 # Al colisionar con un jugador, invertimos la velocidad.
                 self.vel = -self.vel
+                self.current_action = "death"
 
     def update(self, platforms=None):
         """
@@ -129,8 +130,4 @@ class Enemy(Entity):
                 self.index = 0
             self.animation_timer = 0
 
-
-       
-
-   
 

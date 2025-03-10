@@ -56,7 +56,7 @@ class Game(Base):
         for sprite in self.scene.sprites:
             if isinstance(sprite, Enemy):
                 self.enemies.append(sprite)
-                self.scene.sprites.remove(sprite)
+                #self.scene.sprites.remove(sprite)
      
         self.sprites.add(self.player)
 

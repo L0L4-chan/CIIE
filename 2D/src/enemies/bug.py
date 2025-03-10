@@ -30,7 +30,9 @@ class Bug(Enemy):
 
         self.rect.center = self.pos
         
-    def draw(self, surface):
+    def draw(
+        self, surface, bgsurf=None, special_flags=0
+    ):
         action_frames = self.frames[self.current_action]
         frame = action_frames[self.index]
 

@@ -27,14 +27,25 @@ class Bat(Enemy):
     def move(self):
         # Movimiento del murciélago: se mueve en un patrón de zigzag
         self.pos.x += self.vel.x * self.speed
-        self.pos.y += math.sin(self.pos.x * 0.1) * self.speed * 10
+        self.pos.y += math.sin(self.pos.x * 0.1) * self.speed * 5
+        self.move_distance += abs(self.vel.x * self.speed)
+
+        if self.move_distance >= 100:
+            self.vel.x = -self.vel.x  # Cambiar de dirección
+            self.move_distance = 0
 
         if self.pos.x > self.screen_width - self.rect.width or self.pos.x < 0:
             self.vel.x = -self.vel.x  # Cambiar de dirección en X
+        
+        if self.pos.y > 300 or self.pos.y < 100:
+            self.vel.y = -self.vel.y
 
+        
         self.rect.center = self.pos
         
-    def draw(self, surface):
+    def draw(
+        self, surface, bgsurf=None, special_flags=0
+    ):
         action_frames = self.frames[self.current_action]
         frame = action_frames[self.index]
 

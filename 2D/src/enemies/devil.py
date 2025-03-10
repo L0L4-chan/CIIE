@@ -1,6 +1,7 @@
 import pygame
 from classes.enemy import Enemy
 from game.configManager import ConfigManager
+from game.objects.stone import Stone
 
 vec = pygame.math.Vector2  # 2 for two dimensional
 
@@ -22,19 +23,26 @@ class Devil(Enemy):
         self.index = 0
         self.screen_width = pygame.display.get_surface().get_width()  # Obtener el ancho de la pantalla
         self.move_distance = 0  # Distancia recorrida en una dirección
+        self.projectiles = Stone()
+        self.group = pygame.sprite.Group()
+        self.group.add(self.projectiles)
+        self.direction = 0
 
     def move(self):
         self.pos.x += self.vel.x * self.speed
         self.pos.y += self.vel.y * self.speed
         self.move_distance += abs(self.vel.x * self.speed)
 
-        if self.move_distance >= 20:
+        if self.move_distance >= 100:
             self.vel.x = -self.vel.x  # Cambiar de dirección
+            self.direction = 1 if self.direction == 0 else 0
             self.move_distance = 0  # Reiniciar la distancia recorrida
 
         self.rect.center = self.pos
         
-    def draw(self, surface):
+    def draw(
+        self, surface, bgsurf=None, special_flags=0
+    ):
         action_frames = self.frames[self.current_action]
         frame = action_frames[self.index]
 
@@ -62,3 +70,14 @@ class Devil(Enemy):
 
         self.move()
         self.draw(pygame.display.get_surface())
+        
+        self.projectiles.update(self.group)
+    
+
+    def shoot(self):
+        if self.direction:
+            stone_x = self.pos.x + (self.rect.width * self.direction)
+        else:
+            stone_x = self.pos.x - (self.rect.width)
+        stone_y = self.rect.y + (self.height / 2)
+        self.projectiles.active(x=stone_x, y=stone_y, direction=self.direction)
