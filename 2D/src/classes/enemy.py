@@ -120,7 +120,6 @@ class Enemy(Entity):
                 self.check_respawn()
         
     def check_respawn(self):
-        print(self.respawn_time)
         if self.respawn_time <=0:
             self.respawn_time = 3600
             self.not_death = True
@@ -161,7 +160,6 @@ class Enemy(Entity):
         self.lifes -= 1
         if self.lifes<= 0:
             self.not_death = False
-            print("linea 158 ", self.not_death)
             self.rect.topleft = (-100, -100)
             self.sound.play()
     

@@ -9,14 +9,14 @@ class Devil(Enemy):
     
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_spritesheet.png")
-        super().__init__(x,y, (self.spritesheet.get_width() /4), self.spritesheet.get_height(), False )
+        super().__init__(x,y, (self.spritesheet.get_width() /6), self.spritesheet.get_height(), False )
         self.pos = vec(x, y)
         self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = 0.5 
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(i * self.width, 0) for i in range(4)],
-            "death": [(0, 0)]
+            "death": [((self.width * 4 )+(i * self.width), 0) for i in range(2)]
         }
         self.frame_rate = 16
         self.move_distance = 0  # Distancia recorrida en una dirección
