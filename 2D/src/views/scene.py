@@ -104,9 +104,6 @@ class Scene():
         chest = Chest(x, y, "lungs")
         self.chestgroup.add(chest)
         self.it.add(chest.get_prize())
-    
-    def spawn_enemies(self, x, y):
-       self.enemies.add(Ghost(x,y))
         
     def update(self):
         self.check_chest()     
@@ -128,24 +125,3 @@ class Scene():
                 x, y, pz = next((cx, cy, cpz) for cx, cy, cpz in self.chest_list if (cx, cy) == pos)
                 self.spawn_chest(x, y)
                 del self.respawn_timer[pos]
-                
-    def check_enemy(self):
-        if len(self.enemies) == self.num_enemies:
-            return
-        current_enemies = [(enemies.rect.x, enemies.rect.y) for enemies in self.enemies]
-        missing_enemies = [(x, y) for (x, y) in self.enemy_list if (x, y) not in current_enemies]
-
-        for x, y in missing_enemies:
-            pos = (x, y)
-            if pos not in self.respawn_timer:
-                self.respawn_timer[pos] = pygame.time.get_ticks() + 60000
-
-        current_time = pygame.time.get_ticks()
-        for pos, respawn_time in list(self.respawn_timer.items()):
-            if current_time >= respawn_time:
-                x, y = next((cx, cy,) for cx, cy in self.enemy_list if (cx, cy) == pos)
-                self.spawn_enemies(x, y)
-                del self.respawn_timer[pos]
-        
-
-                

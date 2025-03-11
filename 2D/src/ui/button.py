@@ -15,7 +15,7 @@ class Button():
         self.image_path = image_path
         self.hover_image_path = hover_image_path
         self.is_hovering = False  # Estado para saber si el mouse está sobre el botón
-        
+        self.sound = pygame.mixer.Sound("../Sound/FX/button.wav")
         # Cargar imagen normal
         if image_path:
             self.image = self.load_and_scale_image(image_path, scale)
@@ -80,6 +80,7 @@ class Button():
 
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            self.sound.play()
             return True
         return False
 

@@ -23,7 +23,7 @@ class Enemy(Entity):
       - Si cae sobre una plataforma, se asienta sobre ella.
       - Si colisiona con un jugador, se comporta igual que con los spikes.
     """
-    def __init__(self, x, y, width, height, path = True):
+    def __init__(self, x, y, width, height,  path = True):
         # Cargamos el sprite sheet del enemigo (por ejemplo, un murciélago).
         if path:
            self.spritesheet = pygame.Surface((60, 60))
@@ -32,7 +32,7 @@ class Enemy(Entity):
         super().__init__(x, y, width, height)
         # Asignamos la imagen completa como superficie inicial.
         self.surf = self.spritesheet.subsurface(pygame.Rect(0,0,self.width, self.height))
-        # Configuración de velocidad y movimiento.
+        # Configuración de velocidad y movimiento
         self.vel = vec(1, 1)      # Velocidad inicial genérica.
         self.speed = 2            # Factor de velocidad.
         self.change_direction_interval = 60  # Opcional: intervalos para cambiar dirección.
@@ -54,7 +54,12 @@ class Enemy(Entity):
         self.group = pygame.sprite.Group()
         self.on_screen = False
         self.hit = False
+        self.not_death = True
+        self.respawn_time = 3600
+        self.respaw_x = x
+        self.respaw_y = y
         self.lifes = 1
+        self.sound = pygame.mixer.Sound("../Sound/FX/hit.wav")
 
     #funcion que gestiona el movimiento
     def move(self):
@@ -92,20 +97,38 @@ class Enemy(Entity):
                 # Al colisionar con un jugador, invertimos la velocidad.
                 if not self.hit:
                     hit.hit()
-                    self.die()
-           
-            
+                    self.die()       
         
     #funcion que actualiza la posicion del jugador si es necesario            
     def update(self):
-        if self.on_screen:
-            self.animation_timer += 1
-            self.move()
-            if self.vel.x != 0:
-                self.current_action = "walk"
+        if self.on_screen :
+            if self.not_death:
+                self.animation_timer += 1
+                self.move()
+                if self.vel.x != 0:
+                    self.current_action = "walk"
+                else:
+                    self.current_action = "idle"       
             else:
-                self.current_action = "idle"       
-    
+                self.respawn_time -=1
+                self.check_respawn()
+
+        else:
+      
+            if not self.not_death:
+                self.respawn_time -= 1
+                self.check_respawn()
+        
+    def check_respawn(self):
+        print(self.respawn_time)
+        if self.respawn_time <=0:
+            self.respawn_time = 3600
+            self.not_death = True
+            self.life = 1
+            self.hit =False
+            self.rect = self.surf.get_rect(topleft=(self.respaw_x, self.respaw_y))
+
+            
     def render(self):
         action_frames = self.frames[self.current_action]
         if self.animation_timer > self.frame_rate:
@@ -121,7 +144,7 @@ class Enemy(Entity):
     
     #funcion de dibujado en pantalla
     def draw(self, screen= None, position = None):
-        if self.on_screen:
+        if self.on_screen and self.not_death:
             self.render()
             screen.blit(self.surf,position)  
         
@@ -137,7 +160,10 @@ class Enemy(Entity):
     def wounded(self):
         self.lifes -= 1
         if self.lifes<= 0:
-            self.kill()
+            self.not_death = False
+            print("linea 158 ", self.not_death)
+            self.rect.topleft = (-100, -100)
+            self.sound.play()
     
     #funcion que establece un objetivo para el enemigo    
     def set_objective(self, position_player=None):
