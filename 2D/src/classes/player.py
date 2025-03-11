@@ -69,8 +69,13 @@ class Player(Entity):
         self.group.add(self.projectiles)
         # Grupo local para las plataformas (se usa para pasar las colisiones, normalmente se llena en Game)
         self.platform = pygame.sprite.Group()
-        # <--- Aquí definimos el grupo de enemigos que se usará en las colisiones.
-        self.enemy_group = pygame.sprite.Group()  # Inicialmente vacío; desde Game o en otro módulo lo llenas.
+
+        self.animation_map = {  
+            "idle": self.animation_idle,
+            "shoot": self.animation_shoot,
+            "death": self.animation_death
+        }
+      
         # Diccionario de acciones para las entradas.
         self.action_map = {
             pygame.K_LEFT: self.handle_walk_left,
