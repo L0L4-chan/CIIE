@@ -11,6 +11,7 @@ Version: 1.0.0
 import pygame
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
+from game.objects.fireball import Fireball
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
 from game.objects.decor.chest import Chest
@@ -199,7 +200,14 @@ class Player(Entity):
             if isinstance(hit, Enemy):
                 if not self.die and self.death_timer > 100:
                     self.to_die()
-            
+                hit.die()
+                
+            # --- COLISIONES CON STONE O FIREBALL---
+            if isinstance(hit, Stone) or isinstance(hit, Fireball):
+                if not self.die and self.death_timer > 100:
+                    self.to_die()
+                hit.hit()
+              
             # --- COLISIONES CON SWITCH ---
             if isinstance(hit, Switch):
                 if self.pos.y == hit.rect.topleft[1] + 1:

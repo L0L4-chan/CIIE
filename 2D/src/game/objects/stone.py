@@ -10,14 +10,14 @@ Version: 1.0.0
 '''
 
 import pygame
-from game.configManager import ConfigManager
 from game.objects.oneuse import OneUse
 
 class Stone(OneUse):
     
     #funcion de inicializacion de plataformas (modificar para pasar la altura por parametros cuando se tengan los escenarios)
     def __init__(self):
-        super().__init__("stone/001.png") 
+        self.path = "stone/001.png"
+        super().__init__(self.path) 
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
         self.counter = 3

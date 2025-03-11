@@ -148,7 +148,6 @@ class Enemy(Entity):
     #gestionamos la colision y muerte
     def die(self):
         if not self.hit:
-            # Al colisionar con un jugador, invertimos la velocidad.
             self.vel = -self.vel
             self.current_action = "death"
             self.hit = True

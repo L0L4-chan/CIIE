@@ -32,7 +32,6 @@ class Scene():
         self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/levels/{ConfigManager().get_instance().get_difficulty()}/{file}")
         self.platform = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
-        self.projectil = pygame.sprite.Group()
         self.it = pygame.sprite.Group()
         self.chest = 0
         self.num_enemies=0
@@ -82,7 +81,7 @@ class Scene():
                 devil = Devil(x,y)
                 self.enemies.add(devil)
                 self.num_enemies +=1
-                self.projectil.add(devil.group)
+                self.it.add(devil.projectiles)
 
         if self.items.get("bat"):
             for (x,y) in self.items["bat"]:
@@ -97,7 +96,9 @@ class Scene():
         if self.items.get("boss"):
             for (x,y) in self.items["boss"]:
                 self.num_enemies +=1
-                self.enemies.add(Boss(x,y))
+                boss = Boss(x,y)
+                self.enemies.add(boss)
+                self.it.add(boss.group)
         
     
     def spawn_chest(self, x, y):
