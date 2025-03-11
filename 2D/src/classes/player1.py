@@ -22,13 +22,20 @@ class Player1(Player):
         self.action_map.update({pygame.K_a: self.handle_shield})
         
     def handle_shield(self):
+        if not self.shield:
             self.current_action = "shield"
             self.shield = True
+            self.index = 0
             
-    def draw(self):
+    def render(self):
         if self.current_action == "shield" and self.index >= self.end_index:
             self.shield = False
             self.shield_counter = 0
-        super().draw()    
+            self.index = 0
+        else:
+            self.shield = False
+        super().render()    
         
-       
+    def to_die(self):
+        if not self.shield:
+            super().to_die()

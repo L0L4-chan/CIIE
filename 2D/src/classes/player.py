@@ -69,12 +69,6 @@ class Player(Entity):
         self.group.add(self.projectiles)
         # Grupo local para las plataformas (se usa para pasar las colisiones, normalmente se llena en Game)
         self.platform = pygame.sprite.Group()
-
-        self.animation_map = {  
-            "idle": self.animation_idle,
-            "shoot": self.animation_shoot,
-            "death": self.animation_death
-        }
       
         # Diccionario de acciones para las entradas.
         self.action_map = {
@@ -134,27 +128,35 @@ class Player(Entity):
         self.action_frames = self.frames[self.current_action]
         self.end_index = len(self.action_frames)
 
+    def end_shooting(self):
+        self.shooting = False
+        self.shoot()
+        self.current_action = "idle"
+        self.index = 0
+
+    def end_of_death(self): 
+        self.death_sound.play()
+        self.index = 0
+        self.lifes -= 1
+        self.die = False
+        self.power_up = False
+        self.jumping = False 
+        self.shooting = False
+        self.death_timer = 0
+        self.pos.x = self.respawn_x
+        self.pos.y = self.respawn_y
+        self.rect.topleft = [self.respawn_x, self.respawn_y]
+        self.current_action = "idle"
+      
     def render(self):
         if self.animation_timer > self.frame_rate:
             if self.current_action == "shoot" and self.index >= self.end_index - 1:
-                self.shooting = False
-                self.shoot()
-                self.current_action = "idle"
-                self.index = 0
+                self.end_shooting()
             elif self.current_action == "death" and self.index >= self.end_index - 1:
                 if self.lifes >= 0:
-                    self.death_sound.play()
-                    self.index = 0
-                    self.lifes -= 1
-                    self.die = False
-                    self.power_up = False
-                    self.jumping = False 
-                    self.shooting = False
-                    self.death_timer = 0
-                    self.pos.x = self.respawn_x
-                    self.pos.y = self.respawn_y
-                    self.rect.topleft = [self.respawn_x, self.respawn_y]
-                    self.current_action = "idle"
+                    self.end_of_death()
+                else:
+                    self.index -=1        
             elif self.current_action == "idle" or self.index == self.end_index:
                 self.index = 0
             frame = self.action_frames[self.index]
@@ -167,7 +169,8 @@ class Player(Entity):
 
     #funcion de dibujado en pantalla
     def draw(self, screen, position = None):
-        self.render()
+        if self.animation_timer > self.frame_rate:
+            self.render()
         screen.blit(self.surf,position)  
 
     #funcion de gestion de disparo
@@ -188,19 +191,14 @@ class Player(Entity):
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:
-                    self.die = True
                     self.pos.y = hit.rect.top + 1
-                    self.current_action = "death"
-                    self.animation_timer = self.frame_rate + 1
+                    self.to_die()
             
             # --- COLISIONES CON ENEMY ---
             from classes.enemy import Enemy  # Importación local
             if isinstance(hit, Enemy):
                 if not self.die and self.death_timer > 100:
-                    self.die = True
-                    self.pos.y = hit.rect.top + 1
-                    self.current_action = "death"
-                    self.animation_timer = self.frame_rate + 1
+                    self.to_die()
             
             # --- COLISIONES CON SWITCH ---
             if isinstance(hit, Switch):
@@ -265,6 +263,12 @@ class Player(Entity):
                 hit.sound.play()
             hit.being_pick()
 
+    def to_die(self):
+        self.die = True
+        self.current_action = "death"
+        self.index = 0
+        self.animation_timer = self.frame_rate + 1
+    
     def update(self):
         self.animation_timer += 1
         self.death_timer += 1

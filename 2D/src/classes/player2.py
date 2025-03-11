@@ -32,11 +32,11 @@ class Player2(Player1):
             self.index = 0
             self.bomb_counter = 0
     
-    def draw(self):
+    def render(self):
         if self.current_action == "bomb" and self.index >= self.end_index-1:
             self.bombing = False
             self.explode()
-        super().draw()
+        super().render()
     
     def move(self, platforms):
         if not self.bombing:

@@ -20,7 +20,7 @@ class Stone(OneUse):
         super().__init__("stone/001.png") 
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
-        self.counter = 5
+        self.counter = 3
         
         
     def active(self, x, y ,direction ):
@@ -46,6 +46,6 @@ class Stone(OneUse):
             if not self.on_screen and self.counter <= 0:
                 self.inUse = False
                 self.stand_by()
-                self.counter = 5
+                self.counter = 3
                 
  

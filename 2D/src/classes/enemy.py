@@ -155,14 +155,13 @@ class Enemy(Entity):
             self.wounded()
     
     def wounded(self):
-        print(self.lifes)
         self.lifes -= 1
         if self.lifes<= 0:
             self.not_death = False
             self.rect.topleft = (-100, -100)
             self.sound.play()
         else:
-            self.rect.move(0,30)
+            #self.rect.move(0,30)
             self.hit = False
     #funcion que establece un objetivo para el enemigo    
     def set_objective(self, position_player=None):
