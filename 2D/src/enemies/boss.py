@@ -99,5 +99,4 @@ class Boss(Enemy):
             GameManager().get_instance().scene.running= False
             GameManager().get_instance().load_start("st5.json")
         else:
-            #self.rect.move(0,30)
             self.hit = False

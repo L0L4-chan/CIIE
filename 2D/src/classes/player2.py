@@ -49,6 +49,7 @@ class Player2(Player1):
         else:
             heart_x = self.pos.x - (self.rect.width)
         heart_y = self.rect.y + ((self.height) /2)
+        self.heart.set_Platform(self.platform)
         self.heart.active(x= int( heart_x), y = int(heart_y), direction= self.direction)
         self.bomb_counter = 0 
     

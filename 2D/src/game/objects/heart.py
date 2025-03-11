@@ -30,7 +30,11 @@ class Heart(OneUse):
         self.image = self.spritesheet.subsurface(self.frames["bomb"][0]) 
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
+        self.platform = pygame.sprite.Group()
         self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
+    
+    def set_Platform(self,platform):
+        self.platform = platform
     
     #funcion que lo activa para reutilización    
     def active(self,  x, y ,direction):
@@ -53,24 +57,18 @@ class Heart(OneUse):
         else:
             self.sound.play
             super().set_use()
-    '''
-     def onCollision(self, hit):
-        if isinstance(hit, Platforms):
-            if self.acc > 0:
-                if self.rect.y + self.height > hit.rect.top:  # Si toca la plataforma
-                    self.rect.y = hit.rect.top - self.height  # Ajustar posición
-                    self.acc = 0  # Detener caída
-        elif isinstance(hit, Breakable):
-            hit.start_break() 
-    '''
             
-    def update(self, object = None):
+    def stand_by(self): 
+        self.rect.topleft = (-100, -100)  # La sacamos de la pantalla
+        self.speed = 0
+            
+    def update(self,):
         if(self.inUse):
             self.animation_timer += 1
             self.vel_y += self.acc  # Aumenta la velocidad con la gravedad
             self.rect.y += self.vel_y  # Aplica la velocidad a la posición
             #manejo de collisiones 
-            hits = pygame.sprite.spritecollide(self, object, False)
+            hits = pygame.sprite.spritecollide(self,self.platform, False)
             #if isInstace(hit, Breakable)>= self.frames[self.index]:
             #    hits.to_break() #desaparecera por lo tanto 
             if self.acc > 0:      
@@ -83,3 +81,5 @@ class Heart(OneUse):
                         hit.on_bomb_Collision()  
             if self.animation_timer > self.frame_rate:
                 self.animation()     
+        else:
+            self.stand_by()
