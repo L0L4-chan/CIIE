@@ -26,7 +26,7 @@ class Boss(Enemy):
             "death": [((self.width * 9 )+(i * self.width), 0) for i in range(2)]
         }
         self.sound = pygame.mixer.Sound("../Sound/FX/win.wav")
-        self.lifes = 3
+        self.lifes = 25
         for i in range(5):
             self.group.add(Fireball())
 
@@ -94,7 +94,6 @@ class Boss(Enemy):
                                        
     def wounded(self):
         self.lifes -= 1
-        print(self.lifes)
         if self.lifes<= 0:
             self.sound.play()
             GameManager().get_instance().scene.running= False
