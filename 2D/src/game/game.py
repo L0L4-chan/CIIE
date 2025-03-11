@@ -84,7 +84,7 @@ class Game(Base):
         # Capa informacion se actualiza
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values(): #carga botones
-            btn.changeColor(mouse_pos)
+            btn.update(mouse_pos)
         self.group_lifes.empty()  # Limpia las vidas actuales antes de agregar las nuevas
         for i in range(self.player.get_lifes()): 
             self.group_lifes.add(Lifes( x = 50 + (i * 40), y = 50))#todo make dinamic
