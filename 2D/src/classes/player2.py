@@ -38,9 +38,9 @@ class Player2(Player1):
             self.explode()
         super().render()
     
-    def move(self, platforms):
+    def move(self):
         if not self.bombing:
-            super().move(platforms)
+            super().move()
     
         
     def explode(self):
@@ -52,7 +52,7 @@ class Player2(Player1):
         self.heart.active(x= int( heart_x), y = int(heart_y), direction= self.direction)
         self.bomb_counter = 0 
     
-    def update(self, platforms):
+    def update(self):
         self.bomb_counter +=1
-        super().update(platforms)
+        super().update()
         

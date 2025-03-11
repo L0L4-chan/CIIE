@@ -164,5 +164,6 @@ class Enemy(Entity):
             #self.rect.move(0,30)
             self.hit = False
     #funcion que establece un objetivo para el enemigo    
+    
     def set_objective(self, position_player=None):
         self.objective = position_player
