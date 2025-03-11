@@ -9,10 +9,8 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import utils.auxiliar as auxiliar
 from game.gameManager import GameManager
-from game.objects.decor.platforms import Platforms
-from game.event import Event
+from game.objects.decor.event import Event
 
 
 class LastEvent(Event):

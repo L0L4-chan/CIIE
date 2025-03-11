@@ -31,10 +31,9 @@ class Game(Base):
         self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
         self.path = ConfigManager().get_instance().get_artpath()
         self.sprites = pygame.sprite.Group()
-        self.floor = pygame.sprite.Group()
-        self.items = pygame.sprite.Group()
-        self.items_enemies = pygame.sprite.Group()
         self.group_lifes = pygame.sprite.Group()
+        self.in_scene = pygame.sprite.Group()
+        self.in_scene_now = pygame.sprite.Group() #elemetos en escena ahora
         self.clock =  GameManager().get_instance().clock
         self.FPS = ConfigManager().get_instance().get_fps()
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
@@ -53,11 +52,16 @@ class Game(Base):
             "pause": pauseb
         } 
         self.player = GameManager().get_instance().player
-        self.enemies=self.scene.enemies
+        #grupo para jugador y enemigos
         self.sprites.add(self.player)
-        self.sprites.add(self.enemies)
-        self.floor = self.scene.sprites
-        self.sprites.add(self.floor)
+        self.sprites.add(self.scene.enemies)
+        #grupo para elementos en escena para collisiones
+        self.in_scene.add(self.scene.enemies)
+        self.scene.it.add(self.player.get_group())
+        self.in_scene.add(self.scene.it)
+        self.in_scene.add(self.scene.platform)
+        
+        self.player.set_platform(self.scene.platform)
        
     
     #game loop se modificara si es necesario cuando se tengan los niveles
@@ -73,24 +77,10 @@ class Game(Base):
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                     GameManager().get_instance().load_pause()
     
-    def update(self): 
-        it_aux = pygame.sprite.Group() 
+    def update(self):    
         self.scene.update()     
-        #Capa jugador se actualiza
-        it_aux.add(self.items)
-        it_aux.add(self.sprites)
-        self.player.update(it_aux) #actualiza al player
-        self.items = self.player.group  #añade piedras al grupo de piedras para su visualizacion
-        it_aux.add(self.items)
-        it_aux.add(self.sprites)
-        it_aux = pygame.sprite.Group() 
-        for enemy in self.enemies:
-            enemy.update(it_aux)
-            it_aux.add(enemy.group)
-        self.items.add(it_aux)
-        
-        self.items.update(self.sprites)
-        self.floor.update()
+        self.player.update()
+        self.in_scene.update()
         # Capa informacion se actualiza
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values(): #carga botones
@@ -99,23 +89,20 @@ class Game(Base):
         for i in range(self.player.get_lifes()): 
             self.group_lifes.add(Lifes( x = 50 + (i * 40), y = 50))#todo make dinamic
         self.camera.update(self.player)
-        self.camera.check_elements_on_screen(self.floor)
+        self.in_scene_now = self.camera.check_elements_on_screen(self.in_scene)
+        
+    def collision(self):
+        for item in self.sprites:
+             item.collision_managment(self.in_scene_now)
+        self.in_scene_now.add(self.player)
                 
     def render(self):
         # Dibujado: el fondo y cada objeto se dibujan desplazados
         self.screen.blit(self.bg, (-self.camera.offset.x, -self.camera.offset.y))
         #capa escenario se actualiza
-        for platform in self.floor: #carga plataformas
-            if platform.on_screen:
-                platform.draw(self.screen, self.camera.apply(platform.rect).topleft)        
-        self.screen.blit(self.player.surf, self.camera.apply(self.player.rect).topleft)
-        
-        for enemy in self.enemies:
-            #if enemy.on_screen:
-            self.screen.blit(enemy.surf, self.camera.apply(enemy.rect).topleft)
-        
-        for item in self.items:
-            item.draw(screen = self.screen, position = self.camera.apply(item.rect).topleft)           
+        for item in self.in_scene_now: #carga plataformas
+                item.draw(self.screen, self.camera.apply(item.rect).topleft)                
+    
         
         for item in self.group_lifes:
             item.draw(self.screen)
@@ -136,8 +123,6 @@ class Game(Base):
         pygame.mixer.stop()
         # Vaciar grupos de sprites
         self.sprites.empty()
-        self.floor.empty()
-        self.items.empty()
         self.group_lifes.empty()
         # Limpiar referencias a objetos importantes
         self.player = None
@@ -159,7 +144,9 @@ class Game(Base):
             self.clock.tick(self.FPS) # indicamos el numero de frames por segundo
             self.handle_events()
             self.update()
+            self.collision()
             self.render()
+
         
             
             

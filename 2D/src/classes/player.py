@@ -11,15 +11,14 @@ Version: 1.0.0
 import pygame
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
-from game.objects.decor.platforms import Platforms
 from game.objects.decor.spikes import Spikes
 from game.objects.decor.switch import Switch
 from game.objects.decor.chest import Chest
-from game.event import Event
+from game.objects.decor.event import Event
 from game.objects.lungs import Lungs
 from game.objects.key import Key
 from game.objects.extra import Extra
-from game.entity import Entity
+from classes.entity import Entity
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -76,7 +75,7 @@ class Player(Entity):
         self.action_map = {
             pygame.K_LEFT: self.handle_walk_left,
             pygame.K_RIGHT: self.handle_walk_right,
-            pygame.K_SPACE: lambda: self.handle_jump(self.platform),
+            pygame.K_SPACE: self.handle_jump,
             pygame.K_q: self.handle_shoot
         }
 
@@ -97,8 +96,8 @@ class Player(Entity):
         self.direction = 1
         self.current_action = "walk"
 
-    def handle_jump(self, platforms):
-        hits = pygame.sprite.spritecollide(self, platforms, False)
+    def handle_jump(self):
+        hits = pygame.sprite.spritecollide(self, self.platform, False)
         if hits and not self.jumping:
             self.jumping = True
             self.vel.y = self.jump_Max
@@ -111,11 +110,11 @@ class Player(Entity):
             self.shooting = True
             self.current_action = "shoot"
 
-    def move(self, platforms):
+    def move(self):
         if not self.shooting and not self.die:
             self.acc = vec(0, self.y_acc_value)
             pressed_keys = pygame.key.get_pressed()
-            self.platform = platforms
+
             if not any(pressed_keys):
                 self.handle_idle()
                 self.pushing = False
@@ -126,38 +125,44 @@ class Player(Entity):
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
-            self.rect.midbottom = self.pos
             self.update_rect()
         self.action_frames = self.frames[self.current_action]
         self.end_index = len(self.action_frames)
 
-    def draw(self):
-        if self.current_action == "shoot" and self.index >= self.end_index - 1:
-            self.shooting = False
-            self.shoot()
-            self.current_action = "idle"
-            self.index = 0
-        elif self.current_action == "death" and self.index >= self.end_index - 1:
-            if self.lifes >= 0:
-                self.death_sound.play()
-                self.index = 0
-                self.lifes -= 1
-                self.die = False
-                self.death_timer = 0
-                self.pos.x = self.respawn_x
-                self.pos.y = self.respawn_y
-                self.rect.topleft = [self.respawn_x, self.respawn_y]
+    def render(self):
+        if self.animation_timer > self.frame_rate:
+            if self.current_action == "shoot" and self.index >= self.end_index - 1:
+                self.shooting = False
+                self.shoot()
                 self.current_action = "idle"
-        elif self.current_action == "idle" or self.index == self.end_index:
-            self.index = 0
-        frame = self.action_frames[self.index]
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
-        if self.direction == 0:
-            sprite_image = pygame.transform.flip(sprite_image, True, False)
-        self.surf = sprite_image
-        self.animation_timer = 0
-        self.index += 1
+                self.index = 0
+            elif self.current_action == "death" and self.index >= self.end_index - 1:
+                if self.lifes >= 0:
+                    self.death_sound.play()
+                    self.index = 0
+                    self.lifes -= 1
+                    self.die = False
+                    self.death_timer = 0
+                    self.pos.x = self.respawn_x
+                    self.pos.y = self.respawn_y
+                    self.rect.topleft = [self.respawn_x, self.respawn_y]
+                    self.current_action = "idle"
+            elif self.current_action == "idle" or self.index == self.end_index:
+                self.index = 0
+            frame = self.action_frames[self.index]
+            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
+            if self.direction == 0:
+                sprite_image = pygame.transform.flip(sprite_image, True, False)
+            self.surf = sprite_image
+            self.animation_timer = 0
+            self.index += 1
 
+    #funcion de dibujado en pantalla
+    def draw(self, screen, position = None):
+        self.render()
+        screen.blit(self.surf,position)  
+
+    #funcion de gestion de disparo
     def shoot(self):
         if self.direction:
             stone_x = self.pos.x + (self.rect.width * self.direction)
@@ -166,13 +171,10 @@ class Player(Entity):
         stone_y = self.rect.y + (self.height / 2)
         self.projectiles.active(x=stone_x, y=stone_y, direction=self.direction)
 
-
+    #definicion de colisones
     def collision_managment(self, platforms):
         # Creamos un grupo unificado: combinamos plataformas y enemigos.
         collidables = platforms.copy()  # Copiamos el grupo de plataformas.
-        if self.enemy_group and len(self.enemy_group) > 0:
-            # Añadimos todos los enemigos.
-            collidables.add(*self.enemy_group.sprites())
         # Llamamos al método genérico de colisiones de Entity.
         self.resolve_collisions(collidables, vertical_margin=10)
         # Luego, comprobamos colisiones específicas:
@@ -245,7 +247,6 @@ class Player(Entity):
             if isinstance(hit, Extra):
                     self.get_life(hit)
 
-
     def check_power_up(self):
         if self.power_up_counter >= 2000:
             self.jump_Max = ConfigManager().get_instance().get_player_jump()
@@ -259,13 +260,17 @@ class Player(Entity):
                 hit.sound.play()
             hit.being_pick()
 
-    def update(self, platforms=None):
+    def update(self):
         self.animation_timer += 1
         self.death_timer += 1
         self.power_up_counter += 1
         if self.power_up:
             self.check_power_up()
-        self.move(platforms)
-        self.collision_managment(platforms)
-        if self.animation_timer > self.frame_rate:
-            self.draw()
+        self.move()
+              
+    def get_group(self):
+        return self.group
+        
+    def set_platform(self, platform):
+        self.platform = platform
+       

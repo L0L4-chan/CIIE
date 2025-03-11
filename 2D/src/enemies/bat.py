@@ -6,6 +6,7 @@ import math
 vec = pygame.math.Vector2  # 2 for two dimensional
 
 class Bat(Enemy):
+    
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/bat/spritesheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() / 7), self.spritesheet.get_height(), False )
@@ -20,6 +21,7 @@ class Bat(Enemy):
         self.frame_rate = 10
         self.move_distance = 0  # Distancia recorrida en una dirección
 
+    #funcion que gestiona el movimiento
     def move(self):
         # Movimiento del murciélago: se mueve en un patrón de zigzag
         self.pos.x += self.vel.x * self.speed
@@ -36,18 +38,6 @@ class Bat(Enemy):
         if self.pos.y > 300 or self.pos.y < 100:
             self.vel.y = -self.vel.y 
         self.rect.center = self.pos
-        
-    def draw(self):
-        action_frames = self.frames[self.current_action]
-        if self.animation_timer > self.frame_rate:
-            self.index += 1
-            if self.index >= len(action_frames)-1:
-                self.index = 0
-            self.animation_timer = 0
-            frame = action_frames[self.index]
-            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
-            if self.vel.x < 0:
-                sprite_image = pygame.transform.flip(sprite_image, True, False)
-            self.surf = sprite_image  
+     
         
 

@@ -11,7 +11,7 @@ Version: 1.0.0
 
 import pygame
 from game.configManager import ConfigManager
-from game.entity import Entity
+from classes.entity import Entity
 from game.objects.stone import Stone
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
@@ -28,7 +28,6 @@ class Enemy(Entity):
         if path:
            self.spritesheet = pygame.Surface((60, 60))
            self.spritesheet.fill((0, 0, 0))
-
         # Llamamos al constructor de Entity para establecer posición y el rectángulo de colisión.
         super().__init__(x, y, width, height)
         # Asignamos la imagen completa como superficie inicial.
@@ -51,8 +50,13 @@ class Enemy(Entity):
             "death": [(0, 0)]
         }
         self.current_action = "walk"
+        #otras variables
         self.group = pygame.sprite.Group()
+        self.on_screen = False
+        self.hit = False
+        self.lifes = 1
 
+    #funcion que gestiona el movimiento
     def move(self):
         """
         Actualiza la posición del enemigo en función de su velocidad y rebota en los bordes.
@@ -74,43 +78,38 @@ class Enemy(Entity):
         # Actualizamos el rectángulo de colisión.
         self.update_rect()
 
+    #funcion que maneja las colisiones de los enemigos
     def collision_managment(self, platforms):
         """
         Gestiona las colisiones genéricas utilizando el método de la clase padre
         y añade la condición para colisión con un jugador (Player), comportándose igual que con spikes.
         """
-        # Llamamos al método genérico implementado en Entity.
-        self.resolve_collisions(platforms, vertical_margin=0)
-
+        # Creamos un grupo unificado: combinamos plataformas y enemigos.
+        collidables = platforms.copy()  # Copiamos el grupo de plataformas.
+        # Llamamos al método genérico de colisiones de Entity.
+        self.resolve_collisions(collidables, vertical_margin=10)
+        # Luego, comprobamos colisiones específicas:
+        hits = pygame.sprite.spritecollide(self, collidables, False)
         # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
-        hits = pygame.sprite.spritecollide(self, platforms, False)
         for hit in hits:
             print(hit)
-            # Importación local para evitar circular imports.
-            from classes.player import Player
-            if isinstance(hit, Player):
-                print("Enemy Colisión con Player detectada")
-                # Al colisionar con un jugador, invertimos la velocidad.
-                self.vel = -self.vel
-                self.current_action = "death"
             if isinstance(hit, Stone):
                 print("Enemy Colisión con Stone detectada")
                 # Al colisionar con un jugador, invertimos la velocidad.
-                self.vel = -self.vel
-                self.current_action = "death"
-                
-    def update(self, platforms=None):
-        self.animation_timer += 1
-        self.move()
-        if self.vel.x != 0:
-            self.current_action = "walk"
-        else:
-            self.current_action = "idle"       
-        if platforms is not None:
-            self.collision_managment(platforms)
-        self.draw()
-
-    def draw(self):
+                hit.set_use()
+                self.die()
+        
+    #funcion que actualiza la posicion del jugador si es necesario            
+    def update(self):
+        if self.on_screen:
+            self.animation_timer += 1
+            self.move()
+            if self.vel.x != 0:
+                self.current_action = "walk"
+            else:
+                self.current_action = "idle"       
+    
+    def render(self):
         action_frames = self.frames[self.current_action]
         if self.animation_timer > self.frame_rate:
             self.index += 1
@@ -121,7 +120,30 @@ class Enemy(Entity):
             sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
             if self.vel.x < 0:
                 sprite_image = pygame.transform.flip(sprite_image, True, False)
-            self.surf = sprite_image  
+            self.surf = sprite_image
+    
+    #funcion de dibujado en pantalla
+    def draw(self, screen= None, position = None):
+        if self.on_screen:
+            self.render()
+            screen.blit(self.surf,position)  
         
-
-
+    #gestionamos la colision y muerte
+    def die(self):
+        print("Enemy Colisión con Player detectada")
+        
+        if not self.hit:
+            # Al colisionar con un jugador, invertimos la velocidad.
+            self.vel = -self.vel
+            self.current_action = "death"
+            self.hit = True
+            self.wounded()
+    
+    def wounded(self):
+        self.lifes -= 1
+        if self.lifes<= 0:
+            self.kill()
+    
+    #funcion que establece un objetivo para el enemigo    
+    def set_objective(self, position_player=None):
+        self.objective = position_player

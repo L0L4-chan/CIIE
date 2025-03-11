@@ -58,9 +58,12 @@ class Camera:
     
      # Verificar si el rect del elemento está dentro de la vista de la cámara
     def check_elements_on_screen(self, elements):
+        in_scene = pygame.sprite.Group()
         for element in elements:
             aux = self.apply(element.rect)
             if aux.colliderect(pygame.Rect(0,0, self.screen_width, self.screen_height)):
                 element.on_screen = True
+                in_scene.add(element)
             else:
                 element.on_screen = False
+        return in_scene

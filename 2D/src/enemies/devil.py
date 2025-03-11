@@ -6,6 +6,7 @@ from game.objects.stone import Stone
 vec = pygame.math.Vector2  # 2 for two dimensional
 
 class Devil(Enemy):
+    
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/devil/devil_spritesheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() /4), self.spritesheet.get_height(), False )
@@ -24,6 +25,7 @@ class Devil(Enemy):
         self.group.add(self.projectiles)
         self.direction = 0
 
+    #funcion que gestiona el movimiento
     def move(self):
         self.pos.x += self.vel.x * self.speed
         self.pos.y += self.vel.y * self.speed
@@ -36,8 +38,7 @@ class Devil(Enemy):
 
         self.rect.center = self.pos
         
- 
-
+    #funcion para disparo
     def shoot(self):
         if self.direction:
             stone_x = self.pos.x + (self.rect.width * self.direction)

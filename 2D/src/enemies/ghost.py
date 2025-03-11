@@ -5,6 +5,7 @@ from game.configManager import ConfigManager
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Ghost(Enemy):
+    
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/ghost/sprite_sheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() / 5), self.spritesheet.get_height(), False )
@@ -19,6 +20,7 @@ class Ghost(Enemy):
         self.frame_rate = 16
         self.move_distance = 0  # Distancia recorrida en una dirección
 
+    #funcion que gestiona el movimiento
     def move(self):
         self.pos.x += self.vel.x * self.speed
         self.pos.y += self.vel.y* self.speed * 5
