@@ -17,7 +17,7 @@ class Boss(Enemy):
         self.speed = 0.5   
         self.special_timer = 300
         self.attack = 3600
-        
+        self.frame_rate = 16
         self.frames = {
             "idle": [(self.width*4, 0)],
             "walk": [(i * self.width, 0) for i in range(2)],
@@ -43,7 +43,7 @@ class Boss(Enemy):
             self.special_timer -= 1
             if self.special_timer <= 0:
                 self.current_action = "walk"  
-        elif distance_x < 100 and self.lifes < 10 and self.attack <= 0:
+        elif abs(distance_x) < 200 and self.lifes < 10 and self.attack <= 0:
             self.current_action = "magic"
             self.magic_attack()
             self.special_timer = 300
@@ -51,23 +51,25 @@ class Boss(Enemy):
             self.vel.x = self.speed * self.direction
             self.pos.x += self.vel.x
             self.update_rect()
-            if distance_x < 30 and self.lifes > 15:
+            if abs(distance_x) < 100 and self.lifes > 15:
                 self.current_action = "melee"
             else:
                 self.current_action = "walk"    
                 
     def render(self):
+        print(self.current_action)
         action_frames = self.frames[self.current_action]
-        self.index += 1
-        if self.index >= len(action_frames)-1:
+        print(len(action_frames)-1)
+        if self.index > len(action_frames)-1:
             self.index = 0
-            self.animation_timer = 0
         frame = action_frames[self.index]
         sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
         if self.direction < 0:
             sprite_image = pygame.transform.flip(sprite_image, True, False)
-        self.surf = sprite_image  
-
+        self.surf = sprite_image
+        self.animation_timer = 0  
+        self.index += 1
+                
     def magic_attack(self):
         self.proyectil.active()
             

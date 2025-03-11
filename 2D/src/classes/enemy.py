@@ -130,7 +130,7 @@ class Enemy(Entity):
         action_frames = self.frames[self.current_action]
         if self.animation_timer > self.frame_rate:
             self.index += 1
-            if self.index >= len(action_frames)-1:
+            if self.index >= len(action_frames):
                 self.index = 0
             self.animation_timer = 0
             frame = action_frames[self.index]
