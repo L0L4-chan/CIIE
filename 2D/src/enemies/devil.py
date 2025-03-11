@@ -24,7 +24,7 @@ class Devil(Enemy):
         self.projectiles = Stone()
         self.group.add(self.projectiles)
         self.direction = 0
-
+        self.lifes = 3
     #funcion que gestiona el movimiento
     def move(self):
         self.pos.x += self.vel.x * self.speed

@@ -7,7 +7,7 @@ class Button():
         self.y_pos = pos[1]
         self.base_color = (255, 255, 255)
         self.text_input = text_input
-        self.font = ConfigManager().get_instance().get_font() 
+        self.font = ConfigManager().get_instance().get_font_title() 
         self.is_hovering = False  # Estado para saber si el mouse está sobre el botón
         # Cargar imagen normal
         if image_path:

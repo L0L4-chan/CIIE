@@ -20,7 +20,7 @@ class Bat(Enemy):
         }
         self.frame_rate = 10
         self.move_distance = 0  # Distancia recorrida en una dirección
-
+        self.lifes = 2
     #funcion que gestiona el movimiento
     def move(self):
         # Movimiento del murciélago: se mueve en un patrón de zigzag
@@ -38,6 +38,7 @@ class Bat(Enemy):
         if self.pos.y > 300 or self.pos.y < 100:
             self.vel.y = -self.vel.y 
         self.rect.center = self.pos
-     
+    
+ 
         
 
