@@ -20,6 +20,7 @@ class Stone(OneUse):
         super().__init__("stone/001.png") 
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
+        self.counter = 5
         
         
     def active(self, x, y ,direction ):
@@ -29,11 +30,22 @@ class Stone(OneUse):
         self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
         self.set_use()
         
+    def hit(self):
+        self.set_use()  
+        if not self.inUse:
+            self.stand_by() 
      
+    def stand_by(self): 
+        self.rect.topleft = (-100, -100)  # La sacamos de la pantalla
+        self.speed = 0
+        
     def update(self, object = None):
         if(self.inUse):
             self.rect.x += self.speed
-            if not self.on_screen:
-                self.set_use()
+            self.counter -= 1
+            if not self.on_screen and self.counter <= 0:
+                self.inUse = False
+                self.stand_by()
+                self.counter = 5
                 
  

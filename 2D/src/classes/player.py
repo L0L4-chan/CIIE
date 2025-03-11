@@ -142,6 +142,9 @@ class Player(Entity):
                     self.index = 0
                     self.lifes -= 1
                     self.die = False
+                    self.power_up = False
+                    self.jumping = False 
+                    self.shooting = False
                     self.death_timer = 0
                     self.pos.x = self.respawn_x
                     self.pos.y = self.respawn_y
@@ -173,13 +176,10 @@ class Player(Entity):
 
     #definicion de colisones
     def collision_managment(self, platforms):
-        # Creamos un grupo unificado: combinamos plataformas y enemigos.
-        collidables = platforms.copy()  # Copiamos el grupo de plataformas.
-        # Llamamos al método genérico de colisiones de Entity.
-        self.resolve_collisions(collidables, vertical_margin=10)
-        # Luego, comprobamos colisiones específicas:
-        hits = pygame.sprite.spritecollide(self, collidables, False)
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
         for hit in hits:
+            self.resolve_collisions(hit, vertical_margin=10)
             # --- COLISIONES CON PINCHOS ---
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:

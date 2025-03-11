@@ -84,20 +84,17 @@ class Enemy(Entity):
         Gestiona las colisiones genéricas utilizando el método de la clase padre
         y añade la condición para colisión con un jugador (Player), comportándose igual que con spikes.
         """
-        # Creamos un grupo unificado: combinamos plataformas y enemigos.
-        collidables = platforms.copy()  # Copiamos el grupo de plataformas.
-        # Llamamos al método genérico de colisiones de Entity.
-        self.resolve_collisions(collidables, vertical_margin=10)
-        # Luego, comprobamos colisiones específicas:
-        hits = pygame.sprite.spritecollide(self, collidables, False)
+        hits = pygame.sprite.spritecollide(self, platforms, False)
         # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
         for hit in hits:
-            print(hit)
+            self.resolve_collisions(hit, vertical_margin=10)
             if isinstance(hit, Stone):
-                print("Enemy Colisión con Stone detectada")
                 # Al colisionar con un jugador, invertimos la velocidad.
-                hit.set_use()
-                self.die()
+                if not self.hit:
+                    hit.hit()
+                    self.die()
+           
+            
         
     #funcion que actualiza la posicion del jugador si es necesario            
     def update(self):
@@ -130,8 +127,6 @@ class Enemy(Entity):
         
     #gestionamos la colision y muerte
     def die(self):
-        print("Enemy Colisión con Player detectada")
-        
         if not self.hit:
             # Al colisionar con un jugador, invertimos la velocidad.
             self.vel = -self.vel

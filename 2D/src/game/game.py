@@ -89,7 +89,8 @@ class Game(Base):
         for i in range(self.player.get_lifes()): 
             self.group_lifes.add(Lifes( x = 50 + (i * 40), y = 50))#todo make dinamic
         self.camera.update(self.player)
-        self.in_scene_now = self.camera.check_elements_on_screen(self.in_scene)
+        self.in_scene_now.empty()
+        self.in_scene_now.add(self.camera.check_elements_on_screen(self.in_scene))
         
     def collision(self):
         for item in self.sprites:
@@ -102,8 +103,6 @@ class Game(Base):
         #capa escenario se actualiza
         for item in self.in_scene_now: #carga plataformas
                 item.draw(self.screen, self.camera.apply(item.rect).topleft)                
-    
-        
         for item in self.group_lifes:
             item.draw(self.screen)
         
