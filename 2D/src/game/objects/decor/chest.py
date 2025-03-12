@@ -33,6 +33,9 @@ class Chest(Platforms):
         self.active = True
         self.discovered = False
         self.index = 1
+        self.respawn_time = 3600
+        self.respaw_x = x
+        self.respaw_y = y
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
         self.sound = pygame.mixer.Sound("../Sound/FX/OpenChest.wav")
@@ -47,8 +50,17 @@ class Chest(Platforms):
        if self.discovered and self.active:
            self.animation_timer += 1
            self.on_discover()
-       if self.discovered and not self.active:
-           self.kill()      
+       if self.discovered and not self.active: 
+                self.respawn_time -=1
+                self.check_respawn()
+       
+    def check_respawn(self):
+        if self.respawn_time <=0:
+            self.respawn_time = 3000
+            self.discovered = False
+            self.active = True
+            self.rect = self.surf.get_rect(topleft=(self.respaw_x, self.respaw_y))  
+            self.set_prize(self.respaw_x, self.respaw_y, "lungs")   
         
     #dibujado en pantalla       
     def draw(self, screen, position):
@@ -79,7 +91,8 @@ class Chest(Platforms):
         if self.index == 4:
             self.sound.play
             self.active = False
-            self.prize.set_use()         
+            self.prize.set_use()
+            self.rect.topleft = (-100, -100)        
     
     #se asegura de que solo se abre una vez
     def open(self):

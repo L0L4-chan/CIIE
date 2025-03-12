@@ -78,7 +78,7 @@ class Game(Base):
                     GameManager().get_instance().load_pause()
     
     def update(self):    
-        self.scene.update()     
+            
         self.player.update()
         self.in_scene.update()
         # Capa informacion se actualiza
