@@ -2,7 +2,7 @@ import pygame
 from classes.enemy import Enemy
 from game.configManager import ConfigManager
 from game.objects.stone import Stone
-from game.gameManager import GameManager
+
 
 vec = pygame.math.Vector2  # 2 for two dimensional
 
@@ -27,15 +27,16 @@ class Devil(Enemy):
         self.direction = 0
         self.lifes = 3
     #funcion que gestiona el movimiento
+    
     def move(self):
-        self.set_objective(GameManager.get_instance().player.rect.topleft)
+        self.set_objective()
         distance_x = self.objective[0] - self.rect.x
         distance_y = self.objective[1] - self.rect.y
         if distance_x < 0:
             self.direction = -1
         else:
             self.direction = 1
-        if abs(distance_x) < 100:
+        if abs(distance_x) < 200:
             if abs(distance_y) < 10:
                 self.shoot()
             else:
@@ -50,9 +51,16 @@ class Devil(Enemy):
         
     #funcion para disparo
     def shoot(self):
+        aux = 0
         if self.direction > 0:
             stone_x = self.pos.x + (self.rect.width * self.direction)
+            aux = 1
         else:
             stone_x = self.pos.x - (self.rect.width)
         stone_y = self.rect.y + (self.height / 2)
-        self.projectiles.active(x=stone_x, y=stone_y, direction=self.direction)
+        if self.projectiles.get_inUse():
+            return False
+        else:
+            self.projectiles.active(x=stone_x, y=stone_y, direction=aux)
+            return True
+     

@@ -151,7 +151,13 @@ class GameManager():
         from views.start import Start
         self.next_scene = Start(path =path)
         
- 
+    
+    def player_position(self):
+        if self.player.rect is not None:
+            return self.player.rect.midtop
+        else:
+            return None
+    
     def run(self):
         self.first_scene()
         while self.scene is not None:

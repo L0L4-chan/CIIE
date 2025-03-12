@@ -30,7 +30,6 @@ class Player1(Player):
     def render(self):
         if self.current_action == "shield" and self.index >= self.end_index:
             self.shield = False
-            self.shield_counter = 0
             self.index = 0
         else:
             self.shield = False

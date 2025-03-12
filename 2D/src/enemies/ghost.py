@@ -22,22 +22,25 @@ class Ghost(Enemy):
 
     #funcion que gestiona el movimiento
     def move(self):
-        self.pos.x += self.vel.x * self.speed
-        self.pos.y += self.vel.y* self.speed * 5
-        self.move_distance += abs(self.vel.x * self.speed)
-
-        if self.move_distance >= 100:
-            self.vel.x = -self.vel.x  # Cambiar de dirección
-            self.move_distance = 0
-
-        if self.pos.x > self.screen_width - self.rect.width or self.pos.x < 0:
-            self.vel.x = -self.vel.x  # Cambiar de dirección en X
+        self.set_objective()
+        distance_x = self.objective[0] - self.rect.x
+        if distance_x < 0:
+            self.direction = -1
+        else:
+            self.direction = 1
+            
+        if abs(distance_x) < 800 or abs(distance_x) > 50:
+            self.vel.x = self.direction * self.speed
         
-        if self.pos.y > 300 or self.pos.y < 100:
-            self.vel.y = -self.vel.y
-
+        # añadir movimiento de subida y bajada
+        random_y_adjustment = random.randint(-1, 1)
+        self.vel.y =  random_y_adjustment * self.speed
+        self.pos.x += self.vel.x
+        self.pos.y += self.vel.y
         
-        self.rect.center = self.pos
+        self.update_rect()
+        
+
 
     
    

@@ -31,7 +31,7 @@ class Boss(Enemy):
             self.group.add(Fireball())
 
     def move(self):
-        self.set_objective(GameManager.get_instance().player.rect.bottomleft)
+        self.set_objective()
         distance_x = self.objective[0] - self.rect.x
         if distance_x < 0:
             self.direction = -1

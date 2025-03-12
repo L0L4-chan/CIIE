@@ -3,8 +3,8 @@
 "lettering" : 20, 
 "btn_lettering" : 16, 
 "art_path" :"720x405", 
-"speed" : 3,
-"Acc" : 0.28,
+"speed" : 2,
+"Acc" : 0.18,
 "fric" : -0.057,
 "jump" : -5
 }

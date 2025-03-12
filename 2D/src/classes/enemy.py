@@ -13,6 +13,7 @@ import pygame
 from game.configManager import ConfigManager
 from classes.entity import Entity
 from game.objects.stone import Stone
+from game.gameManager import GameManager
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Enemy(Entity):
@@ -119,7 +120,7 @@ class Enemy(Entity):
         
     def check_respawn(self):
         if self.respawn_time <=0:
-            self.respawn_time = 3600
+            self.respawn_time = 3000
             self.not_death = True
             self.life = 1
             self.hit =False
@@ -164,5 +165,9 @@ class Enemy(Entity):
             self.hit = False
     #funcion que establece un objetivo para el enemigo    
     
-    def set_objective(self, position_player=None):
-        self.objective = position_player
+    def set_objective(self):
+        aux = GameManager.get_instance().player_position()
+        if aux == None:
+            return
+        else:
+            self.objective = aux

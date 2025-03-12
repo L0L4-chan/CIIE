@@ -118,7 +118,7 @@ class Scene():
         for x, y, pz in missing_chests:
             pos = (x, y)
             if pos not in self.respawn_timer:
-                self.respawn_timer[pos] = pygame.time.get_ticks() + 60000
+                self.respawn_timer[pos] = pygame.time.get_ticks() + 3000
 
         current_time = pygame.time.get_ticks()
         for pos, respawn_time in list(self.respawn_timer.items()):
