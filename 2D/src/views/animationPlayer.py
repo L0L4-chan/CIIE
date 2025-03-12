@@ -23,7 +23,7 @@ class AnimationPlayer():
         self.path = path
         self.frames = sorted(os.listdir(f"../Art/{self.art_path}/{path}"))
         self.frame_index = 0
-        self.end = len(self.frames) -1
+        self.end = len(self.frames) 
         self.fps = 24
         self.running = True
         self.start = start # cuando sea mostrado el primer texto
@@ -39,7 +39,7 @@ class AnimationPlayer():
     
     def show_dialog(self):  
         if (self.frame_index >= self.start):
-            if self.amount == 1:
+            if self.amount == 1 and self.frame_index <= (self.end - (50)):
                 self.boxes[0].draw()
             else:          
                 frames = ( (self.end - (self.start + 50)) / self.amount ) #350 frames   50 - 400 /2 = 125
@@ -65,6 +65,7 @@ class AnimationPlayer():
                     self.running = False
             #end of the animation
             if self.frame_index == self.end:
+                pygame.time.wait(3000)
                 self.running = False  
                    
        

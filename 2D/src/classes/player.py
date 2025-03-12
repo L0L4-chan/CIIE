@@ -130,9 +130,9 @@ class Player(Entity):
         self.end_index = len(self.action_frames)
 
     def end_shooting(self):
-        if self.shoot():
-            self.shooting = False
-            self.current_action = "idle"
+        self.shoot()
+        self.shooting = False
+        self.current_action = "idle"
         self.index = 0
 
     def end_of_death(self): 
@@ -181,11 +181,7 @@ class Player(Entity):
         else:
             stone_x = self.pos.x - (self.rect.width)
         stone_y = self.rect.y + (self.height / 2)
-        if self.projectiles.get_inUse():
-            return False
-        else:
-            self.projectiles.active(x=stone_x, y=stone_y, direction=self.direction)
-            return True
+        self.projectiles.active(x=stone_x, y=stone_y, direction=self.direction)
 
     #definicion de colisones
     def collision_managment(self, platforms):

@@ -31,9 +31,7 @@ class Stone(OneUse):
         self.set_use()
         
     def hit(self):
-        self.set_use()  
-        if not self.inUse:
-            self.stand_by() 
+        self.set_use()
      
     def stand_by(self): 
         self.rect.topleft = (-100, -100)  # La sacamos de la pantalla
