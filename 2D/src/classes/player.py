@@ -263,7 +263,7 @@ class Player(Entity):
                     self.get_life(hit)
 
     def check_power_up(self):
-        if self.power_up_counter >= 1800:
+        if self.power_up_counter >= 1600:
             self.jump_Max = ConfigManager().get_instance().get_player_jump()
             self.power_up = False
 
