@@ -58,6 +58,7 @@ class Chest(Platforms):
         if self.respawn_time <=0:
             self.respawn_time = 3000
             self.discovered = False
+            self.index = 1
             self.active = True
             self.rect = self.surf.get_rect(topleft=(self.respaw_x, self.respaw_y))  
             self.set_prize(self.respaw_x, self.respaw_y, "lungs")   
