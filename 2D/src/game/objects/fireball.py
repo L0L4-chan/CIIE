@@ -11,13 +11,13 @@ Version: 1.0.0
 
 import pygame
 from game.configManager import ConfigManager
-from game.objects.stone import Stone
+from game.objects.oneuse import OneUse
 
-class Fireball(Stone):
+class Fireball(OneUse):
      #funcion de inicializacion de plataformas (modificar para pasar la altura por parametros cuando se tengan los escenarios)
     def __init__(self):
         self.path = "fireball/spritesheet.png"
-        super().__init__()
+        super().__init__(self.path) 
         self.width = self.spritesheet.get_width()/7
         self.height = self.spritesheet.get_height()
         self.frames = {
@@ -30,8 +30,26 @@ class Fireball(Stone):
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
         self.sound = pygame.mixer.Sound("../Sound/FX/fire.wav")
+        self.counter = 3
     
-    
+            
+    def active(self, x, y ,direction ):
+        self.speed = 10 * 1 if direction else -8
+        super().active(x,y)
+        self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
+        self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
+        self.set_use()
+        
+    def hit(self):
+        self.set_use()  
+        if not self.inUse:
+            self.stand_by() 
+     
+    def stand_by(self): 
+        self.rect.topleft = (-100, -100)  # La sacamos de la pantalla
+        self.speed = 0
+        
+
     def animation(self):
         if self.index < len(self.frames["bomb"]):
             frame_rect = pygame.Rect(self.frames["bomb"][self.index])

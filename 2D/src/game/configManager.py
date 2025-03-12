@@ -25,7 +25,6 @@ class ConfigManager:
             self._initialized = True 
             self.fps = 60
     def load_fonts(self):
-       
         self.fonts_titles = pygame.font.Font("../Font/Cryptik/Cryptik.ttf",  self.conf["lettering"])
         self.fonts_text =  pygame.font.SysFont("arial",self.conf["btn_lettering"])
         self.font_dialog = pygame.font.SysFont("arial", (self.conf["btn_lettering"] // 2))
