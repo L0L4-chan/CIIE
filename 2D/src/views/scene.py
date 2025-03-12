@@ -103,7 +103,8 @@ class Scene():
     
     def spawn_chest(self, x, y):
         chest = Chest(x, y, "lungs")
-        self.chestgroup.add(chest)
+        self.chest_list.append((x,y,"lungs"))
+        self.it.add(chest)
         self.it.add(chest.get_prize())
         
     def update(self):

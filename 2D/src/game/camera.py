@@ -19,9 +19,9 @@ class Camera:
         self.screen_height = screen_height
         self.offset = pygame.math.Vector2(0, 0)
         # Margenes en píxeles según los porcentajes:
-        self.left_margin = screen_width * 0.25
-        self.right_margin = screen_width * 0.25
-        self.top_margin = screen_height * 0.25
+        self.left_margin = screen_width * 0.35
+        self.right_margin = screen_width * 0.35
+        self.top_margin = screen_height * 0.35
         self.bottom_margin = screen_height * 0.15
 
     def update(self, target):
