@@ -96,10 +96,9 @@ class Enemy(Entity):
             self.resolve_collisions(hit, vertical_margin=10)
             if isinstance(hit, Stone):
                 # Al colisionar con un jugador, invertimos la velocidad.
-                if not self.hit:
-                    hit.hit()
+                if not self.hit:    
                     self.die()       
-        
+                hit.hit()
     #funcion que actualiza la posicion del jugador si es necesario            
     def update(self):
         if self.on_screen :
