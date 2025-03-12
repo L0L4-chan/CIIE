@@ -34,7 +34,7 @@ class Game(Base):
         self.group_lifes = pygame.sprite.Group()
         self.in_scene = pygame.sprite.Group()
         self.in_scene_now = pygame.sprite.Group() #elemetos en escena ahora
-        self.clock =  GameManager().get_instance().clock
+        self.clock =  GameManager().get_instance().get_clock()
         self.FPS = ConfigManager().get_instance().get_fps()
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
         self.world_height = self.bg.get_height()   # O la altura máxima del escenario
@@ -51,7 +51,7 @@ class Game(Base):
         self.buttons = {
             "pause": pauseb
         } 
-        self.player = GameManager().get_instance().player
+        self.player = GameManager().get_instance().get_player()
         #grupo para jugador y enemigos
         self.sprites.add(self.player)
         self.sprites.add(self.scene.enemies)

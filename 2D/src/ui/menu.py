@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, sys 
+import pygame 
 from game.gameManager import GameManager
 from game.configManager import ConfigManager
 from game.base import Base

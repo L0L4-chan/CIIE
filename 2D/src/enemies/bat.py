@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from classes.enemy import Enemy
 from game.configManager import ConfigManager
 import math
@@ -12,7 +12,7 @@ class Bat(Enemy):
         super().__init__(x,y, (self.spritesheet.get_width() / 7), self.spritesheet.get_height(), False )
         self.pos = vec(x, y)
         self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
-        self.speed = 0.5 
+        self.speed = 0.7 
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(i * self.width, 0) for i in range(4)],
@@ -23,21 +23,23 @@ class Bat(Enemy):
         self.lifes = 2
     #funcion que gestiona el movimiento
     def move(self):
-        # Movimiento del murciélago: se mueve en un patrón de zigzag
-        self.pos.x += self.vel.x * self.speed
-        self.pos.y += math.sin(self.pos.x * 0.1) * self.speed * 5
-        self.move_distance += abs(self.vel.x * self.speed)
-
-        if self.move_distance >= 100:
-            self.vel.x = -self.vel.x  # Cambiar de dirección
-            self.move_distance = 0
-
-        if self.pos.x > self.screen_width - self.rect.width or self.pos.x < 0:
-            self.vel.x = -self.vel.x  # Cambiar de dirección en X
+        self.set_objective()
+        distance_x = self.objective[0] - self.rect.x
+        if distance_x < 0:
+            self.direction = -1
+        else:
+            self.direction = 1
+            
+        if abs(distance_x) < 900 or abs(distance_x) > 30:
+            self.vel.x = self.direction * self.speed
         
-        if self.pos.y > 300 or self.pos.y < 100:
-            self.vel.y = -self.vel.y 
-        self.rect.center = self.pos
+        # añadir movimiento de subida y bajada
+        random_y_adjustment = random.randint(-5, 5)
+        self.vel.y =  random_y_adjustment * self.speed
+        self.pos.x += self.vel.x
+        self.pos.y += self.vel.y
+        
+        self.update_rect()
     
  
         

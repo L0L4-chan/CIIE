@@ -1,8 +1,19 @@
+'''
+Project: Skelly & Souli
+Authors:
+
+Ivan García Quintela
+Ismael Míguez Valero
+Lola Suárez González
+
+Version: 1.0.0
+'''
+
 import pygame,  random
 from classes.enemy import Enemy
 from game.configManager import ConfigManager
 from game.gameManager import GameManager
-from game.objects.stone import Stone
+
 from game.objects.fireball import Fireball
 vec = pygame.math.Vector2 #2 for two dimensional
 

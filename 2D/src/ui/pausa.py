@@ -25,7 +25,7 @@ class Pausa(Base):
       "quit": Button(pos=(self.screen_width /2, self.screen_height/2), 
                 text_input=ConfigManager().get_instance().get_text_button(key ="QUIT")),
         }  
-    self.clock =  GameManager().get_instance().clock
+    self.clock =  GameManager().get_instance().get_clock()
     self.FPS = ConfigManager().get_instance().get_fps()
 
   def handle_events(self): 

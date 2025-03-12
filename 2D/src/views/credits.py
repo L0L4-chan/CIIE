@@ -12,6 +12,7 @@ import pygame
 import utils.auxiliar as aux
 from game.configManager import ConfigManager
 from game.base import Base
+from game.gameManager import GameManager
 
 class Credits(Base):
     def __init__(self):
@@ -52,3 +53,6 @@ class Credits(Base):
             if self.index >= len(self.credits):  # Asegúrate de que el índice no se pase de la longitud de los créditos
                 self.running = False  # Terminamos, si hemos mostrado todos los créditos
 
+        GameManager().get_instance().scene_end()
+        GameManager().get_instance().load_menu()
+        

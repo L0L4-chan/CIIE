@@ -158,6 +158,15 @@ class GameManager():
         else:
             return None
     
+    def scene_end(self):
+        self.scene.stop()
+        
+    def get_clock(self):
+        return self.clock
+    
+    def get_player(self):
+        return self.player
+    
     def run(self):
         self.first_scene()
         while self.scene is not None:

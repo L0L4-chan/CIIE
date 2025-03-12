@@ -34,7 +34,7 @@ class Event(Platforms):
     def no_key(self, life):
         if (self.level-1) == 3:
             GameManager().get_instance().load_player(3, life)
-            GameManager().get_instance().scene.running = False
+            GameManager().get_instance().scene_end()
             from views.scene import Scene
             GameManager().get_instance().load_game(Scene("level3.jpg", "level3.json"), "../Sound/BSO/levels-_2_.wav", 3)
            
