@@ -22,7 +22,7 @@ class Player2(Player1):
         self.frames.update( {"bomb": [( self.width * 9 + (i * self.width), 0) for i in range(4)]})
         self.heart = Heart()
         self.bomb_counter = 300
-        self.action_map.update({pygame.K_s: self.handle_bomb})
+        self.action_map.update({pygame.K_e: self.handle_bomb})
         self.group.add(self.heart)
         
     def handle_bomb(self):

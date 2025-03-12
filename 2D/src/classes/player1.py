@@ -19,7 +19,7 @@ class Player1(Player):
         self.lifes = lifes
         self.shield = False 
         self.frames.update({"shield": [(( self.width* 13 ) + ( i * self.width), 0) for i in range(2)]})
-        self.action_map.update({pygame.K_a: self.handle_shield})
+        self.action_map.update({pygame.K_w: self.handle_shield})
         
     def handle_shield(self):
         if not self.shield:
