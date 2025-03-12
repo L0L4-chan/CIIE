@@ -32,9 +32,10 @@ class Stone(OneUse):
         
     def hit(self):
         self.set_use()
+        self.stand_by()
      
     def stand_by(self): 
-        self.rect.topleft = (-100, -100)  # La sacamos de la pantalla
+        self.rect.topleft = (0,0)  # La sacamos de la pantalla
         self.speed = 0
         
     def update(self, object = None):
@@ -42,8 +43,7 @@ class Stone(OneUse):
             self.rect.x += self.speed
             self.counter -= 1
             if not self.on_screen and self.counter <= 0:
-                self.inUse = False
-                self.stand_by()
+                self.hit()
                 self.counter = 3
                 
  
