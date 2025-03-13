@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-from game.gameManager import GameManager
+import  utils.globals as globals
 from game.objects.decor.event import Event
 
 
@@ -20,5 +20,5 @@ class LastEvent(Event):
     def on_collision(self, player):
         if not self.triggered:
             self.triggered = True
-            GameManager.get_instance().scene.running = False
-            GameManager.get_instance().load_credits()
+            globals.game.scene.running = False
+            globals.game.load_credits()

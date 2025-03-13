@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import utils.auxiliar as auxiliar, pygame
+import utils.auxiliar as auxiliar, pygame ,  utils.globals as globals
 from game.gameManager import GameManager
 from game.objects.decor.platforms import Platforms
 
@@ -28,13 +28,13 @@ class Event(Platforms):
             self.triggered = True
             data = {"level": self.level, "player_lifes":player.get_lifes() }
             auxiliar.save_json(f"save/level_{self.level}.json", data)
-            GameManager.get_instance().scene.running = False
-            GameManager().get_instance().load_start(self.path)
+            globals.game.scene.running = False
+            globals.game.load_start(self.path)
     
     def no_key(self, life):
         if (self.level-1) == 3:
-            GameManager().get_instance().load_player(3, life)
-            GameManager().get_instance().scene_end()
+            globals.game.load_player(3, life)
+            globals.game.scene_end()
             from views.scene import Scene
-            GameManager().get_instance().load_game(Scene("level3.jpg", "level3.json"), "../Sound/BSO/levels-_2_.wav", 3)
+            globals.game.load_game(Scene("level3.jpg", "level3.json"), "../Sound/BSO/levels-_2_.wav", 3)
            

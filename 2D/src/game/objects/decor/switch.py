@@ -10,8 +10,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-from game.configManager import ConfigManager
+import pygame, utils.globals as globals
 from game.objects.decor.platforms import Platforms
 from game.objects.decor.door import Door
 
@@ -19,7 +18,7 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Switch(Platforms):
     def __init__(self, x, y, door_x, door_y):
         #cargamos las imagenes y asignamos tamaño de forma dinámica
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/pushbutton/boton.PNG")
+        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/pushbutton/boton.PNG")
         self.width = self.spritesheet.get_width()/2
         self.height = self.spritesheet.get_height()
         #asignamos posiciones para la carga de imagenes que forman la animación

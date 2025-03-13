@@ -9,14 +9,11 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-from game.gameManager import GameManager
-from game.configManager import ConfigManager
+import pygame,  utils.globals as globals
 from game.camera import Camera
 from game.objects.lifes import Lifes
 from game.base import Base
-from classes.enemy import Enemy
-from enemies.devil import Devil
+
 
 from ui.button import Button
 vec = pygame.math.Vector2  
@@ -28,30 +25,30 @@ class Game(Base):
         super().__init__()   
         #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
         self.scene = scene
-        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/{self.scene.background}")
-        self.path = ConfigManager().get_instance().get_artpath()
+        self.bg = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/background/{self.scene.background}")
+        self.path =  globals.config.get_artpath()
         self.sprites = pygame.sprite.Group()
         self.group_lifes = pygame.sprite.Group()
         self.in_scene = pygame.sprite.Group()
         self.in_scene_now = pygame.sprite.Group() #elemetos en escena ahora
-        self.clock =  GameManager().get_instance().get_clock()
-        self.FPS = ConfigManager().get_instance().get_fps()
+        self.clock =  globals.game.get_clock()
+        self.FPS =  globals.config.get_fps()
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
         self.world_height = self.bg.get_height()   # O la altura máxima del escenario
         self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
         self.sound = sound
-        path_button = f"../Art/{ConfigManager().get_instance().get_artpath()}/avatar/pause_button.png"
-        path_hover = f"../Art/{ConfigManager().get_instance().get_artpath()}/avatar/pause_button_hover.png"
+        path_button = f"../Art/{ globals.config.get_artpath()}/avatar/pause_button.png"
+        path_hover = f"../Art/{ globals.config.get_artpath()}/avatar/pause_button_hover.png"
 
         pauseb = Button(pos=(self.screen_width - 100, self.screen_height / 8), 
-                text_input=ConfigManager().get_instance().get_text_button(key ="PAUSE"),
+                text_input= globals.config.get_text_button(key ="PAUSE"),
                 image_path = path_button,
                 hover_image_path=path_hover
                 )
         self.buttons = {
             "pause": pauseb
         } 
-        self.player = GameManager().get_instance().get_player()
+        self.player = globals.game.get_player()
         #grupo para jugador y enemigos
         self.sprites.add(self.player)
         self.sprites.add(self.scene.enemies)
@@ -68,14 +65,14 @@ class Game(Base):
     def handle_events(self):
         if self.player.get_lifes() == 0:
             self.running = False
-            GameManager().get_instance().end_game()
+            globals.game.end_game()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
-                    GameManager().get_instance().load_pause()
+                    globals.game.load_pause()
     
     def update(self):    
             
@@ -137,7 +134,7 @@ class Game(Base):
     
        
     def run(self):
-        GameManager().get_instance().changeMusic(self.sound)    
+        globals.game.changeMusic(self.sound)    
         self.running = True
         while self.running:           
             self.clock.tick(self.FPS) # indicamos el numero de frames por segundo

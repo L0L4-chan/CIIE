@@ -1,12 +1,21 @@
-import pygame
-from game.configManager import ConfigManager
+'''
+Project: Skelly & Souli
+Authors:
+
+Ivan García Quintela
+Ismael Míguez Valero
+Lola Suárez González
+
+Version: 1.0.0
+'''
+import pygame,  utils.globals as globals
 from game.objects.decor.platforms import Platforms
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Door(Platforms):
    def __init__(self, x = 0, y = 0 ):
-      self.surf = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/metallicdoor/metallicdoor.PNG")
+      self.surf = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/metallicdoor/metallicdoor.PNG")
       super().__init__(x,y,self.surf.get_width(), self.surf.get_height()) 
       self.initial_y = y
       

@@ -9,10 +9,9 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame,  random
+import pygame,  random, utils.globals as globals
 from classes.enemy import Enemy
-from game.configManager import ConfigManager
-from game.gameManager import GameManager
+
 
 from game.objects.fireball import Fireball
 vec = pygame.math.Vector2 #2 for two dimensional
@@ -21,7 +20,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Boss(Enemy):
     def __init__(self, x, y):
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/boss/sprite_sheet.png")
+        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/boss/sprite_sheet.png")
         super().__init__(x, y, (self.spritesheet.get_width() / 11), self.spritesheet.get_height(), False)
         self.pos = vec(x, y)
         self.vel = vec(0, 0)  # Velocidad inicial para moverse hacia la derecha
@@ -68,11 +67,18 @@ class Boss(Enemy):
                 self.current_action = "melee"
             else:
                 self.current_action = "walk"    
+    
+    def the_end(self):
+        self.sound.play()
+        globals.game.scene.running= False
+        globals.game.load_start("st5.json")
                 
     def render(self):
         action_frames = self.frames[self.current_action]
         if self.index > len(action_frames)-1:
             self.index = 0
+            if self.current_action == "death":
+                self.the_end()
         frame = action_frames[self.index]
         sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
         if self.direction < 0:
@@ -106,8 +112,6 @@ class Boss(Enemy):
     def wounded(self):
         self.lifes -= 1
         if self.lifes<= 0:
-            self.sound.play()
-            GameManager().get_instance().scene.running= False
-            GameManager().get_instance().load_start("st5.json")
+            self.current_action = "death"
         else:
             self.hit = False

@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, random
+import pygame 
 
 class Platforms(pygame.sprite.Sprite):
     

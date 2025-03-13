@@ -9,17 +9,15 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, os
-from game.gameManager import GameManager
-from game.configManager import ConfigManager
+import pygame, os, utils.globals as globals
 from views.dialogBox import DialogBox
 
 class AnimationPlayer():
     def __init__(self, path, start, amount, event):
         super().__init__()
-        self.screen = GameManager.get_instance().screen
-        self.clock =  GameManager.get_instance().clock
-        self.art_path = ConfigManager().get_instance().get_artpath()
+        self.screen = globals.game.screen
+        self.clock =  globals.game.clock
+        self.art_path =  globals.config.get_artpath()
         self.path = path
         self.frames = sorted(os.listdir(f"../Art/{self.art_path}/{path}"))
         self.frame_index = 0

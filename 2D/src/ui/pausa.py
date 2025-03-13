@@ -10,23 +10,21 @@ Version: 1.0.0
 '''
 
 
-import pygame, sys
+import pygame, sys,  utils.globals as globals
 from game.base import Base
 from ui.button import Button
-from game.configManager import ConfigManager
-from game.gameManager import GameManager
 
 class Pausa(Base):
   def __init__(self):
     super().__init__()
     self.buttons = {
       "back": Button(pos=((self.screen_width/2), (self.screen_height/3)), 
-                text_input= ConfigManager().get_instance().get_text_button(key ="BACK"))   ,
+                text_input=  globals.config.get_text_button(key ="BACK"))   ,
       "quit": Button(pos=(self.screen_width /2, self.screen_height/2), 
-                text_input=ConfigManager().get_instance().get_text_button(key ="QUIT")),
+                text_input= globals.config.get_text_button(key ="QUIT")),
         }  
-    self.clock =  GameManager().get_instance().get_clock()
-    self.FPS = ConfigManager().get_instance().get_fps()
+    self.clock =  globals.game.get_clock()
+    self.FPS =  globals.config.get_fps()
 
   def handle_events(self): 
     for event in pygame.event.get():
@@ -39,7 +37,7 @@ class Pausa(Base):
            self.running = False  # Sale de la pausa y vuelve al juego
         if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()): 
            self.running = False  # Sale de la pausa y vuelve al juego
-           GameManager().get_instance().load_menu()
+           globals.game.load_menu()
 
   def update(self):
     mouse_pos = pygame.mouse.get_pos()

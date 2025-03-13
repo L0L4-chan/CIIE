@@ -8,8 +8,7 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame
-from game.configManager import ConfigManager
+import pygame,  utils.globals as globals
 from game.objects.stone import Stone
 from game.objects.fireball import Fireball
 from game.objects.decor.spikes import Spikes
@@ -27,7 +26,7 @@ class Player(Entity):
     def __init__(self, x, y):
         # Cargamos el sprite sheet y definimos ancho y alto.
         self.spritesheet = pygame.image.load(
-            f"../Art/{ConfigManager().get_instance().get_artpath()}/skelly/spritesheet.png"
+            f"../Art/{ globals.config.get_artpath()}/skelly/spritesheet.png"
         )
         self.width = self.spritesheet.get_width() / 18  # 18 imágenes diferentes.
         self.height = self.spritesheet.get_height()
@@ -39,11 +38,11 @@ class Player(Entity):
         self.vel = vec(0, 0)
         
         self.got_key = False
-        self.ACC = ConfigManager().get_instance().get_player_Acc()
-        self.FRIC = ConfigManager().get_instance().get_player_fric()
-        self.speed = ConfigManager().get_instance().get_player_speed()
-        self.jump_Max = ConfigManager().get_instance().get_player_jump()
-        self.y_acc_value = ConfigManager().get_instance().get_player_Acc()
+        self.ACC =  globals.config.get_player_Acc()
+        self.FRIC =  globals.config.get_player_fric()
+        self.speed =  globals.config.get_player_speed()
+        self.jump_Max =  globals.config.get_player_jump()
+        self.y_acc_value =  globals.config.get_player_Acc()
         self.index = 0
         self.lifes = 3
         self.death_sound = pygame.mixer.Sound("../Sound/FX/death.wav")
@@ -260,7 +259,7 @@ class Player(Entity):
 
     def check_power_up(self):
         if self.power_up_counter >= 1700:
-            self.jump_Max = ConfigManager().get_instance().get_player_jump()
+            self.jump_Max =  globals.config.get_player_jump()
             self.power_up = False
 
     #aumenta el numero de vidas

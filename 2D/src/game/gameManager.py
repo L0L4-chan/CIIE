@@ -9,8 +9,9 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
+import pygame ,  utils.globals as globals
 from game.configManager import ConfigManager
+
 
 class GameManager():
 
@@ -36,8 +37,10 @@ class GameManager():
             pygame.mixer.pre_init(44100,16,2,4096) #initialize the mixer (sound)
             pygame.mixer.init()
             pygame.mixer.set_num_channels(8)
-            ConfigManager().get_instance().load_fonts()
-            self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height()))  # screen size default 1280 x 720
+            pygame.mixer.music.set_volume(.5)
+            globals.config = ConfigManager()
+            globals.config.load_fonts()
+            self.screen = pygame.display.set_mode((globals.config.get_width(), globals.config.get_height()))  # screen size default 1280 x 720
             pygame.display.set_caption("Skelly & Soulie") #display name of the game on the edge of the window
             self.clock = pygame.time.Clock() # create a clock
             self._initialized = True # one is all done state is inicialized
@@ -69,7 +72,7 @@ class GameManager():
              
     #change the resolution of the screen
     def change_resolution(self):
-        self.screen = pygame.display.set_mode((ConfigManager().get_instance().get_width(), ConfigManager().get_instance().get_height())) 
+        self.screen = pygame.display.set_mode((globals.config.get_width(), globals.config.get_height())) 
 
     #functions to load different scenes
     def load_menu(self):
@@ -102,14 +105,16 @@ class GameManager():
     def load_player(self, level, lifes=3):
         if level == 1:
             from classes.player import Player
-            self.player = Player(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*4)    
+            self.player = Player(globals.config.get_width()/20, (globals.config.get_height()/6)*4)    
         elif level == 2: 
             from classes.player1 import Player1
-            self.player = Player1(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()*2.5),lifes)
+            self.player = Player1(globals.config.get_width()/20, (globals.config.get_height()*2.5),lifes)
+        elif level == 3:
+            from classes.player2 import Player2
+            self.player = Player2(globals.config.get_width()/20, (globals.config.get_height()/6)*5,lifes)
         else:
             from classes.player2 import Player2
-            self.player = Player2(ConfigManager().get_instance().get_width()/20, (ConfigManager().get_instance().get_height()/6)*5,lifes)
-    
+            self.player = Player2(globals.config.get_width()/20, (globals.config.get_height())*1.7,lifes)
 
 
     def load_loading(self):

@@ -10,17 +10,15 @@ Version: 1.0.0
 '''
 
 
-import pygame
+import pygame, utils.globals as globals
 from ui.button import Button
 from game.base import Base
-from game.configManager import ConfigManager
-from game.gameManager import GameManager
 
 class GameOver(Base):
   def __init__(self):
     super().__init__()
-    self.button = Button (pos=((self.screen_width/2), (self.screen_height/2)), text_input= ConfigManager().get_instance().get_text_button(key ="GAMEOVER"))
-    self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/gameover.jpg")
+    self.button = Button (pos=((self.screen_width/2), (self.screen_height/2)), text_input=  globals.config.get_text_button(key ="GAMEOVER"))
+    self.bg = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/background/gameover.jpg")
 
   
   def handle_events(self): 
@@ -28,9 +26,10 @@ class GameOver(Base):
       if event.type == pygame.QUIT:
         self.running = False
       if event.type == pygame.MOUSEBUTTONDOWN:   # Detecta si se ha hecho clic sobre el botón "Volver"
-        if self.button.checkForInput(pygame.mouse.get_pos()): 
+        if self.button.checkForInput(pygame.mouse.get_pos()):
+          self.button.make_sound() 
           self.running = False  # Sale de la pausa y vuelve al juego
-          GameManager().get_instance().load_menu()
+          globals.game.load_menu()
   
   def cleanup(self):
     pygame.mixer.music.stop()  

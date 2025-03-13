@@ -8,16 +8,15 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-from game.configManager import ConfigManager
-from game.gameManager import GameManager
+import  utils.globals as globals
 
 class Base():
  
     def __init__(self):
         super().__init__()
-        self.screen = GameManager().get_instance().screen
-        self.screen_width = ConfigManager().get_instance().get_width()
-        self.screen_height =  ConfigManager().get_instance().get_height()
+        self.screen = globals.game.screen
+        self.screen_width =  globals.config.get_width()
+        self.screen_height =   globals.config.get_height()
         self.running = False
      
     def stop(self):

@@ -1,5 +1,4 @@
-import pygame
-from game.configManager import ConfigManager
+import pygame,  utils.globals as globals
 
 class Button():
     def __init__(self, pos, text_input, image_path=None,  hover_image_path=None):
@@ -7,7 +6,7 @@ class Button():
         self.y_pos = pos[1]
         self.base_color = (255, 255, 255)
         self.text_input = text_input
-        self.font = ConfigManager().get_instance().get_font_title() 
+        self.font =  globals.config.get_font_title() 
         self.is_hovering = False  # Estado para saber si el mouse está sobre el botón
         # Cargar imagen normal
         if image_path:
@@ -23,6 +22,7 @@ class Button():
             self.rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
             self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
             self.image = None
+        self.sound = pygame.mixer.Sound("../Sound/FX/button.wav")    
 
     def render(self, screen):
         if self.image is not None :          
@@ -35,6 +35,8 @@ class Button():
             return True
         return False
 
+    def make_sound(self):
+        self.sound.play()
 
     def update(self, position):
         if self.image:

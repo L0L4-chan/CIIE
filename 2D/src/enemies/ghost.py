@@ -1,13 +1,23 @@
-import pygame, random
-import math
+'''
+Project: Skelly & Souli
+Authors:
+
+Ivan García Quintela
+Ismael Míguez Valero
+Lola Suárez González
+
+Version: 1.0.0
+'''
+import pygame, random,   utils.globals as globals
+
 from classes.enemy import Enemy
-from game.configManager import ConfigManager
+
 vec = pygame.math.Vector2 #2 for two dimensional
 
 class Ghost(Enemy):
     
     def __init__(self, x, y):
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/ghost/sprite_sheet.png")
+        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/ghost/sprite_sheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() / 5), self.spritesheet.get_height(), False )
         self.pos = vec(x, y)
         self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha

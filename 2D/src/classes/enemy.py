@@ -9,11 +9,10 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-from game.configManager import ConfigManager
+import pygame, utils.globals as globals
+
 from classes.entity import Entity
 from game.objects.stone import Stone
-from game.gameManager import GameManager
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 
 class Enemy(Entity):
@@ -39,8 +38,8 @@ class Enemy(Entity):
         self.change_direction_interval = 60  # Opcional: intervalos para cambiar dirección.
         self.frame_counter = 0 
         # Dimensiones de la pantalla (para rebotar en los bordes).
-        self.screen_width = ConfigManager().get_instance().get_width()
-        self.screen_height = ConfigManager().get_instance().get_height()
+        self.screen_width =  globals.config.get_width()
+        self.screen_height =  globals.config.get_height()
         # Variables para animación.
         self.animation_timer = 0
         self.frame_rate = 10
@@ -167,7 +166,7 @@ class Enemy(Entity):
     #funcion que establece un objetivo para el enemigo    
     
     def set_objective(self):
-        aux = GameManager.get_instance().player_position()
+        aux = globals.game.player_position()
         if aux == None:
             return
         else:

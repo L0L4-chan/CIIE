@@ -9,7 +9,6 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
 from game.objects.lifes import Lifes
 
 class Keys(Lifes):

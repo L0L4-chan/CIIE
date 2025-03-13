@@ -1,21 +1,18 @@
-import pygame
-from game.gameManager import GameManager
-from game.configManager import ConfigManager
+import pygame, utils.globals as globals
 
 class DialogBox:
     
     def __init__(self, event = 0):
-        self.screen = GameManager.get_instance().screen
-        self.config = ConfigManager().get_instance()
-        self.dialog = next((d for d in self.config.get_text(key="dialogues") if d["event"] == event), None)
+        self.screen = globals.game.screen
+        self.dialog = next((d for d in globals.config.get_text(key="dialogues") if d["event"] == event), None)
         name = self.dialog["character"]
-        self.icon = pygame.image.load(f"../Art/{self.config.get_artpath()}/avatar/{name}.png") # Carga el icono del personaje
+        self.icon = pygame.image.load(f"../Art/{globals.config.get_artpath()}/avatar/{name}.png") # Carga el icono del personaje
         self.bg_image = pygame.image.load("../Art/varios/dialog.png" ,)
-        self.width = (self.config.get_width() / 6) * 4 # Ancho del cuadro de diálogo
+        self.width = (globals.config.get_width() / 6) * 4 # Ancho del cuadro de diálogo
         self.margin = 20  # Espacio interno
-        self.line_height = self.config.get_font_dialog().get_height() + 5  # Altura de cada línea de texto
+        self.line_height = globals.config.get_font_dialog().get_height() + 5  # Altura de cada línea de texto
 
-        self.font = ConfigManager().get_instance().get_font_dialog()
+        self.font =  globals.config.get_font_dialog()
 
 
     def wrap_text(self):

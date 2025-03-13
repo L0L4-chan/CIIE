@@ -9,15 +9,14 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-from game.configManager import ConfigManager
+import pygame ,  utils.globals as globals
 from game.objects.decor.platforms import Platforms
 
 class Breakable(Platforms):
    #Funcion de inicializacion delelemento
    def __init__(self, x , y ):
       #cargamos las imagenes y asignamos tamaño de forma dinámica
-      self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/breakable/breakablesheet.png")
+      self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/breakable/breakablesheet.png")
       self.width = self.spritesheet.get_width()/5
       self.height = self.spritesheet.get_height()
       #asignamos posiciones para la carga de imagenes que forman la animación

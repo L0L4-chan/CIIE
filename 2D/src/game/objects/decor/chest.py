@@ -10,8 +10,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-from game.configManager import ConfigManager
+import pygame ,  utils.globals as globals
 from game.objects.decor.platforms import Platforms
 from game.objects.lungs import Lungs
 from game.objects.extra import Extra
@@ -22,7 +21,7 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Chest(Platforms):
     def __init__(self, x, y, prize):
         #cargamos las imagenes y asignamos tamaño de forma dinámica
-        self.spritesheet = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/chest/chest.png")
+        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/chest/chest.png")
         self.width = self.spritesheet.get_width()/4
         self.height = self.spritesheet.get_height()
         #asignamos posiciones para la carga de imagenes que forman la animación

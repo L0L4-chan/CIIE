@@ -9,9 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame 
-from game.gameManager import GameManager
-from game.configManager import ConfigManager
+import pygame ,  utils.globals as globals
 from game.base import Base
 from ui.button import Button
 
@@ -19,7 +17,7 @@ class Menu(Base):
 
     def __init__(self):
         super().__init__()
-        self.bg = pygame.image.load(f"../Art/{ConfigManager().get_instance().get_artpath()}/background/Menu.jpg") #add background
+        self.bg = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/background/Menu.jpg") #add background
         # Botones del menu
         self.new_buttons() #create buttons
         
@@ -31,13 +29,13 @@ class Menu(Base):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["play"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False
-                    GameManager().get_instance().load_start("st1.json") 
+                    globals.game.load_start("st1.json") 
                 if self.buttons["load"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False 
-                    GameManager().get_instance().load_loading()   
+                    globals.game.load_loading()   
                 if self.buttons["options"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False 
-                    GameManager().get_instance().load_options()
+                    globals.game.load_options()
                 if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
                     self.running = False  
 
@@ -45,10 +43,10 @@ class Menu(Base):
     # create buttons    
     def new_buttons(self):
          self.buttons = {
-            "play": Button(pos=(self.screen_width/8, (self.screen_height/8) *3), text_input= ConfigManager().get_instance().get_text_button(key = "PLAY")),
-            "load": Button(pos=(self.screen_width/8, (self.screen_height/8)*4), text_input= ConfigManager().get_instance().get_text_button(key ="LOAD")),
-            "options": Button(pos=(self.screen_width/8, (self.screen_height/8)*5), text_input= ConfigManager().get_instance().get_text_button(key ="OPTIONS")),
-            "quit": Button(pos=(self.screen_width/8, (self.screen_height/8)*6), text_input= ConfigManager().get_instance().get_text_button(key ="QUIT")),
+            "play": Button(pos=(self.screen_width/8, (self.screen_height/8) *3), text_input=  globals.config.get_text_button(key = "PLAY")),
+            "load": Button(pos=(self.screen_width/8, (self.screen_height/8)*4), text_input=  globals.config.get_text_button(key ="LOAD")),
+            "options": Button(pos=(self.screen_width/8, (self.screen_height/8)*5), text_input=  globals.config.get_text_button(key ="OPTIONS")),
+            "quit": Button(pos=(self.screen_width/8, (self.screen_height/8)*6), text_input=  globals.config.get_text_button(key ="QUIT")),
         }
 
 
@@ -61,7 +59,7 @@ class Menu(Base):
     # rendering the screen
     def render(self):
         self.screen.blit(self.bg, (0, 0)) #background
-        menu_text = ConfigManager().get_instance().get_font_title().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
+        menu_text =  globals.config.get_font_title().render("MAIN MENU", True, (255, 255, 255)) #title letters to imagen
         self.screen.blit(menu_text, (self.screen_width/14, (self.screen_height/6))) # add to buffer     
         for btn in self.buttons.values(): #add the buttons
             btn.render(self.screen)

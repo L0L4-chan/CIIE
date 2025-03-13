@@ -8,11 +8,8 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame
-import utils.auxiliar as aux
-from game.configManager import ConfigManager
+import pygame , utils.auxiliar as aux , utils.globals as globals
 from game.base import Base
-from game.gameManager import GameManager
 
 class Credits(Base):
     def __init__(self):
@@ -20,7 +17,7 @@ class Credits(Base):
         self.credits = aux.load_json("../Credits/credits.json")  # Carga los créditos
         self.index = 0  # Índice del crédito actual (Asegúrate de que comience desde 0 o el índice adecuado)
         self.last_update_time = pygame.time.get_ticks()  # Tiempo del último cambio
-        self.font = ConfigManager().get_instance().get_font_title()  # Fuente del texto
+        self.font =  globals.config.get_font_title()  # Fuente del texto
         self.lines = self.credits[self.index].split('\n')  # Dividir el primer crédito en líneas por saltos de línea
 
     def run(self):
@@ -53,6 +50,6 @@ class Credits(Base):
             if self.index >= len(self.credits):  # Asegúrate de que el índice no se pase de la longitud de los créditos
                 self.running = False  # Terminamos, si hemos mostrado todos los créditos
 
-        GameManager().get_instance().scene_end()
-        GameManager().get_instance().load_menu()
+        globals.game.scene_end()
+        globals.game.load_menu()
         

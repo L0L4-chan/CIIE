@@ -8,10 +8,8 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame, utils.auxiliar as auxiliar
+import pygame, utils.auxiliar as auxiliar, utils.globals as globals
 from game.objects.decor.event import Event
-from game.lastevent import LastEvent
-from game.configManager import ConfigManager
 from game.objects.decor.platforms import Platforms
 from game.objects.decor.breakable import Breakable
 from game.objects.decor.spikes import Spikes
@@ -29,7 +27,7 @@ class Scene():
     def __init__(self, background,file):
         super().__init__() 
         self.background = background
-        self.items = auxiliar.load_json(f"../Art/{ConfigManager().get_instance().get_artpath()}/levels/{ConfigManager().get_instance().get_difficulty()}/{file}")
+        self.items = auxiliar.load_json(f"../Art/{ globals.config.get_artpath()}/levels/{ globals.config.get_difficulty()}/{file}")
         self.platform = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.it = pygame.sprite.Group()

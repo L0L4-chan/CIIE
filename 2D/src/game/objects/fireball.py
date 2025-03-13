@@ -9,8 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-from game.configManager import ConfigManager
+import pygame 
 from game.objects.oneuse import OneUse
 
 class Fireball(OneUse):

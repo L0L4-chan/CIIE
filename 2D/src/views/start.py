@@ -9,10 +9,8 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
-import utils.auxiliar as auxiliar
-from game.gameManager import GameManager
-from game.configManager import ConfigManager
+import pygame, utils.auxiliar as auxiliar, utils.globals as globals
+
 from game.base import Base
 from views.scene import Scene
 from views.animationPlayer import AnimationPlayer
@@ -23,8 +21,8 @@ class Start(Base):
       super().__init__()
       self.info = auxiliar.load_json(f"../config/{path}")
       self.animation = AnimationPlayer(self.info["ani_path"], self.info["ani_start"], self.info["ani_amount"], self.info["ani_event"])
-      self.screen_width = ConfigManager().get_instance().get_width()
-      self.screen_height =  ConfigManager().get_instance().get_height()
+      self.screen_width =  globals.config.get_width()
+      self.screen_height =   globals.config.get_height()
       pygame.mixer.music.stop()
       pygame.mixer.music.load(self.info["ani_sound"])
       pygame.mixer.music.play()
@@ -41,6 +39,6 @@ class Start(Base):
    def run(self):
       self.animation.run()
       if self.info["scene_level"] == 5 :
-         GameManager().get_instance().load_credits()
+         globals.game.load_credits()
       else:   
-         GameManager().get_instance().load_game(Scene(self.info["scene_bg"], self.info["scene_file"]), self.info["scene_sound"], self.info["scene_level"]  )
+         globals.game.load_game(Scene(self.info["scene_bg"], self.info["scene_file"]), self.info["scene_sound"], self.info["scene_level"]  )
