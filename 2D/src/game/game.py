@@ -72,6 +72,7 @@ class Game(Base):
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["pause"].make_sound()
                     globals.game.load_pause()
     
     def update(self):    
@@ -101,8 +102,7 @@ class Game(Base):
         for item in self.in_scene_now: #carga plataformas
                 item.draw(self.screen, self.camera.apply(item.rect).topleft)                
         for item in self.group_lifes:
-            item.draw(self.screen)
-        
+            item.draw(self.screen) 
         for btn in self.buttons.values(): #carga botones
             btn.render(self.screen)
         

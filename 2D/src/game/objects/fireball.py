@@ -29,6 +29,7 @@ class Fireball(OneUse):
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
         self.sound = pygame.mixer.Sound("../Sound/FX/fire.wav")
+        self.sound.set_volume(0.5)
         self.counter = 3
     
             

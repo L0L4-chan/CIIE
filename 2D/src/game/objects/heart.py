@@ -32,6 +32,7 @@ class Heart(OneUse):
         #recurso sonido explosión
         self.platform = pygame.sprite.Group()
         self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
+        self.sound.set_volume(0.5)
     
     def set_Platform(self,platform):
         self.platform = platform

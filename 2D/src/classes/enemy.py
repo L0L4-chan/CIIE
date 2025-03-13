@@ -60,6 +60,7 @@ class Enemy(Entity):
         self.respaw_y = y
         self.lifes = 1
         self.sound = pygame.mixer.Sound("../Sound/FX/hit.wav")
+        self.sound.set_volume(0.5)
 
     #funcion que gestiona el movimiento
     def move(self):

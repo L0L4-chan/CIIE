@@ -38,6 +38,7 @@ class Chest(Platforms):
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
         self.sound = pygame.mixer.Sound("../Sound/FX/OpenChest.wav")
+        self.sound.set_volume(0.5)
      
     #Funcion que establece la image inicial y la posicion inicial con el colisionador
     def init_surf(self):

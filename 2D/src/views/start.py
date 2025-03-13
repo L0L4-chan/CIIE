@@ -23,10 +23,12 @@ class Start(Base):
       self.animation = AnimationPlayer(self.info["ani_path"], self.info["ani_start"], self.info["ani_amount"], self.info["ani_event"])
       self.screen_width =  globals.config.get_width()
       self.screen_height =   globals.config.get_height()
+     
+      
+   def music_on(self):
       pygame.mixer.music.stop()
       pygame.mixer.music.load(self.info["ani_sound"])
-      pygame.mixer.music.play()
-
+      pygame.mixer.music.play(-1)
       
    def cleanup(self):
       pygame.mixer.music.stop()
@@ -37,6 +39,7 @@ class Start(Base):
       gc.collect()
 
    def run(self):
+      self.music_on()
       self.animation.run()
       if self.info["scene_level"] == 5 :
          globals.game.load_credits()

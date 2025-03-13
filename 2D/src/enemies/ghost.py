@@ -39,11 +39,11 @@ class Ghost(Enemy):
         else:
             self.direction = 1
             
-        if abs(distance_x) < 800 or abs(distance_x) > 50:
+        if abs(distance_x) < 600 or abs(distance_x) > 50:
             self.vel.x = self.direction * self.speed
         
         # añadir movimiento de subida y bajada
-        random_y_adjustment = random.randint(-1, 1)
+        random_y_adjustment = random.randint(-2, 2)
         self.vel.y =  random_y_adjustment * self.speed
         self.pos.x += self.vel.x
         self.pos.y += self.vel.y

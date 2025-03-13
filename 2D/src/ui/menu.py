@@ -28,15 +28,19 @@ class Menu(Base):
                 self.running = False 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["play"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["play"].make_sound()
                     self.running = False
                     globals.game.load_start("st1.json") 
                 if self.buttons["load"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["load"].make_sound()
                     self.running = False 
                     globals.game.load_loading()   
                 if self.buttons["options"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["options"].make_sound()
                     self.running = False 
                     globals.game.load_options()
                 if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["quit"].make_sound()
                     self.running = False  
 
 

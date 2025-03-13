@@ -53,7 +53,6 @@ class AnimationPlayer():
             self.frame = pygame.image.load(self.frame_path)
             self.screen.blit(self.frame, (0, 0))
             self.show_dialog() 
-            
             pygame.display.flip()
             self.frame_index += 1 
             

@@ -45,6 +45,7 @@ class GameManager():
             self.clock = pygame.time.Clock() # create a clock
             self._initialized = True # one is all done state is inicialized
             self.scene = None
+            self.next_scene = None
             self.player = None
             self.enemy = None
             self.music = False
@@ -58,7 +59,7 @@ class GameManager():
         if(not self.music):
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load("../Sound/BSO/Credits.wav")
-                pygame.mixer.music.play()
+                pygame.mixer.music.play(-1)
                 self.music = True
    
     def changeMusic(self, path = None):
@@ -67,8 +68,9 @@ class GameManager():
         else: 
             pygame.mixer.music.stop()
             pygame.mixer.music.load(path)
-            pygame.mixer.music.play()
+            pygame.mixer.music.play(-1)
             self.music = True
+
              
     #change the resolution of the screen
     def change_resolution(self):
@@ -77,8 +79,8 @@ class GameManager():
     #functions to load different scenes
     def load_menu(self):
         if self.scene:
-            self.scene.stop()
-        self.music_on() 
+            self.scene.stop() 
+        self.music = False
         from ui.menu import Menu
         self.next_scene =  Menu()
         
@@ -91,7 +93,6 @@ class GameManager():
        
     
     def load_game(self, scene, sound, level):
-
         if self.scene:
             self.scene.stop()
         if self.player == None:    
@@ -127,9 +128,6 @@ class GameManager():
         if self.scene:
             self.scene.stop()
         self.music = False
-        pygame.mixer.music.stop()
-        pygame.mixer.music.load("../Sound/BSO/Credits.wav")
-        pygame.mixer.music.play()
         from views.credits import Credits
         self.next_scene =  Credits()
         
@@ -144,15 +142,13 @@ class GameManager():
         from views.gameOver import GameOver
         self.player = None
         self.music = False
-        pygame.mixer.music.stop()
-        pygame.mixer.music.load("../Sound/BSO/game_over.wav")
-        pygame.mixer.music.play()
         self.next_scene =  GameOver()
        
 
     def load_start(self, path):
         if self.scene:
             self.scene.stop()
+            self.music = False
         from views.start import Start
         self.next_scene = Start(path =path)
         
@@ -174,6 +170,7 @@ class GameManager():
     
     def run(self):
         self.first_scene()
+        self.music_on()
         while self.scene is not None:
             self.scene.run()
             
@@ -183,6 +180,7 @@ class GameManager():
                 
                 # Verificar si hay una nueva escena o salir
                 if self.next_scene is not None:
+                    self.music_on()
                     self.scene = self.next_scene
                     self.next_scene = None
                 else:

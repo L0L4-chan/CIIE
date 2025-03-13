@@ -30,18 +30,22 @@ class Load(Base):
                 self.running = False 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if "2" in self.buttons and self.buttons["2"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["2"].make_sound()
                     self.running = False
                     globals.game.load_player(2, self.get_player_lifes("level_2.json"))
                     globals.game.load_start("st2.json")
                 if "3" in self.buttons and self.buttons["3"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["3"].make_sound()
                     self.running = False
                     globals.game.load_player(3, self.get_player_lifes("level_3.json"))
                     globals.game.load_start("st3.json")
                 if "4" in self.buttons and self.buttons["4"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["4"].make_sound()
                     self.running = False
                     globals.game.load_player(3, self.get_player_lifes("level_4.json"))
                     globals.game.load_start("st4.json")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["BACK"].make_sound()
                     self.running = False
                     globals.game.load_menu()
 

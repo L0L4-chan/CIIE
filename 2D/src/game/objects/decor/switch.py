@@ -31,6 +31,7 @@ class Switch(Platforms):
         self.door = Door(door_x, door_y)
         self.pressed = False
         self.sound = pygame.mixer.Sound("../Sound/FX/switch.wav")
+        self.sound.set_volume(0.5)
     
     #Funcion que establece la image inicial y la posicion inicial con el colisionador    
     def init_surf(self):

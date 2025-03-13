@@ -41,24 +41,33 @@ class Options(Base):
                 self.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.buttons["galician"].checkForInput(pygame.mouse.get_pos()):
+                   self.buttons["galician"].make_sound()
                    self.change_language("galician")
                 if self.buttons["english"].checkForInput(pygame.mouse.get_pos()):
+                   self.buttons["english"].make_sound()
                    self.change_language( "english")
                 if self.buttons["spanish"].checkForInput(pygame.mouse.get_pos()):
+                   self.buttons["spanish"].make_sound()
                    self.change_language("spanish")
                 if self.buttons["easy"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["easy"].make_sound()
                     globals.config.update_config_difficulty(1)
                 if self.buttons["medium"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["medium"].make_sound()
                     globals.config.update_config_difficulty(2)
                 if self.buttons["hard"].checkForInput(pygame.mouse.get_pos()):
+                    self.buttons["hard"].make_sound()
                     globals.config.update_config_difficulty(3)
-                if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):                   
+                if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):
+                   self.buttons["small"].make_sound()                   
                    self.change_resolution("../config/720x405.json")
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
-                   self.change_resolution("../config/1280x720.json")
+                    self.buttons["big"].make_sound()
+                    self.change_resolution("../config/1280x720.json")
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
-                   self.running = False
-                   globals.game.load_menu()
+                    self.buttons["BACK"].make_sound()
+                    self.running = False
+                    globals.game.load_menu()
                    
     
     def change_language(self,language): 

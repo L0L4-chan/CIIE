@@ -34,10 +34,12 @@ class Pausa(Base):
         sys.exit()
       if event.type == pygame.MOUSEBUTTONDOWN:   # Detecta si se ha hecho clic sobre el botón "Volver"
         if self.buttons["back"].checkForInput(pygame.mouse.get_pos()): 
-           self.running = False  # Sale de la pausa y vuelve al juego
-        if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()): 
-           self.running = False  # Sale de la pausa y vuelve al juego
-           globals.game.load_menu()
+          self.buttons["back"].make_sound()
+          self.running = False  # Sale de la pausa y vuelve al juego
+        if self.buttons["quit"].checkForInput(pygame.mouse.get_pos()):
+          self.buttons["quit"].make_sound() 
+          self.running = False  # Sale de la pausa y vuelve al juego
+          globals.game.load_menu()
 
   def update(self):
     mouse_pos = pygame.mouse.get_pos()

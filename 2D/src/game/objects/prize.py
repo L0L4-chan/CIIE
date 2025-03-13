@@ -21,6 +21,7 @@ class Prize(OneUse):
        self.rect = pygame.Rect(self.x_pos, self.y_pos, self.width, self.height)
        self.counter = 0
        self.sound = pygame.mixer.Sound("../Sound/FX/Prize.wav") #por si alguno no tiene sonido
+       self.sound.set_volume(0.5)
         
     
     

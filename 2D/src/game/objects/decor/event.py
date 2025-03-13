@@ -22,6 +22,7 @@ class Event(Platforms):
         self.level = level
         self.triggered = False
         self.sound = pygame.mixer.Sound("../Sound/FX/noKey.wav")  #suena cuando se pisa sin la llave
+        self.sound.set_volume(0.5)
           
     def on_collision(self, player):
         if not self.triggered:
