@@ -32,7 +32,7 @@ class Entity(pygame.sprite.Sprite):
         # Flag para saber si está saltando.
         self.jumping = False
 
-    def resolve_collisions(self, hit, vertical_margin=10):
+    def resolve_collisions(self, hit, vertical_margin=0):
             # --- Resolución de colisiones horizontales ---
             if hasattr(hit, 'rect'):
                 # Calcula la diferencia entre la parte inferior de la entidad y el tope del objeto.

@@ -111,4 +111,9 @@ class ConfigManager:
     def get_player_posy(self,p):
         return self.conf[f"level{p}y"]
     
-   
+    def get_stone_v(self):
+        return self.conf["stone"]
+    
+    def get_stone_r(self):
+        return self.conf["rev_stone"]
+    

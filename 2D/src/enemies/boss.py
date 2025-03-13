@@ -58,7 +58,7 @@ class Boss(Enemy):
                 if self.special_timer % 6 ==0:
                     self.magic_attack() 
                 
-            elif abs(distance_x) < 400 and self.lifes < 15 and self.attack <= 0:
+            elif abs(distance_x) < self.screen_width/4 and self.lifes < 15 and self.attack <= 0:
                 self.current_action = "magic"
                 self.magic_attack()
                 self.special_timer = 300
@@ -66,7 +66,7 @@ class Boss(Enemy):
                 self.vel.x = self.speed * self.direction
                 self.pos.x += self.vel.x
                 self.update_rect()
-                if abs(distance_x) < 100:
+                if abs(distance_x) < int(self.screen_width/12):
                     self.current_action = "melee"
                 else:
                     self.current_action = "walk"    

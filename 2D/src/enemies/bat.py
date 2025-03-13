@@ -19,8 +19,8 @@ class Bat(Enemy):
         self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/bat/spritesheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() / 7), self.spritesheet.get_height(), False )
         self.pos = vec(x, y)
-        self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
-        self.speed = 0.7 
+        self.vel = vec(globals.config.get_player_Acc() * 2, 0)  # Velocidad inicial para moverse hacia la derecha
+        self.speed = globals.config.get_player_Acc() 
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(i * self.width, 0) for i in range(4)],
@@ -38,7 +38,7 @@ class Bat(Enemy):
         else:
             self.direction = 1
             
-        if abs(distance_x) < 900 or abs(distance_x) > 30:
+        if abs(distance_x) < self.screen_width/2 or abs(distance_x) > self.screen_width/40 :
             self.vel.x = self.direction * self.speed
         
         # añadir movimiento de subida y bajada

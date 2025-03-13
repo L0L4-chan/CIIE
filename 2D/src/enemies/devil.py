@@ -45,8 +45,8 @@ class Devil(Enemy):
             self.direction = -1
         else:
             self.direction = 1
-        if abs(distance_x) < 200:
-            if abs(distance_y) < 10:
+        if abs(distance_x) < self.screen_width/10:
+            if abs(distance_y) < int(self.screen_width/20):
                 self.shoot()
             else:
                 self.vel.y = self.speed * (1 if distance_y > 0 else -1)

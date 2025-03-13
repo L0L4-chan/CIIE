@@ -123,7 +123,7 @@ class Player(Entity):
                         action()
             self.acc.x += self.vel.x * self.FRIC
             self.vel += self.acc
-            self.pos += self.vel + 0.5 * self.acc
+            self.pos += self.vel + self.ACC * self.acc
             self.update_rect()
         self.action_frames = self.frames[self.current_action]
         self.end_index = len(self.action_frames)
@@ -241,7 +241,7 @@ class Player(Entity):
             if isinstance(hit, Lungs):
                 if not self.power_up:
                     hit.sound.play()
-                    self.jump_Max = self.jump_Max + (-5)
+                    self.jump_Max += self.jump_Max  * self.ACC
                     self.power_up_counter = 0
                     self.power_up_sound.play()
                     self.power_up = True

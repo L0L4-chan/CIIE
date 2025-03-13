@@ -9,8 +9,9 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
+import pygame, utils.globals as globals
 from game.objects.oneuse import OneUse
+
 
 class Stone(OneUse):
     
@@ -21,10 +22,12 @@ class Stone(OneUse):
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
         self.counter = 3
+        self.speed_d = globals.config.get_stone_v()
+        self.rev_speed= globals.config.get_stone_r()
         
         
     def active(self, x, y ,direction ):
-        self.speed = 10 * 1 if direction else -8
+        self.speed = self.speed_d * 1 if direction else - self.rev_speed
         super().active(x,y)
         self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
         self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
