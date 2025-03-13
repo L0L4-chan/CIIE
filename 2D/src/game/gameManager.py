@@ -115,7 +115,7 @@ class GameManager():
             self.player = Player2(globals.config.get_player_posx(3), globals.config.get_player_posy(3),lifes)
         else:
             from classes.player2 import Player2
-            self.player = Player2(globals.config.get_player_posx(4), globals.config.get_player_posy(4),lifes)
+            self.player = Player2(globals.config.get_player_posx(4), globals.config.get_player_posy(4),lifes+1)
 
 
     def load_loading(self):
