@@ -28,14 +28,15 @@ class Stone(OneUse):
         
     def active(self, x, y ,direction ):
         self.speed = self.speed_d * 1 if direction else - self.rev_speed
-        super().active(x,y)
         self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
-        self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
+        super().active(x,y)
         self.set_use()
+
         
     def hit(self):
         self.set_use()
         self.stand_by()
+        self.counter = 3
      
     def stand_by(self): 
         self.rect.topleft = (0,0)  # La sacamos de la pantalla
