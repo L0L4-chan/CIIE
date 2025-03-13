@@ -11,14 +11,35 @@ def scale_coordinates(coords, original_size, new_size):
     
     return scaled_coords
 
-original_size = (6400,2160)
-new_size = (2400,810)
+original_size = (2560,5040)
+new_size = (1280,2520)
 
-ghost_coords = [[500, 1000], [1488,1994],[6105,1737],[800,1790],[687,1956],[5559,1880],[2830,1790]]
+devil=  [[492,403], [2231,465]]
+ghost= [[772,406], [853,956]]
+bat=[[1259,489]]
+boss= [[1268,1325]]
 
 
-scaled_ghost_coords = scale_coordinates(ghost_coords, original_size, new_size)
+scaled_ghost_coords = scale_coordinates(bat, original_size, new_size)
 
-print("Scaled Coordinates:")
+print("bat: [")
 for coord in scaled_ghost_coords:
-    print(coord)
+    print(coord,",")
+    scaled_ghost_coords = scale_coordinates(devil, original_size, new_size)
+
+print("], devil : [")
+for coord in scaled_ghost_coords:
+    print(coord,",")
+    
+scaled_ghost_coords = scale_coordinates(ghost, original_size, new_size)
+
+print("], ghost:[")
+for coord in scaled_ghost_coords:
+    print(coord,",")
+    
+print("], boss :[")
+
+scaled_ghost_coords = scale_coordinates(boss, original_size, new_size)
+for coord in scaled_ghost_coords:
+    print(coord,",")
+print("]")
