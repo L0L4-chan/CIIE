@@ -30,7 +30,8 @@ class Prize(OneUse):
             self.counter += 1
             if self.counter >= 100:
                 self.inUse = False
-                self.kill()
+                self.rect.topleft = (0,0)
+                self.counter = 0
                 
             
                 

@@ -32,7 +32,7 @@ class Chest(Platforms):
         self.active = True
         self.discovered = False
         self.index = 1
-        self.respawn_time = 3600
+        self.respawn_time = 3000
         self.respaw_x = x
         self.respaw_y = y
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
@@ -52,8 +52,9 @@ class Chest(Platforms):
            self.on_discover()
        if self.discovered and not self.active: 
                 self.respawn_time -=1
-                self.check_respawn()
-                self.index = 0
+                if not isinstance(self.prize, Key):
+                  self.check_respawn()
+                  self.index = 0
        
     def check_respawn(self):
         if self.respawn_time <=0:
@@ -61,8 +62,9 @@ class Chest(Platforms):
             self.discovered = False
             self.index = 0
             self.active = True
-            self.init_surf()  
-            self.set_prize(self.respaw_x, self.respaw_y, "lungs")   
+            self.init_surf() 
+            self.prize.active(self.x_pos, self.y_pos)
+            self.prize.set_use() 
         
     #dibujado en pantalla       
     def draw(self, screen, position):

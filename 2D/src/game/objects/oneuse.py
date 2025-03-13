@@ -23,6 +23,7 @@ class OneUse(pygame.sprite.Sprite):
     def active(self, x, y):
         self.x_pos = x
         self.y_pos = y
+        self.rect = pygame.Rect(self.x_pos, self.y_pos, self.image.get_width(), self.image.get_height())
         
     def set_use(self):
         self.inUse = not self.inUse    

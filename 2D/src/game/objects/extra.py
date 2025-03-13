@@ -19,6 +19,10 @@ class Extra(Prize):
        self.sound.set_volume(0.5)
        self.to_pick= True
     
+    def set_use(self):
+        self.inUse = not self.inUse  
+        self.to_pick = not self.to_pick
+    
     def being_pick(self):
         self.to_pick = False
         
