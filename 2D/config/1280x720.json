@@ -6,5 +6,13 @@
 "speed" : 5,
 "Acc" : 0.5,
 "fric" : -0.12,
-"jump" : -12
+"jump" : -12,
+"level1x": 40,
+"level1y": 510,
+"level2x": 45,
+"level2y": 1960,
+"level3x": 45,
+"level3y": 580,
+"level4x": 45,
+"level4y": 1254
 }

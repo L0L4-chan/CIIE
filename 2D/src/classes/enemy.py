@@ -157,10 +157,10 @@ class Enemy(Entity):
     
     def wounded(self):
         self.lifes -= 1
+        self.sound.play()
         if self.lifes<= 0:
             self.not_death = False
             self.rect.topleft = (-100, -100)
-            self.sound.play()
         else:
             #self.rect.move(0,30)
             self.hit = False

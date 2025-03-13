@@ -104,4 +104,11 @@ class ConfigManager:
     def get_player_fric(self):
         return self.conf["fric"]
     
+    def get_player_posx(self, p):
+        return self.conf[f"level{p}x"]
+    
+    
+    def get_player_posy(self,p):
+        return self.conf[f"level{p}y"]
+    
    

@@ -106,16 +106,16 @@ class GameManager():
     def load_player(self, level, lifes=3):
         if level == 1:
             from classes.player import Player
-            self.player = Player(globals.config.get_width()/20, (globals.config.get_height()/6)*4)    
+            self.player = Player(globals.config.get_player_posx(1), globals.config.get_player_posy(1))   
         elif level == 2: 
             from classes.player1 import Player1
-            self.player = Player1(globals.config.get_width()/20, (globals.config.get_height()*2.5),lifes)
+            self.player = Player1(globals.config.get_player_posx(2),globals.config.get_player_posy(2),lifes)
         elif level == 3:
             from classes.player2 import Player2
-            self.player = Player2(globals.config.get_width()/20, (globals.config.get_height()/6)*5,lifes)
+            self.player = Player2(globals.config.get_player_posx(3), globals.config.get_player_posy(3),lifes)
         else:
             from classes.player2 import Player2
-            self.player = Player2(globals.config.get_width()/20, (globals.config.get_height())*1.7,lifes)
+            self.player = Player2(globals.config.get_player_posx(4), globals.config.get_player_posy(4),lifes)
 
 
     def load_loading(self):

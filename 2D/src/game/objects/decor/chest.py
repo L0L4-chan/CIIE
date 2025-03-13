@@ -64,7 +64,7 @@ class Chest(Platforms):
             self.active = True
             self.init_surf() 
             self.prize.active(self.x_pos, self.y_pos)
-            self.prize.set_use() 
+ 
         
     #dibujado en pantalla       
     def draw(self, screen, position):
