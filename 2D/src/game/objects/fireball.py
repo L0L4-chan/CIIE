@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame 
+import pygame , utils.auxiliar as auxiliar
 from game.objects.oneuse import OneUse
 
 class Fireball(OneUse):
@@ -28,7 +28,7 @@ class Fireball(OneUse):
         self.image = self.spritesheet.subsurface(self.frames["bomb"][0]) 
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
-        self.sound = pygame.mixer.Sound("../Sound/FX/fire.wav")
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/fire.wav"))
         self.sound.set_volume(0.5)
         self.counter = 3
     

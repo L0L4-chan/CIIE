@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame
+import pygame, utils.auxiliar as auxiliar
 from game.objects.decor.breakable import Breakable
 from game.objects.decor.platforms import Platforms
 from game.objects.oneuse import OneUse
@@ -31,7 +31,7 @@ class Heart(OneUse):
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
         self.platform = pygame.sprite.Group()
-        self.sound = pygame.mixer.Sound("../Sound/FX/Explosion.wav")
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/Explosion.wav"))
         self.sound.set_volume(0.5)
     
     def set_Platform(self,platform):

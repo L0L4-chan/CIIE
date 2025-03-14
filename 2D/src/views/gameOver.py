@@ -10,7 +10,7 @@ Version: 1.0.0
 '''
 
 
-import pygame, utils.globals as globals
+import pygame, utils.globals as globals, utils.auxiliar as auxiliar
 from ui.button import Button
 from game.base import Base
 
@@ -18,7 +18,7 @@ class GameOver(Base):
   def __init__(self):
     super().__init__()
     self.button = Button (pos=((self.screen_width/2), (self.screen_height/2)), text_input=  globals.config.get_text_button(key ="GAMEOVER"))
-    self.bg = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/background/gameover.jpg")
+    self.bg = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/background/gameover.jpg"))
 
   
   def handle_events(self): 

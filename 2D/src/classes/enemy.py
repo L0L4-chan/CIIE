@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, utils.globals as globals
+import pygame, utils.globals as globals, utils.auxiliar as auxiliar
 
 from classes.entity import Entity
 from game.objects.stone import Stone
@@ -51,7 +51,7 @@ class Enemy(Entity):
         self.not_death = True
         self.respawn_time = 3600
         self.lifes = 1
-        self.sound = pygame.mixer.Sound("../Sound/FX/hit.wav")
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/hit.wav"))
         self.sound.set_volume(0.5)
         
         self.animation_map.update({
@@ -122,7 +122,7 @@ class Enemy(Entity):
             self.not_death = True
             self.life = 1
             self.hit =False
-            self.rect = self.surf.get_rect(topleft=(self.respaw_x, self.respaw_y))
+            self.rect = self.surf.get_rect(topleft=(self.respawn_x, self.respawn_y))
  
     #funcion de dibujado en pantalla
     def draw(self, screen= None, position = None):

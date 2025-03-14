@@ -19,7 +19,7 @@ class Start(Base):
 
    def __init__(self, path):
       super().__init__()
-      self.info = auxiliar.load_json(f"../config/{path}")
+      self.info = auxiliar.load_json(auxiliar.get_path(f"config/{path}"))
       self.animation = AnimationPlayer(self.info["ani_path"], self.info["ani_start"], self.info["ani_amount"], self.info["ani_event"])
       self.screen_width =  globals.config.get_width()
       self.screen_height =   globals.config.get_height()
@@ -27,7 +27,7 @@ class Start(Base):
       
    def music_on(self):
       pygame.mixer.music.stop()
-      pygame.mixer.music.load(self.info["ani_sound"])
+      pygame.mixer.music.load(auxiliar.get_path(self.info["ani_sound"]))
       pygame.mixer.music.play(-1)
       
    def cleanup(self):

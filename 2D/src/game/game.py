@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame,  utils.globals as globals
+import pygame,  utils.globals as globals, utils.auxiliar as auxiliar
 from game.camera import Camera
 from game.objects.lifes import Lifes
 from game.base import Base
@@ -25,8 +25,8 @@ class Game(Base):
         super().__init__()   
         #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
         self.scene = scene
-        self.bg = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/background/{self.scene.background}")
-        self.path =  globals.config.get_artpath()
+        self.bg = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/background/{self.scene.background}"))
+        self.path = auxiliar.get_path( globals.config.get_artpath())
         self.sprites = pygame.sprite.Group()
         self.group_lifes = pygame.sprite.Group()
         self.in_scene = pygame.sprite.Group()
@@ -37,8 +37,8 @@ class Game(Base):
         self.world_height = self.bg.get_height()   # O la altura máxima del escenario
         self.camera = Camera(self.world_width, self.world_height,self.screen_width, self.screen_height)
         self.sound = sound
-        path_button = f"../Art/{ globals.config.get_artpath()}/avatar/pause_button.png"
-        path_hover = f"../Art/{ globals.config.get_artpath()}/avatar/pause_button_hover.png"
+        path_button =auxiliar.get_path( f"Art/{ globals.config.get_artpath()}/avatar/pause_button.png")
+        path_hover = auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/avatar/pause_button_hover.png")
 
         pauseb = Button(pos=(self.screen_width - 100, self.screen_height / 8), 
                 text_input= globals.config.get_text_button(key ="PAUSE"),

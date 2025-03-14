@@ -8,7 +8,7 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame, random,   utils.globals as globals
+import pygame, random,   utils.globals as globals, utils.auxiliar as auxiliar
 from classes.enemy import Enemy
 
 vec = pygame.math.Vector2  # 2 for two dimensional
@@ -16,7 +16,7 @@ vec = pygame.math.Vector2  # 2 for two dimensional
 class Bat(Enemy):
     
     def __init__(self, x, y):
-        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/bat/spritesheet.png")
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/bat/spritesheet.png"))
         super().__init__(x,y, (self.spritesheet.get_width() / 7), self.spritesheet.get_height(), False )
         self.vel = vec(globals.config.get_player_Acc() * 2, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = globals.config.get_player_Acc() 

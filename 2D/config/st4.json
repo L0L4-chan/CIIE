@@ -1,5 +1,5 @@
 {"ani_path" : "4animation",
-"ani_sound" : "../Sound/BSO/levels-_1_.wav",
+"ani_sound" : "Sound/BSO/levels-_1_.wav",
 "ani_amount" : 2,
 "ani_start" : 200,
 "ani_event" :5,
@@ -7,4 +7,4 @@
 "scene_level" : 4,
 "scene_bg" : "level4.jpg",
 "scene_file" : "level4.json",
-"scene_sound" : "../Sound/BSO/levels-_2_.wav"}
+"scene_sound" : "Sound/BSO/levels-_2_.wav"}

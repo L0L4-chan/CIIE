@@ -1,4 +1,4 @@
-import pygame,  utils.globals as globals
+import pygame,  utils.globals as globals, utils.auxiliar as auxiliar
 
 class Button():
     def __init__(self, pos, text_input, image_path=None,  hover_image_path=None):
@@ -22,7 +22,7 @@ class Button():
             self.rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
             self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
             self.image = None
-        self.sound = pygame.mixer.Sound("../Sound/FX/button.wav")
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/button.wav"))
         self.sound.set_volume(0.3)    
 
     def render(self, screen):

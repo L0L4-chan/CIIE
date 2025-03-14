@@ -8,7 +8,7 @@ Lola Suárez González
 
 Version: 1.0.0
 '''
-import pygame, random,   utils.globals as globals
+import pygame, random,   utils.globals as globals, utils.auxiliar as auxiliar
 
 from classes.enemy import Enemy
 
@@ -17,7 +17,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 class Ghost(Enemy):
     
     def __init__(self, x, y):
-        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/ghost/sprite_sheet.png")
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/ghost/sprite_sheet.png"))
         super().__init__(x,y, (self.spritesheet.get_width() / 5), self.spritesheet.get_height(), False )
         
         self.vel = vec(globals.config.get_player_Acc()*2 , 0)  # Velocidad inicial para moverse hacia la derecha

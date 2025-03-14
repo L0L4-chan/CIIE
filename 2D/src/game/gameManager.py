@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame ,  utils.globals as globals
+import pygame ,  utils.globals as globals, utils.auxiliar as auxiliar
 from game.configManager import ConfigManager
 
 
@@ -58,7 +58,7 @@ class GameManager():
     def music_on(self):
         if(not self.music):
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load("../Sound/BSO/Credits.wav")
+                pygame.mixer.music.load(auxiliar.get_path("Sound/BSO/Credits.wav"))
                 pygame.mixer.music.play(-1)
                 self.music = True
    
@@ -67,7 +67,7 @@ class GameManager():
             self.music_on()
         else: 
             pygame.mixer.music.stop()
-            pygame.mixer.music.load(path)
+            pygame.mixer.music.load(auxiliar.get_path(path))
             pygame.mixer.music.play(-1)
             self.music = True
 
@@ -150,7 +150,7 @@ class GameManager():
             self.scene.stop()
             self.music = False
         from views.start import Start
-        self.next_scene = Start(path =path)
+        self.next_scene = Start(path)
         
     
     def player_position(self):

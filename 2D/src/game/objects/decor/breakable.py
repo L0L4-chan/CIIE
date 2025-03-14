@@ -9,14 +9,14 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame ,  utils.globals as globals
+import pygame ,  utils.globals as globals, utils.auxiliar as auxiliar
 from game.objects.decor.platforms import Platforms
 
 class Breakable(Platforms):
    #Funcion de inicializacion delelemento
    def __init__(self, x , y ):
       #cargamos las imagenes y asignamos tamaño de forma dinámica
-      self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/breakable/breakablesheet.png")
+      self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/breakable/breakablesheet.png"))
       self.width = self.spritesheet.get_width()/5
       self.height = self.spritesheet.get_height()
       #asignamos posiciones para la carga de imagenes que forman la animación
@@ -28,7 +28,7 @@ class Breakable(Platforms):
       self.index = 1
       self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
       self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
-      self.sound = pygame.mixer.Sound("../Sound/FX/17_knock.wav")
+      self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/17_knock.wav"))
       self.sound.set_volume(0.5)
    
    #Funcion que establece la image inicial y la posicion inicial con el colisionador

@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame,  random, utils.globals as globals
+import pygame,  random, utils.globals as globals, utils.auxiliar as auxiliar
 from classes.enemy import Enemy
 
 
@@ -20,7 +20,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Boss(Enemy):
     def __init__(self, x, y):
-        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/boss/sprite_sheet.png")
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/boss/sprite_sheet.png"))
         super().__init__(x, y, (self.spritesheet.get_width() / 11), self.spritesheet.get_height(), False)
         self.vel = vec(0, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = 0.5   
@@ -40,10 +40,10 @@ class Boss(Enemy):
          })
         self.animation_map["death"] = self.the_end
         print(self.animation_map)
-        self.hurt_sound = pygame.mixer.Sound("../Sound/FX/hurt.wav")
-        self.sound = pygame.mixer.Sound("../Sound/FX/win.wav")
+        self.hurt_sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/hurt.wav"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/win.wav"))
         self.sound.set_volume(0.5)
-        self.lifes = 1
+        self.lifes = 50
         for i in range(5):
             self.group.add(Fireball())
         
@@ -66,7 +66,7 @@ class Boss(Enemy):
                 if self.special_timer % 6 ==0:
                     self.magic_attack() 
                 
-            elif abs(distance_x) < self.screen_width/3 and self.lifes < 15 and self.attack <= 0:
+            elif abs(distance_x) < self.screen_width/3 and self.lifes < 25 and self.attack <= 0:
                 self.current_action = "magic"
                 self.index = 0
                 self.magic_attack()

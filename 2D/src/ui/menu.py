@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame ,  utils.globals as globals
+import pygame ,  utils.globals as globals, utils.auxiliar as auxiliar
 from game.base import Base
 from ui.button import Button
 
@@ -17,7 +17,7 @@ class Menu(Base):
 
     def __init__(self):
         super().__init__()
-        self.bg = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/background/Menu.jpg") #add background
+        self.bg = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/background/Menu.jpg")) #add background
         # Botones del menu
         self.new_buttons() #create buttons
         

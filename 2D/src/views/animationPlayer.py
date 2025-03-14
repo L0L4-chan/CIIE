@@ -9,7 +9,7 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame, os, utils.globals as globals
+import pygame, os, utils.globals as globals, utils.auxiliar as auxiliar
 from views.dialogBox import DialogBox
 
 class AnimationPlayer():
@@ -19,7 +19,7 @@ class AnimationPlayer():
         self.clock =  globals.game.clock
         self.art_path =  globals.config.get_artpath()
         self.path = path
-        self.frames = sorted(os.listdir(f"../Art/{self.art_path}/{path}"))
+        self.frames = sorted(os.listdir(auxiliar.get_path(f"Art/{self.art_path}/{path}")))
         self.frame_index = 0
         self.end = len(self.frames) 
         self.fps = 24
@@ -49,7 +49,7 @@ class AnimationPlayer():
     def run(self):
         while(self.running):
             self.clock.tick(self.fps)
-            self.frame_path = os.path.join(f"../Art/{self.art_path}/{self.path}", self.frames[self.frame_index])
+            self.frame_path = os.path.join(auxiliar.get_path(f"Art/{self.art_path}/{self.path}"), self.frames[self.frame_index])
             self.frame = pygame.image.load(self.frame_path)
             self.screen.blit(self.frame, (0, 0))
             self.show_dialog() 

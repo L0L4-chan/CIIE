@@ -9,13 +9,13 @@ Lola Suárez González
 Version: 1.0.0
 '''
 
-import pygame,  utils.globals as globals
+import pygame,  utils.globals as globals, utils.auxiliar as auxiliar
 
 
 class OneUse(pygame.sprite.Sprite):
     def __init__(self, path):
         super().__init__()
-        self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/{path}")
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/{path}"))
         self.image = self.spritesheet
         self.rect = self.image.get_rect()
         self.inUse = False
