@@ -31,10 +31,9 @@ class Platforms(pygame.sprite.Sprite):
               
     def draw(self, screen, position =[0,0]):
         pass  
-        
-
+"""
     #PRUEBA PARA COMPROBAR Y TESTEAR POSICIÓN PLATAFORMAS
-    '''
+
     def init_surf(self):
         # Creamos una superficie sin canal alfa
         self.surf = pygame.Surface((self.width, self.height))
@@ -44,6 +43,6 @@ class Platforms(pygame.sprite.Sprite):
               
     def draw(self, screen, position=[0, 0]):
         screen.blit(self.surf, position)
-'''
-    
-    
+
+"""      
+   
