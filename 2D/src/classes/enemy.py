@@ -35,7 +35,6 @@ class Enemy(Entity):
         # Configuración de velocidad y movimiento
         self.change_direction_interval = 60  # Opcional: intervalos para cambiar dirección.
         self.frame_counter = 0 
-       
         # Dimensiones de la pantalla (para rebotar en los bordes).
         self.screen_width =  globals.config.get_width()
         self.screen_height =  globals.config.get_height()

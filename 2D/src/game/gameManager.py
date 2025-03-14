@@ -155,7 +155,7 @@ class GameManager():
     
     def player_position(self):
         if self.player is not None:
-            return self.player.rect.midtop
+            return self.player.rect.midbottom 
         else:
             return None
     
