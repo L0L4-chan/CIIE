@@ -33,43 +33,34 @@ class Player(Entity):
         # Llamamos al constructor de Entity con posición y dimensiones.
         super().__init__(x, y, self.width, self.height)
         self.surf = self.spritesheet.subsurface(pygame.Rect(0, 0, self.width, self.height))
-        self.respawn_x = x
-        self.respawn_y = y
         self.vel = vec(0, 0)
-        
         self.got_key = False
         self.ACC =  globals.config.get_player_Acc()
         self.FRIC =  globals.config.get_player_fric()
         self.speed =  globals.config.get_player_speed()
         self.jump_Max =  globals.config.get_player_jump()
         self.y_acc_value =  globals.config.get_player_Acc()
-        self.index = 0
         self.lifes = 3
         self.death_sound = pygame.mixer.Sound("../Sound/FX/death.wav")
         self.power_up_sound = pygame.mixer.Sound("../Sound/FX/ticktock.wav")
         self.power_up_counter = 0
         self.death_timer = 0
-        self.animation_timer = 0
-        self.frame_rate = 10
         self.power_up = False
         self.jumping = False 
         self.shooting = False
         self.die = False 
         self.got_life = False
-        self.direction = 1  # 1: derecha, 0: izquierda
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(self.width + (i * self.width), 0) for i in range(4)],
             "shoot": [((self.width * 5) + (i * self.width), 0) for i in range(4)],
             "death": [((self.width * 15) + (i * self.width), 0) for i in range(3)],
-        }
+        }      
         self.current_action = "idle"
         self.projectiles = Stone()
-        self.group = pygame.sprite.Group()
         self.group.add(self.projectiles)
         # Grupo local para las plataformas (se usa para pasar las colisiones, normalmente se llena en Game)
         self.platform = pygame.sprite.Group()
-      
         # Diccionario de acciones para las entradas.
         self.action_map = {
             pygame.K_LEFT: self.handle_walk_left,
@@ -77,7 +68,12 @@ class Player(Entity):
             pygame.K_SPACE: self.handle_jump,
             pygame.K_q: self.handle_shoot
         }
-
+        #diccionario para animaciones 
+        self.animation_map.update({
+            "shoot":self.end_shooting,
+            "death": self.animation_death          
+         })
+        
     def get_lifes(self):
         return self.lifes
 
@@ -87,7 +83,7 @@ class Player(Entity):
 
     def handle_walk_left(self):
         self.acc.x = -self.ACC
-        self.direction = 0
+        self.direction = -1
         self.current_action = "walk"
 
     def handle_walk_right(self):
@@ -125,14 +121,13 @@ class Player(Entity):
             self.vel += self.acc
             self.pos += self.vel + self.ACC * self.acc
             self.update_rect()
-        self.action_frames = self.frames[self.current_action]
-        self.end_index = len(self.action_frames)
-
+       
     def end_shooting(self):
-        self.shoot()
-        self.shooting = False
-        self.current_action = "idle"
-        self.index = 0
+        if self.index >= self.end_index:
+            self.shoot()
+            self.shooting = False
+            self.current_action = "idle"
+            self.index = 0
 
     def end_of_death(self): 
         self.death_sound.play()
@@ -147,25 +142,17 @@ class Player(Entity):
         self.pos.y = self.respawn_y
         self.rect.topleft = [self.respawn_x, self.respawn_y]
         self.current_action = "idle"
-      
-    def render(self):
-        if self.animation_timer > self.frame_rate:
-            if self.current_action == "shoot" and self.index >= self.end_index - 1:
-                self.end_shooting()
-            elif self.current_action == "death" and self.index >= self.end_index - 1:
+    
+    def animation_death(self):
+        if self.index >= self.end_index:
                 if self.lifes >= 0:
                     self.end_of_death()
                 else:
-                    self.index -=1        
-            elif self.current_action == "idle" or self.index == self.end_index:
-                self.index = 0
-            frame = self.action_frames[self.index]
-            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
-            if self.direction == 0:
-                sprite_image = pygame.transform.flip(sprite_image, True, False)
-            self.surf = sprite_image
-            self.animation_timer = 0
-            self.index += 1
+                    self.index -=1   
+    
+         
+    
+    
 
     #funcion de dibujado en pantalla
     def draw(self, screen, position = None):
@@ -175,7 +162,7 @@ class Player(Entity):
 
     #funcion de gestion de disparo
     def shoot(self):
-        if self.direction:
+        if self.direction > 0:
             stone_x = self.pos.x + (self.rect.width * self.direction)
         else:
             stone_x = self.pos.x - (self.rect.width)
@@ -199,7 +186,9 @@ class Player(Entity):
             if isinstance(hit, Enemy):
                 if not self.die and self.death_timer > 100:
                     self.to_die()
-                hit.die()
+                from enemies.boss import Boss
+                if not isinstance(hit, Boss):
+                    hit.die()
                 
             # --- COLISIONES CON STONE O FIREBALL---
             if isinstance(hit, Stone) or isinstance(hit, Fireball):

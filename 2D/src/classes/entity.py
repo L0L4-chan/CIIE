@@ -25,13 +25,33 @@ class Entity(pygame.sprite.Sprite):
         self.pos = vec(x, y)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
+        self.respawn_x = x
+        self.respawn_y = y
+        self.speed = 0
         self.width = width
         self.height = height
+        self.direction = 1  # 1: derecha, -1: izquierda
         # Se crea el rectángulo de colisión usando la posición (topleft) y dimensiones.
         self.rect = pygame.Rect(x, y, width, height)
         # Flag para saber si está saltando.
         self.jumping = False
-
+        # Variables para animación.
+        self.index = 0
+        self.end_index = 0
+        self.animation_timer = 0
+        self.frame_rate = 10
+        self.index = 0
+        self.group = pygame.sprite.Group()
+        self.animation_map = {
+            "idle": self.other_animation,
+            "walk": self.other_animation,         
+         }
+    
+    
+    def other_animation(self):   
+        if self.index >= self.end_index:
+           self.index = 0    
+              
     def resolve_collisions(self, hit, vertical_margin=0):
             # --- Resolución de colisiones horizontales ---
             if hasattr(hit, 'rect'):
@@ -62,9 +82,25 @@ class Entity(pygame.sprite.Sprite):
                         self.rect.top = hit.rect.bottom
                         self.pos.y = self.rect.bottom
                         self.vel.y = 0
+    
+    def render(self):
+        self.action_frames = self.frames[self.current_action]
+        self.end_index = len(self.action_frames)-1
+        if self.animation_timer > self.frame_rate: 
+            if self.current_action in self.animation_map:
+                action = self.animation_map[self.current_action]
+                if action:
+                    action()
+            frame = self.action_frames[self.index]
+            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
+            if self.direction < 0:
+                sprite_image = pygame.transform.flip(sprite_image, True, False)
+            self.surf = sprite_image
+            self.animation_timer = 0
+            self.index += 1
 
-    def update_rect(self):
-        """
+    """
         Actualiza el rectángulo de colisión basado en la posición actual.
-        """
+    """
+    def update_rect(self):
         self.rect.midbottom = self.pos

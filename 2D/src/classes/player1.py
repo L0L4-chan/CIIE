@@ -20,6 +20,7 @@ class Player1(Player):
         self.shield = False 
         self.frames.update({"shield": [(( self.width* 13 ) + ( i * self.width), 0) for i in range(2)]})
         self.action_map.update({pygame.K_w: self.handle_shield})
+        self.animation_map.update({"shield": self.animation_shield})
         
     def handle_shield(self):
         if not self.shield:
@@ -27,13 +28,12 @@ class Player1(Player):
             self.shield = True
             self.index = 0
             
-    def render(self):
-        if self.current_action == "shield" and self.index >= self.end_index:
+    def animation_shield(self):
+        if self.index >= self.end_index:
             self.shield = False
+            self.current_action = "idle"
             self.index = 0
-        else:
-            self.shield = False
-        super().render()    
+   
         
     def to_die(self):
         if not self.shield:

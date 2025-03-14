@@ -21,7 +21,7 @@ class OneUse(pygame.sprite.Sprite):
         self.inUse = False
         self.on_screen = False
         
-    def active(self, x, y):
+    def active(self, x, y, direction):
         self.x_pos = x
         self.y_pos = y
         self.rect = pygame.Rect(self.x_pos, self.y_pos, self.image.get_width(), self.image.get_height())

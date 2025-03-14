@@ -23,6 +23,7 @@ class Player2(Player1):
         self.heart = Heart()
         self.bomb_counter = 300
         self.action_map.update({pygame.K_e: self.handle_bomb})
+        self.animation_map.update({"bomb": self.animation_bomb})
         self.group.add(self.heart)
         
     def handle_bomb(self):
@@ -32,11 +33,12 @@ class Player2(Player1):
             self.index = 0
             self.bomb_counter = 0
     
-    def render(self):
-        if self.current_action == "bomb" and self.index >= self.end_index-1:
+    def animation_bomb(self):
+        if self.index >= self.end_index:
             self.bombing = False
             self.explode()
-        super().render()
+            self.current_action = "idle"
+            self.index = 0
     
     def move(self):
         if not self.bombing:

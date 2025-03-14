@@ -40,7 +40,7 @@ class Heart(OneUse):
     #funcion que lo activa para reutilización    
     def active(self,  x, y ,direction):
         self.direction = direction
-        super().active(x,y)#posicion
+        super().active(x,y, direction)#posicion
         self.rect = pygame.Rect(x, y, self.width, self.height)
         self.index = 0
         super().set_use()#activación

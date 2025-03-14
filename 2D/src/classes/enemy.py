@@ -33,17 +33,13 @@ class Enemy(Entity):
         # Asignamos la imagen completa como superficie inicial.
         self.surf = self.spritesheet.subsurface(pygame.Rect(0,0,self.width, self.height))
         # Configuración de velocidad y movimiento
-        self.vel = vec(1, 1)      # Velocidad inicial genérica.
-        self.speed = 2            # Factor de velocidad.
         self.change_direction_interval = 60  # Opcional: intervalos para cambiar dirección.
         self.frame_counter = 0 
+       
         # Dimensiones de la pantalla (para rebotar en los bordes).
         self.screen_width =  globals.config.get_width()
         self.screen_height =  globals.config.get_height()
         # Variables para animación.
-        self.animation_timer = 0
-        self.frame_rate = 10
-        self.index = 0
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(0, 0)],
@@ -51,22 +47,25 @@ class Enemy(Entity):
         }
         self.current_action = "walk"
         #otras variables
-        self.group = pygame.sprite.Group()
         self.on_screen = False
         self.hit = False
         self.not_death = True
         self.respawn_time = 3600
-        self.respaw_x = x
-        self.respaw_y = y
         self.lifes = 1
         self.sound = pygame.mixer.Sound("../Sound/FX/hit.wav")
         self.sound.set_volume(0.5)
+        
+        self.animation_map.update({
+            "death": self.other_animation         
+         })
+        
 
+    """
+        Actualiza la posición del enemigo en función de su velocidad y rebota en los bordes.
+    """
     #funcion que gestiona el movimiento
     def move(self):
-        """
-        Actualiza la posición del enemigo en función de su velocidad y rebota en los bordes.
-        """
+        
         self.pos.x += self.vel.x * self.speed
         self.pos.y += self.vel.y * self.speed
 
@@ -85,11 +84,11 @@ class Enemy(Entity):
         self.update_rect()
 
     #funcion que maneja las colisiones de los enemigos
-    def collision_managment(self, platforms):
-        """
+    """
         Gestiona las colisiones genéricas utilizando el método de la clase padre
         y añade la condición para colisión con un jugador (Player), comportándose igual que con spikes.
-        """
+    """
+    def collision_managment(self, platforms):
         hits = pygame.sprite.spritecollide(self, platforms, False)
         # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
         for hit in hits:
@@ -99,8 +98,7 @@ class Enemy(Entity):
                 # Al colisionar con un jugador, invertimos la velocidad.
                 if not self.hit:    
                     self.die()       
-                
-        
+                        
     #funcion que actualiza la posicion del jugador si es necesario            
     def update(self):
         if self.on_screen :
@@ -126,21 +124,7 @@ class Enemy(Entity):
             self.life = 1
             self.hit =False
             self.rect = self.surf.get_rect(topleft=(self.respaw_x, self.respaw_y))
-
-            
-    def render(self):
-        action_frames = self.frames[self.current_action]
-        if self.animation_timer > self.frame_rate:
-            self.index += 1
-            if self.index >= len(action_frames):
-                self.index = 0
-            self.animation_timer = 0
-            frame = action_frames[self.index]
-            sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
-            if self.vel.x < 0:
-                sprite_image = pygame.transform.flip(sprite_image, True, False)
-            self.surf = sprite_image
-    
+ 
     #funcion de dibujado en pantalla
     def draw(self, screen= None, position = None):
         if self.on_screen and self.not_death:

@@ -15,7 +15,7 @@ from game.objects.oneuse import OneUse
 class Prize(OneUse):
     def __init__(self,x,y,path):
        super().__init__(path)
-       super().active(x,y)
+       super().active(x,y, 1)
        self.width = self.spritesheet.get_width()
        self.height = self.spritesheet.get_height()
        self.rect = pygame.Rect(self.x_pos, self.y_pos, self.width, self.height)

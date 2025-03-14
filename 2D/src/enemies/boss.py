@@ -22,12 +22,10 @@ class Boss(Enemy):
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/boss/sprite_sheet.png")
         super().__init__(x, y, (self.spritesheet.get_width() / 11), self.spritesheet.get_height(), False)
-        self.pos = vec(x, y)
         self.vel = vec(0, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = 0.5   
         self.special_timer = 300
-        self.attack = 3600
-        self.frame_rate = 16
+        self.attack = 100
         self.frames = {
             "idle": [(self.width*4, 0)],
             "walk": [(i * self.width, 0) for i in range(2)],
@@ -42,6 +40,13 @@ class Boss(Enemy):
         for i in range(5):
             self.group.add(Fireball())
 
+        self.animation_map.update({
+            "death": self.the_end,
+            "melee" : self.other_animation,
+            "magic": self.other_animation,
+            "death": self.other_animation         
+         })
+               
     def move(self):
         if self.current_action != "death":
             self.set_objective()
@@ -55,43 +60,36 @@ class Boss(Enemy):
                 self.special_timer -= 1
                 if self.special_timer <= 0:
                     self.current_action = "walk" 
+                    self.index = 0
                 if self.special_timer % 6 ==0:
                     self.magic_attack() 
                 
-            elif abs(distance_x) < self.screen_width/4 and self.lifes < 15 and self.attack <= 0:
+            elif abs(distance_x) < self.screen_width/3 and self.lifes < 15 and self.attack <= 0:
                 self.current_action = "magic"
+                self.index = 0
                 self.magic_attack()
+                self.attack = 600
                 self.special_timer = 300
             else:
                 self.vel.x = self.speed * self.direction
                 self.pos.x += self.vel.x
                 self.update_rect()
                 if abs(distance_x) < int(self.screen_width/12):
+                    if self.current_action != "melee":
+                        self.index = 0
                     self.current_action = "melee"
                 else:
-                    self.current_action = "walk"    
+                    if self.current_action != "walk":
+                        self.index = 0  
+                    self.current_action = "walk"   
     
     def the_end(self):
-        self.sound.play()
-        globals.game.scene.running= False
-        globals.game.load_start("st5.json")
-                
-    def render(self):
-        action_frames = self.frames[self.current_action]
-        if self.index > len(action_frames)-1:
-            if self.current_action == "death":
-                self.the_end()
-                return
-            else:
-                self.index = 0
-        frame = action_frames[self.index]
-        sprite_image = self.spritesheet.subsurface(pygame.Rect(frame[0], frame[1], self.width, self.height))
-        if self.direction < 0:
-            sprite_image = pygame.transform.flip(sprite_image, True, False)
-        self.surf = sprite_image
-        self.animation_timer = 0  
-        self.index += 1
-                
+        if self.index >= self.end_index:
+            print("hola")
+            self.sound.play()
+            globals.game.scene.running= False
+            globals.game.load_start("st5.json")
+                                
     def magic_attack(self):
         for item in self.group:
             if not item.get_inUse():
@@ -105,8 +103,7 @@ class Boss(Enemy):
         self.move()
  
     def draw(self, screen= None, position = None):
-        if self.animation_timer > self.frame_rate:
-            self.render()
+        self.render()
         screen.blit(self.surf,position)    
         
     def die(self):
@@ -117,7 +114,8 @@ class Boss(Enemy):
                                        
     def wounded(self):
         self.lifes -= 1
-        if self.lifes<= 0:
+        if self.lifes == 0:
             self.current_action = "death"
+            self.index = 0
         else:
             self.hit = False

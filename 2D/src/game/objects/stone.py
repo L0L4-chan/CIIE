@@ -22,14 +22,12 @@ class Stone(OneUse):
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
         self.counter = 3
-        self.speed_d = globals.config.get_stone_v()
-        self.rev_speed= globals.config.get_stone_r()
-        
+        self.speed_d = globals.config.get_stone_v()      
         
     def active(self, x, y ,direction ):
-        self.speed = self.speed_d * 1 if direction else - self.rev_speed
+        self.speed = self.speed_d *  direction 
         self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
-        super().active(x,y)
+        super().active(x,y, direction)
         self.set_use()
 
         

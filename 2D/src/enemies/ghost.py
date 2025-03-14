@@ -19,7 +19,7 @@ class Ghost(Enemy):
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/ghost/sprite_sheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() / 5), self.spritesheet.get_height(), False )
-        self.pos = vec(x, y)
+        
         self.vel = vec(globals.config.get_player_Acc()*2 , 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = globals.config.get_player_Acc() 
         self.frames = {
@@ -27,8 +27,6 @@ class Ghost(Enemy):
             "walk": [(i * self.width, 0) for i in range(2)],
             "death": [((self.width * 2) + (i * self.width), 0) for i in range(3)]
         }
-        self.frame_rate = 16
-        self.move_distance = 0  # Distancia recorrida en una dirección
 
     #funcion que gestiona el movimiento
     def move(self):

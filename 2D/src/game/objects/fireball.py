@@ -24,7 +24,7 @@ class Fireball(OneUse):
         } 
         self.animation_timer = 0  # Medir el tiempo para cambiar la animación
         self.frame_rate = 120  # Cada cuántos frames cambiamos la animación
-        self.direction = 0  # Dirección (0: izquierda, 1: derecha)
+        self.direction = 1  # Dirección (-1: izquierda, 1: derecha)
         self.image = self.spritesheet.subsurface(self.frames["bomb"][0]) 
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
@@ -34,8 +34,8 @@ class Fireball(OneUse):
     
             
     def active(self, x, y ,direction ):
-        self.speed = 10 * 1 if direction else -8
-        super().active(x,y)
+        self.speed = 10 *  direction 
+        super().active(x,y, direction)
         self.image = pygame.transform.scale(self.spritesheet, (self.width, self.height))
         self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
         self.set_use()
@@ -55,7 +55,7 @@ class Fireball(OneUse):
             frame_rect = pygame.Rect(self.frames["bomb"][self.index])
             self.image = self.spritesheet.subsurface(frame_rect)
             self.index += 1
-            if self.direction == 0:
+            if self.direction <= 0:
                 self.image = pygame.transform.flip(self.image, True, False)
             self.animation_timer = 0
         else:

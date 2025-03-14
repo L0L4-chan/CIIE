@@ -18,7 +18,6 @@ class Bat(Enemy):
     def __init__(self, x, y):
         self.spritesheet = pygame.image.load(f"../Art/{ globals.config.get_artpath()}/bat/spritesheet.png")
         super().__init__(x,y, (self.spritesheet.get_width() / 7), self.spritesheet.get_height(), False )
-        self.pos = vec(x, y)
         self.vel = vec(globals.config.get_player_Acc() * 2, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = globals.config.get_player_Acc() 
         self.frames = {
@@ -26,9 +25,8 @@ class Bat(Enemy):
             "walk": [(i * self.width, 0) for i in range(4)],
             "death": [((self.width *4) + (i * self.width), 0) for i in range(3)]
         }
-        self.frame_rate = 10
-        self.move_distance = 0  # Distancia recorrida en una dirección
         self.lifes = 2
+        
     #funcion que gestiona el movimiento
     def move(self):
         self.set_objective()
