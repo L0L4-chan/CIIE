@@ -33,19 +33,21 @@ class Boss(Enemy):
             "magic": [((self.width * 5 )+(i * self.width), 0) for i in range(4)],
             "death": [((self.width * 9 )+(i * self.width), 0) for i in range(2)]
         }
-        self.hurt_sound = pygame.mixer.Sound("../Sound/FX/hurt.wav")
-        self.sound = pygame.mixer.Sound("../Sound/FX/win.wav")
-        self.sound.set_volume(0.5)
-        self.lifes = 25
-        for i in range(5):
-            self.group.add(Fireball())
-
         self.animation_map.update({
-            "death": self.the_end,
             "melee" : self.other_animation,
             "magic": self.other_animation,
             "death": self.other_animation         
          })
+        self.animation_map["death"] = self.the_end
+        print(self.animation_map)
+        self.hurt_sound = pygame.mixer.Sound("../Sound/FX/hurt.wav")
+        self.sound = pygame.mixer.Sound("../Sound/FX/win.wav")
+        self.sound.set_volume(0.5)
+        self.lifes = 1
+        for i in range(5):
+            self.group.add(Fireball())
+        
+        
                
     def move(self):
         if self.current_action != "death":
@@ -84,8 +86,7 @@ class Boss(Enemy):
                     self.current_action = "walk"   
     
     def the_end(self):
-        if self.index >= self.end_index:
-            print("hola")
+        if self.index == self.end_index:
             self.sound.play()
             globals.game.scene.running= False
             globals.game.load_start("st5.json")

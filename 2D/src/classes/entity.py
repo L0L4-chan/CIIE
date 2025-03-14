@@ -48,9 +48,9 @@ class Entity(pygame.sprite.Sprite):
          }
     
     
-    def other_animation(self):   
+    def other_animation(self):  
         if self.index >= self.end_index:
-           self.index = 0    
+           self.index = 0   
               
     def resolve_collisions(self, hit, vertical_margin=0):
             # --- Resolución de colisiones horizontales ---
@@ -83,7 +83,7 @@ class Entity(pygame.sprite.Sprite):
                         self.pos.y = self.rect.bottom
                         self.vel.y = 0
     
-    def render(self):
+    def render(self): 
         self.action_frames = self.frames[self.current_action]
         self.end_index = len(self.action_frames)-1
         if self.animation_timer > self.frame_rate: 
