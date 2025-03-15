@@ -21,7 +21,7 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Chest(Platforms):
     def __init__(self, x, y, prize):
         #cargamos las imagenes y asignamos tamaño de forma dinámica
-        self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/chest/chest.png"))
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/chest/chest.png"))
         self.width = self.spritesheet.get_width()/4
         self.height = self.spritesheet.get_height()
         #asignamos posiciones para la carga de imagenes que forman la animación
@@ -37,7 +37,7 @@ class Chest(Platforms):
         self.respaw_y = y
         self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
         self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
-        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/OpenChest.wav"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/OpenChest.wav"))
         self.sound.set_volume(0.5)
      
     #Funcion que establece la image inicial y la posicion inicial con el colisionador

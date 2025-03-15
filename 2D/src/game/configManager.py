@@ -20,12 +20,12 @@ class ConfigManager:
         if not self._initialized:
             self.language = "spanish"
             self.difficulty = 2
-            self.conf = auxiliar.load_json(auxiliar.get_path("config/1280x720.json"))
+            self.conf = auxiliar.load_json(auxiliar.get_path("../config/1280x720.json"))
             self.change_texts(self.language) # load text on the apropiate language
             self._initialized = True 
             self.fps = 60
     def load_fonts(self):
-        self.fonts_titles = pygame.font.Font(auxiliar.get_path("Font/Cryptik/Cryptik.ttf"),  self.conf["lettering"])
+        self.fonts_titles = pygame.font.Font(auxiliar.get_path("../Font/Cryptik/Cryptik.ttf"),  self.conf["lettering"])
         self.fonts_text =  pygame.font.SysFont("arial",self.conf["btn_lettering"])
         self.font_dialog = pygame.font.SysFont("arial", (self.conf["btn_lettering"] // 2))
         
@@ -44,8 +44,8 @@ class ConfigManager:
         self.load_fonts()    
      #@param string language
     def change_texts(self, language):
-        self.texts = auxiliar.load_json(auxiliar.get_path(f"Dialog/{language}.json"))
-        self.btn_text = auxiliar.load_json(auxiliar.get_path(f"ButtonText/{language}.json"))
+        self.texts = auxiliar.load_json(auxiliar.get_path(f"../Dialog/{language}.json"))
+        self.btn_text = auxiliar.load_json(auxiliar.get_path(f"../ButtonText/{language}.json"))
     
     
     #change the language configuration

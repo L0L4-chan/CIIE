@@ -18,7 +18,7 @@ class Options(Base):
     
     def __init__(self):
         super().__init__() 
-        self.bg = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/background/Options.jpg"))
+        self.bg = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/background/Options.jpg"))
         self.font =   globals.config.get_font_title()
         self.LANGUAGE =  globals.config.get_text_button(key ="LANGUAGE")
         self.op_1 =  globals.config.get_text_button(key ="galician")
@@ -60,10 +60,10 @@ class Options(Base):
                     globals.config.update_config_difficulty(3)
                 if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):
                    self.buttons["small"].make_sound()                   
-                   self.change_resolution(auxiliar.get_path("config/720x405.json"))
+                   self.change_resolution(auxiliar.get_path("../config/720x405.json"))
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
                     self.buttons["big"].make_sound()
-                    self.change_resolution(auxiliar.get_path("config/1280x720.json"))
+                    self.change_resolution(auxiliar.get_path("../config/1280x720.json"))
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
                     self.buttons["BACK"].make_sound()
                     self.running = False
@@ -90,7 +90,7 @@ class Options(Base):
     
     def change_resolution(self, path):
         globals.config.update_config_meassurement(path)  
-        self.bg = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/background/Options.jpg"))
+        self.bg = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/background/Options.jpg"))
         self.screen_width =  globals.config.get_width()
         self.screen_height =   globals.config.get_height() 
         globals.game.change_resolution()

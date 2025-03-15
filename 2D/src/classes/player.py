@@ -26,7 +26,7 @@ class Player(Entity):
     def __init__(self, x, y):
         # Cargamos el sprite sheet y definimos ancho y alto.
         self.spritesheet = pygame.image.load(auxiliar.get_path(
-            f"Art/{ globals.config.get_artpath()}/skelly/spritesheet.png"
+            f"../Art/{ globals.config.get_artpath()}/skelly/spritesheet.png"
         ))
         self.width = self.spritesheet.get_width() / 18  # 18 imágenes diferentes.
         self.height = self.spritesheet.get_height()
@@ -41,8 +41,8 @@ class Player(Entity):
         self.jump_Max =  globals.config.get_player_jump()
         self.y_acc_value =  globals.config.get_player_Acc()
         self.lifes = 3
-        self.death_sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/death.wav"))
-        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/ticktock.wav"))
+        self.death_sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/death.wav"))
+        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/ticktock.wav"))
         self.power_up_counter = 0
         self.death_timer = 0
         self.power_up = False
@@ -135,6 +135,8 @@ class Player(Entity):
         self.lifes -= 1
         self.die = False
         self.power_up = False
+        self.power_up_sound.stop()
+        self.jump_Max =  globals.config.get_player_jump()
         self.jumping = False 
         self.shooting = False
         self.death_timer = 0
@@ -204,17 +206,6 @@ class Player(Entity):
             # --- COLISIONES CON CHEST ---
             if isinstance(hit, Chest):
                 hit_result = hit.open()
-                if hit_result is not None:
-                    self.group.add(hit_result)
-                if self.vel.y > 0 and self.rect.bottom > hit.rect.top and self.rect.top < hit.rect.top:
-                    self.rect.bottom = hit.rect.top + 1
-                    self.pos.y = self.rect.bottom
-                    self.vel.y = 0
-                    self.jumping = False
-                elif self.vel.y < 0 and self.rect.top < hit.rect.bottom and self.rect.bottom > hit.rect.bottom:
-                    self.rect.top = hit.rect.bottom
-                    self.pos.y = self.rect.bottom
-                    self.vel.y = 0
                 self.respawn_x = self.rect.x
                 self.respawn_y = self.rect.y
             
@@ -247,7 +238,8 @@ class Player(Entity):
                     self.get_life(hit)
 
     def check_power_up(self):
-        if self.power_up_counter >= 1650:
+        if self.power_up_counter >= 1690:
+            print("endPowerup")
             self.jump_Max =  globals.config.get_player_jump()
             self.power_up = False
 

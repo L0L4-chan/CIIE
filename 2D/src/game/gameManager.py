@@ -58,7 +58,7 @@ class GameManager():
     def music_on(self):
         if(not self.music):
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load(auxiliar.get_path("Sound/BSO/Credits.wav"))
+                pygame.mixer.music.load(auxiliar.get_path("../Sound/BS/00-intro.wav"))
                 pygame.mixer.music.play(-1)
                 self.music = True
    

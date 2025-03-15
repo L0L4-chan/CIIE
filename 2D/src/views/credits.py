@@ -14,14 +14,21 @@ from game.base import Base
 class Credits(Base):
     def __init__(self):
         super().__init__()
-        self.credits = aux.load_json(aux.get_path("Credits/credits.json"))  # Carga los créditos
+        self.credits = aux.load_json(aux.get_path("../Credits/credits.json"))  # Carga los créditos
         self.index = 0  # Índice del crédito actual (Asegúrate de que comience desde 0 o el índice adecuado)
         self.last_update_time = pygame.time.get_ticks()  # Tiempo del último cambio
         self.font =  globals.config.get_font_title()  # Fuente del texto
         self.lines = self.credits[self.index].split('\n')  # Dividir el primer crédito en líneas por saltos de línea
 
+    def music_on(self):
+      pygame.mixer.music.stop()
+      pygame.mixer.music.load(aux.get_path("../Sound/BS/10-Credits.wav"))
+      pygame.mixer.music.play(-1)
+    
     def run(self):
         self.running = True
+        
+        
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

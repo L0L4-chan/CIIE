@@ -20,7 +20,7 @@ vec = pygame.math.Vector2 #2 for two dimensional
 
 class Boss(Enemy):
     def __init__(self, x, y):
-        self.spritesheet = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/boss/sprite_sheet.png"))
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/boss/sprite_sheet.png"))
         super().__init__(x, y, (self.spritesheet.get_width() / 11), self.spritesheet.get_height(), False)
         self.vel = vec(0, 0)  # Velocidad inicial para moverse hacia la derecha
         self.speed = 0.5   
@@ -40,8 +40,8 @@ class Boss(Enemy):
          })
         self.animation_map["death"] = self.the_end
         print(self.animation_map)
-        self.hurt_sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/hurt.wav"))
-        self.sound = pygame.mixer.Sound(auxiliar.get_path("Sound/FX/win.wav"))
+        self.hurt_sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/hurt.wav"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/win.wav"))
         self.sound.set_volume(0.5)
         self.lifes = 50
         for i in range(5):

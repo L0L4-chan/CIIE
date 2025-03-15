@@ -27,6 +27,11 @@ class Player1(Player):
             self.current_action = "shield"
             self.shield = True
             self.index = 0
+     
+    def move(self):
+        super().move()
+        if self.current_action != "shield":
+            self.shield= False 
             
     def animation_shield(self):
         if self.index >= self.end_index:
@@ -38,3 +43,4 @@ class Player1(Player):
     def to_die(self):
         if not self.shield:
             super().to_die()
+        self.shield = False

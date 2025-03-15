@@ -1,6 +1,6 @@
 {
     "ani_path" : "1animation",
-    "ani_sound" : "Sound/BSO/levels-_1_.wav",
+    "ani_sound" : "../Sound/BS/01-escna1.wav",
     "ani_amount" : 1,
     "ani_start" : 100,
     "ani_event" :1,
@@ -8,5 +8,5 @@
     "scene_level" : 1,
     "scene_bg" : "level1.jpg",
     "scene_file" : "level1.json",
-    "scene_sound" : "Sound/BSO/levels-_2_.wav"
+    "scene_sound" : "../Sound/BS/02-level1.wav"
 }

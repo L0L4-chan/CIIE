@@ -18,7 +18,7 @@ class Load(Base):
     
     def __init__(self):
         super().__init__()
-        self.bg = pygame.image.load(auxiliar.get_path(f"Art/{ globals.config.get_artpath()}/background/Menu.jpg"))  # Cambiar fondo
+        self.bg = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/background/Menu.jpg"))  # Cambiar fondo
         self.buttons = {}  # Contenedor de botones
         self.process_saves_in_directory()  # Procesar archivos JSON para ver qué botones se crean
         self.new_buttons()  # Crear los botones
@@ -56,7 +56,7 @@ class Load(Base):
 
     # Procesar los archivos JSON en el directorio de guardado
     def process_saves_in_directory(self):
-        for filename in os.listdir(auxiliar.get_path("save")):
+        for filename in os.listdir(auxiliar.get_path("../src/save")):
             if filename.lower().endswith('.json'):
                 if filename == "level_2.json":
                     self.buttons["2"] = Button(pos=(self.screen_width / 6, (self.screen_height / 8) * 3),
@@ -70,7 +70,7 @@ class Load(Base):
 
     # Conseguir el número de vidasque tenia el jugador cuando guardo
     def get_player_lifes(self, level_file):
-        info = auxiliar.load_json(auxiliar.get_path(f"save/{level_file}")) 
+        info = auxiliar.load_json(auxiliar.get_path(f"../src/save/{level_file}")) 
         return info["player_lifes"] 
     
     # Actualizar color de los botones si el mouse pasa sobre ellos
