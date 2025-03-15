@@ -46,10 +46,10 @@ class Entity(pygame.sprite.Sprite):
             "idle": self.other_animation,
             "walk": self.other_animation,         
          }
-        self.curren
+        self.current_action = "idle"
        
     def other_animation(self):  
-        print(self.index, " ", self.current_action)
+
         if self.index >= self.end_index:
            self.index = 0   
               
@@ -86,7 +86,7 @@ class Entity(pygame.sprite.Sprite):
     
     def render(self): 
         self.action_frames = self.frames[self.current_action]
-        self.end_index = len(self.action_frames)-1
+        self.end_index = len(self.action_frames)
         if self.animation_timer > self.frame_rate: 
             if self.current_action in self.animation_map:
                 action = self.animation_map[self.current_action]
