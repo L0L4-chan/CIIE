@@ -39,7 +39,6 @@ class Boss(Enemy):
             "death": self.other_animation         
          })
         self.animation_map["death"] = self.the_end
-        print(self.animation_map)
         self.hurt_sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/hurt.wav"))
         self.sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/win.wav"))
         self.sound.set_volume(0.5)

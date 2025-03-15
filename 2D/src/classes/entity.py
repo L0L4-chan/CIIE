@@ -46,8 +46,10 @@ class Entity(pygame.sprite.Sprite):
             "idle": self.other_animation,
             "walk": self.other_animation,         
          }
+        self.curren
        
     def other_animation(self):  
+        print(self.index, " ", self.current_action)
         if self.index >= self.end_index:
            self.index = 0   
               

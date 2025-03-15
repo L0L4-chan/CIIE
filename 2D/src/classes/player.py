@@ -239,7 +239,6 @@ class Player(Entity):
 
     def check_power_up(self):
         if self.power_up_counter >= 1690:
-            print("endPowerup")
             self.jump_Max =  globals.config.get_player_jump()
             self.power_up = False
 
