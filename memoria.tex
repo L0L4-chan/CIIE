@@ -1,0 +1,387 @@
+\documentclass[12pt,a4paper,twoside,spanish]{article}      % Libro a 11 pt
+\usepackage[utf8]{inputenc}
+\usepackage[height=17.5cm,width=13.5cm]{geometry}
+\usepackage[spanish]{babel}         % diccionario
+\usepackage{epsfig}         % Graficos Postscript
+\usepackage{tabularx}
+\usepackage{sectsty}
+\usepackage{float}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%% Margenes
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Definimos el maximo tamaño posible.
+\marginparwidth 0pt     \marginparsep 0pt
+\topmargin   0pt        \textwidth   6.5in
+\textheight 23cm
+
+% Margen izq del txt en impares.
+\setlength{\oddsidemargin}{.0001\textwidth}
+
+% Margen izq del txt en pares.
+\setlength{\evensidemargin}{-.04\textwidth}
+
+% Anchura del texto
+\setlength{\textwidth}{.99\textwidth}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%% Profundidad de enumeracion y tabla de contenidos
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%% Nuevos Comandos
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            %%%%%%%%%%%%%%%%%%%%%%%
+            %%%%%%%%%%%%%%%%%%%%%%%
+            % Comandos para simplificar
+            % la escritura
+            %%%%%%%%%%%%%%%%%%%%%%%
+            %%%%%%%%%%%%%%%%%%%%%%%
+
+\def\mc{\multicolumn}
+            %%%%%%%%%%%%%%%%%%%%%%%
+            % Comandos para poder utilizar raggedright en tablas
+            %%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\let\PBS=\PreserveBackslash
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%% Cuerpo del documento
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\def\chaptername{Capítulo}
+\def\tablename{Tabla}
+\def\listtablename{Índice de Tablas}
+\chapterfont{\LARGE\raggedleft}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DISEÑO DE LA PAGINA DEL TITULO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+
+\begin{titlepage}
+\setlength{\parindent}{0cm} \setlength{\parskip}{0cm}
+
+%\raggedleft {\textsf{\textbf{Login del grupo: xxxx}}}
+
+\newcommand{\HRule}{\rule{\linewidth}{1mm}}
+
+\vspace*{2cm}
+\HRule \\[0.5cm]
+\begin{center}
+% Letra lineal y negrita
+\textsf{\textbf{\large DESARROLLO DE UN VIDEOJUEGO EN 2 DIMENSIONES\\[0.75cm] SKELLY \& SOULIE \\[0.5cm]}}
+\HRule \vspace*{3cm}
+
+\textsf{\textbf{\normalsize Iván García Quintela\\ Ismael Miguez Valero\\ Lola Suárez González\\[5cm]
+Grupo 2\\
+Contornos Inmersivos, Interactivos y de Entretenimiento\\
+Universidade da Coruña \\ 
+Curso
+2024-2025}}
+\end{center}
+\end{titlepage}
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% TABLA DE CONTENIDOS
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CONTENIDO DEL DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%numeros arábigos
+\pagenumbering{arabic} \pagestyle{myheadings} \markboth{Grupo de
+prácticas: xxx}{Desarrollo de videojuegos}
+
+%indentaciones y espaciado entre párrafos
+\setlength{\parindent}{1,5cm} \setlength{\parskip}{0,7cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ÍNDICE IMPLEMENTADO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Desarrollo artístico}
+
+\subsection{Antecedentes}
+\subsubsection{Ambientación}
+Los juegos están ambientados en la época medieval en un mundo de ultratumba donde podrás recorrer el inframundo por el que se han desperdigado las piezas que componen tu ente corpóreo. Posteriormente te levantarás de entre los muertos para dar caza a aquellos que te arrebataron tu bien más preciado y lo que te mantenía atado a tu mundo, tu propia vida.
+
+\subsubsection{Historia}
+La historia del juego sigue a un esqueleto (SKELLY), acompañado de su alma (SOULIE) en la aventura de recuperar sus órganos (plataforma / mazmorras en 2D) y en la búsqueda de venganza (mazmorras 3D). Cada juego tendrá 3 fases.\\
+
+En el videojuego 2D “Skelly \& Soulie : Rebuild The Body”, el protagonista comienza con la habilidad de deslizar/empujar objetos, tirar piedras, andar y saltar. En la primera fase recuperará sus pulmones que permitirá saltar más alto. Tras superar la primera fase, recibe sus intestinos como premio que le darán la posibilidad de colgarse y balancearse de las ramas o atacar a los enemigos. En el segundo nivel recuperara su corazón que le permitirá romper a base de latidos algunos muros, cajas, etc. En el tercer nivel, podrá recuperar su estómago que le sirve para defender o repeler los ataques enemigos. Tras enfrentarse al jefe final, recupera su cerebro y ojos que le permitirá ver y entender el mundo de una nueva forma, lo que nos llevará al desarrollo del segundo juego en 3D.\\
+
+En el videojuego 3D “Skelly \& Soulie: Revenge Awakened”, Skelly se verá sumido en un viaje de venganza que partirá desde el cementerio, cruzando el bosque y la aldea, hasta el castillo donde se enfrentará a su enemigo con el fin de volver a ser uno con su alma.
+
+\subsection{Personajes}
+% Aquí puedes incluir el contenido correspondiente a los personajes.
+Texto de personajes...
+
+\subsection{Otras características de la ambientación (Otros elementos que aparecerán en el juego)}
+\paragraph{Objetos destacados}
+% Contenido de objetos destacados.
+Texto de objetos destacados...
+
+\paragraph{Lugares}
+% Contenido de lugares.
+Texto de lugares...
+
+
+
+\subsection{Guion}
+Comenzamos con una imagen menú de inicio con tres apartados, nueva partida, cargar partida y opciones.
+Opciones nos permite: cambiar dificultad (normal / difícil) Cambiar idioma (Inglés, castellano y gallego) y resolución 
+Nueva partida te permite comenzar un juego y partida guardada volver al inicio del nivel donde guardaste, solo se guardan niveles completados.
+
+\subsubsection{Desarrollo 2D}
+Introducción, en el cementerio aparece Soulie sobre Skelly.
+
+- Soulie: "Por fin despiertas... pero no estás completo. Alguien te ha despojado de lo que fuiste. Tus entrañas, tu corazón y tu mente están dispersos. Sólo si los recuperas podrás volver a ser tú."
+
+Comienza el nivel, al llegar a la salida del cementerio y recuperar los intestinos.
+
+
+- Soulie: "Has recuperado algo de ti, pero aún queda un largo camino. La oscuridad se vuelve más densa conforme avanzas."
+
+Y comienza el bosque. Al finalizarlo y recibir el corazón.
+
+- Soulie: "Tu corazón... Aún late con fuerza. Ahora podrás usarlo para destruir ciertos obstáculos que se interpongan en tu camino."
+
+Al entrar en la cueva:
+
+- Soulie: "Cada pieza que recuperas te acerca más a tu esencia, pero también te acerca al infierno... y a quien te arrebató todo."
+
+Al llegar a la mazmorra:
+
+- Diablo: "Te has arrastrado hasta aquí por tu propia voluntad. Qué patético. ¿Crees que un saco de huesos puede desafiarme?"
+
+- Soulie: "Eres más de lo que pareces. Has cruzado la muerte y la desesperación. Recupera lo que es tuyo."
+
+En un cofre oculto en la mazmorra encuentras tu estómago.
+
+- Soulie: Por fín un modo de protegernos de esos molestos ataques. Úsalo para repeler los ataques de los enemigos.
+
+Batalla final contra el demonio. Al vencerlo, el Skelly recupera su cerebro.
+
+- Soulie: "Lo has logrado. Estás completo una vez más... Pero dime, ¿qué harás ahora que recuerdas quién eres?"
+
+El juego termina.
+
+
+\subsubsection{Desarrollo 3D}
+Inicio del juego : 
+- Soulie:  ¡Por fin despiertas! Pensé que ibas a quedar enterrado para siempre.
+- Skelly:  ¿Dónde estoy?
+- Soulie: En el cementerio. Soy yo,  Soulie, tu alma. ¿Estás preparado?, debemos continuar nuestro camino para volver a ser uno.
+- Skelly:  ¿Nos separaron? ¿Quién haría algo así?
+- Soulie: No lo sé, pero hay que averiguarlo. Para eso, primero tenemos que salir de aquí.
+
+
+Se desarrolla el nivel hasta llegar a la salida. 
+- Sepulturero:  ¡Un muerto caminando! ¡Vuelve a tu tumba o te haré pedazos!
+
+Una vez derrotas a tu enemigo.
+- Sepulturero: ¡Cuando llegaste aquí ya estabas muerto, yo solo te enterré! . El caballero Oscuro fue quien te trajo.
+
+Acceso al segundo área 
+- Soulie: Algo aquí no me gusta. Hay demasiada calma…
+- Skelly: No, nunca debes decir eso.
+
+Al llegar junto al jefe final de esta área.
+- Caballero Oscuro: Nadie cruza este bosque sin probar su valía.
+- Skelly: ¡Pues veamos quién es más fuerte!
+
+Se desarrolla el combate 
+
+- Caballero Oscuro:  No eres un simple esqueleto... Continúa, guerrero. Pero el destino te espera en la ciudad.
+
+Una vez se derrota al caballero:
+- Caballero Oscuro:  Yo solo acataba órdenes de su majestad. Es él, el que ordenó darte caza.
+
+Llegamos a la tercera zona:
+- Soulie: No me gusta este lugar... Hay algo oscuro aquí.
+- Skelly: Desde aquí puedo ver el castillo, démonos prisa
+
+Nos adentramos en el nivel.
+- Rey Espectral: Has llegado lejos... pero tu viaje termina aquí. Fui yo quien separó tu alma de tu cuerpo.
+- Skelly: ¿¡Por qué lo hiciste!? ¡Devuélveme mi alma!
+- Rey Espectral: Porque un esqueleto con un alma es demasiado poderoso. Pero si crees que puedes vencerme... demuéstramelo.
+
+Se desarrolla la batalla
+- Soulie:  ¡Lo logramos! Ahora... ¿qué pasará con nosotros?
+- Skelly:  Supongo que... estamos completos otra vez.
+- Soulie: Sí. Y ahora, ¿qué sigue?
+- Skelly:  Lo que queramos.
+
+Final del juego y créditos.
+
+\clearpage
+
+\section{Desarrollo técnico}
+
+\subsection{Videojuego en 2D}
+
+\subsubsection{Descripción}
+
+En un mundo sumido en la oscuridad, "Skelly & Soulie" te sumerge en una aventura de plataformas 2D con scroll lateral y vertical, recordando el espíritu de los clásicos de 8 y 16 bits. La historia sigue a Skelly, un esqueleto resucitado de su tumba, y a su inseparable compañero Soulie, el espíritu de su alma. Juntos, emprenden un peligroso viaje a través de bosques sombríos, laberínticas cuevas y hasta los infiernos más profundos, en una misión para recuperar la vitalidad perdida de Skelly.\\
+
+Mientras avanzan por escenarios llenos de obstáculos y trampas mortales, Skelly debe recolectar sus órganos dispersos, cada uno dotado de un poder especial que le permite superar barreras y enfrentarse a hordas de monstruos y enemigos temibles. Cada nivel desafiante combina la acción frenética con un toque tétrico y nostálgico, evocando la estética y jugabilidad de aquellos videojuegos clásicos que marcaron una época.\\
+
+El juego se distingue por su sistema de scroll dinámico que permite explorar escenarios que se extienden tanto en el plano vertical como el horizontal, donde el jugador debe estar alerta en cada salto y en cada ataque. La atmósfera, impregnada de un aura oscura y siniestra, se complementa con gráficos pixel art elaborados personalmente y una jugabilidad que exige precisión y valentía. "Skelly & Soulie" es un homenaje a los clásicos de acción de los 80 y los 90.
+
+\paragraph{Personajes}
+\begin{itemize}
+    \item Skelly es un esqueleto que, tras años de letargo en su tumba, es despertado por el misterioso impulso de su propia alma. Con un aire melancólico y una determinación oscura, se embarca en una arriesgada aventura para recuperar cada una de sus piezas perdidas. Su apariencia, marcada por restos óseos desgastados y rasgos que insinúan un pasado glorioso y trágico a la vez, refleja la lucha interna entre la venganza y el anhelo de redención. Cada paso que da en su viaje le acerca no solo a la reconstitución de su cuerpo, sino también a la recuperación de memorias olvidadas, que revelarán los secretos de su vida pasada y le permitirán enfrentarse a sus enemigos con una fuerza renovada.
+    \item Soulie es el etéreo guía de Skelly, la manifestación de su alma que aparece al inicio y al final de cada nivel para ofrecer sabiduría y consejos esenciales. Con una presencia casi fantasmal y serena, Soulie actúa como la voz que ilumina el oscuro camino de Skelly, proporcionándole la información necesaria para sortear los peligros y desentrañar los misterios del mundo que le rodea. Soulie es un vínculo vivo entre el pasado y el presente de Skelly, guiándolo hacia la verdad que yace oculta en sus recuerdos.
+\end{itemize}
+
+\paragraph{Enemigos}
+\begin{itmize}
+    \item Murciélagos y fantasmas: Estos enemigos de bajo nivel merodean sin rumbo fijo, deambulando por los oscuros cielos y pasillos olvidados. Aunque su presencia puede resultar inquietante, su ataque es mínimo, representando más una molestia que una amenaza real para Skelly.
+
+    \item Monstruos de cueva: Más peligrosos que los deambulatorios murciélagos, estos seres acechan en las profundidades de las cuevas. Con un instinto depredador, persiguen al protagonista a lo largo de estrechos pasajes, obligándolo a estar siempre alerta para evitar ser atrapado.
+
+    \item Pequeños diablos: A medida que la aventura avanza, surgen estos enemigos que atacan a distancia con proyectiles o ráfagas. Aunque no son invencibles, su capacidad para hostigar al jugador desde lejos añade un nuevo nivel de dificultad y tensión a cada encuentro.
+
+    \item Demonio Jefe: La culminación de los horrores del inframundo es el Demonio Jefe, un adversario formidable que combina una imponente presencia con ataques devastadores. Este jefe exige paciencia, precisión y reflejos para ser derrotado, ya que representa el pináculo de los desafíos que Skelly debe superar en su oscura travesía.
+\end{itmize}
+
+\paragraph{Objetos}
+% Contenido de objetos en 2D.
+Texto de objetos (2D)...
+
+\paragraph{Diseño}
+% Contenido de diseño en 2D.
+Texto de diseño (2D)...
+
+\subsubsection{Escenas}
+\paragraph{Escena 1: <nombre de la escena 1>}
+\subparagraph{Descripción}
+% Detalles de la descripción de la Escena 1.
+Texto de descripción de Escena 1...
+
+\subparagraph{Modelo}
+% Detalles del modelo de la Escena 1.
+Texto de modelo de Escena 1...
+
+\subparagraph{Detalles de implementación}
+% Detalles de implementación de la Escena 1.
+Texto de detalles de implementación...
+
+\paragraph{Escena 2: <nombre de la escena 2>}
+% Contenido para Escena 2.
+
+
+\paragraph{Escena 3: <nombre de la escena 3>}
+% Contenido para Escena 3.
+
+
+\subsubsection{Aspectos destacables}
+% Contenido de aspectos destacables en 2D.
+Texto de aspectos destacables (2D)...
+
+\subsubsection{Manual de usuario}
+% Contenido del manual de usuario para el videojuego en 2D.
+Texto del manual de usuario (2D)...
+
+\subsubsection{Reporte de bugs}
+% Contenido del reporte de bugs para el videojuego en 2D.
+Texto del reporte de bugs (2D)...
+
+\clearpage
+
+n{Videojuego en 3D}
+
+\subsubsection{Descripción}
+\paragraph{Personajes}
+% Contenido de personajes en 3D.
+Texto de personajes (3D)...
+
+\paragraph{Enemigos}
+% Contenido de enemigos en 3D.
+Texto de enemigos (3D)...
+
+\paragraph{Objetos}
+% Contenido de objetos en 3D.
+Texto de objetos (3D)...
+
+\paragraph{Diseño}
+% Contenido de diseño en 3D.
+Texto de diseño (3D)...
+
+\subsubsection{Escenas}
+\paragraph{Escena 1: <nombre de la escena 1>}
+\subparagraph{Descripción}
+% Detalles de la descripción de la Escena 1 en 3D.
+Texto de descripción de Escena 1 (3D)...
+
+\subparagraph{Modelo}
+% Detalles del modelo de la Escena 1 en 3D.
+Texto de modelo de Escena 1 (3D)...
+
+\subparagraph{Detalles de implementación}
+% Detalles de implementación de la Escena 1 en 3D.
+Texto de detalles de implementación (3D)...
+
+\paragraph{Escena 2: <nombre de la escena 2>}
+% Contenido para Escena 2 en 3D.
+Texto de Escena 2 (3D)...
+
+\paragraph{Escena 3: <nombre de la escena 3>}
+% Contenido para Escena 3 en 3D.
+Texto de Escena 3 (3D)...
+
+\subsubsection{Aspectos destacables}
+% Contenido de aspectos destacables en 3D.
+Texto de aspectos destacables (3D)...
+
+\subsubsection{Manual de usuario}
+% Contenido del manual de usuario para el videojuego en 3D.
+Texto del manual de usuario (3D)...
+
+\subsubsection{Reporte de bugs}
+% Contenido del reporte de bugs para el videojuego en 3D.
+Texto del reporte de bugs (3D)...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FINAL DEL DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
