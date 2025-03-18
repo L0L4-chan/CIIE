@@ -120,7 +120,7 @@ class Enemy(Entity):
         if self.respawn_time <=0:
             self.respawn_time = 3000
             self.not_death = True
-            self.life = 1
+            self.lifes = 1
             self.hit =False
             self.rect = self.surf.get_rect(topleft=(self.respawn_x, self.respawn_y))
  
