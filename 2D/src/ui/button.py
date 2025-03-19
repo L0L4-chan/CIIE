@@ -47,7 +47,7 @@ class Button():
 
     def changeColor(self, position):
         if self.checkForInput(position):
-            self.base_color = (0, 200, 0)  # Verde
+            self.base_color = (128,128,128) #gris
         else:
             self.base_color = (255, 255, 255) # Blanco
         self.text = self.font.render(self.text_input, True, self.base_color)
