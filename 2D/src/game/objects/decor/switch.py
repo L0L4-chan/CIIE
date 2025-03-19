@@ -18,7 +18,7 @@ vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
 class Switch(Platforms):
     def __init__(self, x, y, door_x, door_y):
         #cargamos las imagenes y asignamos tamaño de forma dinámica
-        self.spritesheet = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/pushbutton/boton.PNG"))
+        self.spritesheet = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/pushbutton/boton.PNG"))
         self.width = self.spritesheet.get_width()/2
         self.height = self.spritesheet.get_height()
         #asignamos posiciones para la carga de imagenes que forman la animación
@@ -30,7 +30,7 @@ class Switch(Platforms):
         self.counter = 0
         self.door = Door(door_x, door_y)
         self.pressed = False
-        self.sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/switch.wav"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}switch.wav"))
         self.sound.set_volume(0.5)
     
     #Funcion que establece la image inicial y la posicion inicial con el colisionador    

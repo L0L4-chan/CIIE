@@ -2,7 +2,7 @@
 "height" : 405,  
 "lettering" : 20, 
 "btn_lettering" : 16, 
-"art_path" :"720x405", 
+"art_path" :"img/720x405", 
 "speed" : 2,
 "Acc" : 0.15,
 "fric" : -0.06,
@@ -16,5 +16,8 @@
 "level3x": 22,
 "level3y": 280,
 "level4x": 22,
-"level4y": 500
+"level4y": 500,
+"icon_path": "img/varios/life2.png",
+"audio_fx_path": "audio/FX/",
+"audio_bs_path": "audio/BS/"
 }

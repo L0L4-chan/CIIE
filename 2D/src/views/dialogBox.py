@@ -6,8 +6,8 @@ class DialogBox:
         self.screen = globals.game.screen
         self.dialog = next((d for d in globals.config.get_text(key="dialogues") if d["event"] == event), None)
         name = self.dialog["character"]
-        self.icon = pygame.image.load(auxiliar.get_path(f"../Art/{globals.config.get_artpath()}/avatar/{name}.png")) # Carga el icono del personaje
-        self.bg_image = pygame.image.load(auxiliar.get_path("../Art/varios/dialog.png" ))
+        self.icon = pygame.image.load(auxiliar.get_path(f"{globals.config.get_artpath()}/avatar/{name}.png")) # Carga el icono del personaje
+        self.bg_image = pygame.image.load(auxiliar.get_path(f"{globals.config.get_artpath()}/varios/dialog.png" ))
         self.width = (globals.config.get_width() / 6) * 4 # Ancho del cuadro de diálogo
         self.margin = 20  # Espacio interno
         self.line_height = globals.config.get_font_dialog().get_height() + 5  # Altura de cada línea de texto

@@ -1,5 +1,5 @@
 {"ani_path" : "4animation",
-"ani_sound" : "../Sound/BS/07-escena4.wav",
+"ani_sound" : "audio/BS/07-escena4.wav",
 "ani_amount" : 2,
 "ani_start" : 200,
 "ani_event" :5,
@@ -7,4 +7,4 @@
 "scene_level" : 4,
 "scene_bg" : "level4.jpg",
 "scene_file" : "level4.json",
-"scene_sound" : "../Sound/BS/08-bossfight.wav"}
+"scene_sound" : "auidio/BS/08-bossfight.wav"}

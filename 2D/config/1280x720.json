@@ -1,6 +1,6 @@
 {"width" : 1280 ,
 "height" : 720, 
-"art_path" : "1280x720", 
+"art_path" : "img/1280x720", 
 "lettering" : 48, 
 "btn_lettering" : 30, 
 "speed" : 5,
@@ -16,5 +16,9 @@
 "level3x": 45,
 "level3y": 580,
 "level4x": 45,
-"level4y": 1000
+"level4y": 1000,
+"icon_path": "img/varios/life2.png",
+"audio_fx_path": "audio/FX/",
+"audio_bs_path": "audio/BS/"
+
 }

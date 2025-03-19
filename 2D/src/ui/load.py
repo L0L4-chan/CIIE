@@ -18,7 +18,7 @@ class Load(Base):
     
     def __init__(self):
         super().__init__()
-        self.bg = pygame.image.load(auxiliar.get_path(f"../Art/{ globals.config.get_artpath()}/background/Menu.jpg"))  # Cambiar fondo
+        self.bg = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/background/Menu.jpg"))  # Cambiar fondo
         self.buttons = {}  # Contenedor de botones
         self.process_saves_in_directory()  # Procesar archivos JSON para ver qué botones se crean
         self.new_buttons()  # Crear los botones

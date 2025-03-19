@@ -70,7 +70,17 @@ class ConfigManager:
     
     def get_artpath(self):
         return self.conf["art_path"]
+    
+    def get_iconpath(self):
+        return self.conf["icon_path"]
+    
+    def get_audiofxpath(self):
+        return self.conf["audio_fx_path"]
 
+
+    def get_audiobspath(self):
+        return self.conf["audio_bs_path"]
+    
     def get_font_title(self):
         return self.fonts_titles
     

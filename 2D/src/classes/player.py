@@ -26,7 +26,7 @@ class Player(Entity):
     def __init__(self, x, y):
         # Cargamos el sprite sheet y definimos ancho y alto.
         self.spritesheet = pygame.image.load(auxiliar.get_path(
-            f"../Art/{ globals.config.get_artpath()}/skelly/spritesheet.png"
+            f"{ globals.config.get_artpath()}/skelly/spritesheet.png"
         ))
         self.width = self.spritesheet.get_width() / 18  # 18 imágenes diferentes.
         self.height = self.spritesheet.get_height()
@@ -41,8 +41,8 @@ class Player(Entity):
         self.jump_Max =  globals.config.get_player_jump()
         self.y_acc_value =  globals.config.get_player_Acc()
         self.lifes = 3
-        self.death_sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/death.wav"))
-        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path("../Sound/FX/ticktock.wav"))
+        self.death_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}death.wav"))
+        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}ticktock.wav"))
         self.power_up_counter = 0
         self.death_timer = 0
         self.power_up = False

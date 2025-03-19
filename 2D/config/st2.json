@@ -1,6 +1,6 @@
 {
     "ani_path" : "2animation",
-    "ani_sound" : "../Sound/BS/03-escena2.wav",
+    "ani_sound" : "audio/BS/03-escena2.wav",
     "ani_amount" : 1,
     "ani_start" : 100,
     "ani_event" :2,
@@ -8,4 +8,4 @@
     "scene_level" : 2,
     "scene_bg" : "level2.jpg",
     "scene_file" : "level2.json",
-    "scene_sound" : "../Sound/BS/04-level2.wav"}
+    "scene_sound" : "audio/BS/04-level2.wav"}
