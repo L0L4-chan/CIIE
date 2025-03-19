@@ -48,5 +48,8 @@ class Bat(Enemy):
         self.update_rect()
     
  
-        
+    def check_respawn(self):
+        super().check_respawn()
+        self.lifes = 2
+    
 
