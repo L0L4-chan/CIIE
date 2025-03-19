@@ -86,6 +86,7 @@ class Boss(Enemy):
     
     def the_end(self):
         if self.index == self.end_index:
+            self.index -= 1
             self.sound.play()
             globals.game.scene.running= False
             globals.game.load_start("st5.json")
