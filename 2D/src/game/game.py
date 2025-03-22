@@ -120,9 +120,10 @@ class Game(Base):
         # Vaciar grupos de sprites
         self.sprites.empty()
         self.group_lifes.empty()
+        self.in_scene.empty()
+        self.in_scene_now.empty()
         # Limpiar referencias a objetos importantes
         self.player = None
-        self.enemy = None
         self.scene = None
         self.sound = None
         
