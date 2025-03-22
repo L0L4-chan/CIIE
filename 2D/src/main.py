@@ -14,8 +14,7 @@ from game.gameManager import GameManager
 # Main class start of the game
 if __name__ == "__main__":
     pygame.init()
- 
-    globals.game = GameManager()  #create the singleton
+    globals.game = GameManager()
     icon = pygame.image.load(auxiliar.get_path(globals.config.get_iconpath()))
     pygame.display.set_icon(icon)
     globals.game.run()
