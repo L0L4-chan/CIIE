@@ -22,7 +22,7 @@ class Credits(Base):
 
     def music_on(self):
       pygame.mixer.music.stop()
-      pygame.mixer.music.load(aux.get_path(f"{globals.config.get_audiobspath("10-Credits.wav")}"))
+      pygame.mixer.music.load(aux.get_path(globals.config.get_audiobspath("10-Credits.wav")))
       pygame.mixer.music.play(-1)
     
     def run(self):

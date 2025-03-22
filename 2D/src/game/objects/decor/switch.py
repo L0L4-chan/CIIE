@@ -30,7 +30,7 @@ class Switch(Platforms):
         self.counter = 0
         self.door = Door(door_x, door_y)
         self.pressed = False
-        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("switch.wav")}"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("switch.wav")))
         self.sound.set_volume(0.5)
     
     #Funcion que establece la image inicial y la posicion inicial con el colisionador    

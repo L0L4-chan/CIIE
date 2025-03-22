@@ -41,8 +41,8 @@ class Player(Entity):
         self.jump_Max =  globals.config.get_player_jump()
         self.y_acc_value =  globals.config.get_player_Acc()
         self.lifes = 3
-        self.death_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("death.wav")}"))
-        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("ticktock.wav")}"))
+        self.death_sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("death.wav")))
+        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("ticktock.wav")))
         self.power_up_counter = 0
         self.death_timer = 0
         self.power_up = False

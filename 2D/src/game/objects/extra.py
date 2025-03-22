@@ -15,7 +15,7 @@ from game.objects.prize import Prize
 class Extra(Prize):
     def __init__(self,x,y):
        super().__init__(x,y, "prize/003.png")
-       self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("Life.wav")}"))
+       self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("Life.wav")))
        self.sound.set_volume(0.5)
        self.to_pick= True
     

@@ -20,7 +20,7 @@ class Prize(OneUse):
        self.height = self.spritesheet.get_height()
        self.rect = pygame.Rect(self.x_pos, self.y_pos, self.width, self.height)
        self.counter = 0
-       self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("Prize.wav")}")) #por si alguno no tiene sonido
+       self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("Prize.wav"))) #por si alguno no tiene sonido
        self.sound.set_volume(0.5)
         
     

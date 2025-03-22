@@ -37,7 +37,7 @@ class GameManager():
             pygame.mixer.pre_init(44100,16,2,4096) #initialize the mixer (sound)
             pygame.mixer.init()
             pygame.mixer.set_num_channels(8)
-            pygame.mixer.music.set_volume(.5)
+            pygame.mixer.music.set_volume(.3)
             globals.config = ConfigManager()
             globals.config.load_fonts()
             self.screen = pygame.display.set_mode((globals.config.get_width(), globals.config.get_height()))  # screen size default 1280 x 720
@@ -58,7 +58,7 @@ class GameManager():
     def music_on(self):
         if(not self.music):
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load(auxiliar.get_path(f"{globals.config.get_audiobspath("00-intro.wav")}"))
+                pygame.mixer.music.load(auxiliar.get_path(globals.config.get_audiobspath("00-intro.wav")))
                 pygame.mixer.music.play(-1)
                 self.music = True
    

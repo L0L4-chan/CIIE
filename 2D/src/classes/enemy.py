@@ -51,7 +51,7 @@ class Enemy(Entity):
         self.not_death = True
         self.respawn_time = 3600
         self.lifes = 1
-        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("hit.wav")}"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("hit.wav")))
         self.sound.set_volume(0.5)
         
         self.animation_map.update({

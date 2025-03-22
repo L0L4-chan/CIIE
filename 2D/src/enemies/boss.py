@@ -23,7 +23,7 @@ class Boss(Enemy):
         self.spritesheet = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/boss/sprite_sheet.png"))
         super().__init__(x, y, (self.spritesheet.get_width() / 15), self.spritesheet.get_height(), False)
         self.vel = vec(0, 0)  # Velocidad inicial para moverse hacia la derecha
-        self.speed = 0.5   
+        self.speed = globals.config.get_player_Acc()   
         self.special_timer = 300
         self.attack = 100
         self.frames = {
@@ -42,8 +42,8 @@ class Boss(Enemy):
             "dash": self.other_animation      
          })
         self.animation_map["death"] = self.the_end
-        self.hurt_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("hurt.wav")}"))
-        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("win.wav")}"))
+        self.hurt_sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("hurt.wav")))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("win.wav")))
         self.sound.set_volume(0.5)
         self.lifes = 50
         for i in range(5):

@@ -28,7 +28,7 @@ class Breakable(Platforms):
       self.index = 1
       self.animation_timer = 0  # mediremos cuanto ha pasado desde el ultimo cambio de imagen para manejar la animación
       self.frame_rate = 10 # limite de cada cuantos frames cambiamos la animación 
-      self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("Explosion.wav")}"))
+      self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("Explosion.wav")))
       self.sound.set_volume(0.5)
    
    #Funcion que establece la image inicial y la posicion inicial con el colisionador

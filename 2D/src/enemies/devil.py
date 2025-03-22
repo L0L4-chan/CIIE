@@ -21,14 +21,14 @@ class Devil(Enemy):
         self.spritesheet = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/devil/devil_spritesheet.png"))
         super().__init__(x,y, (self.spritesheet.get_width() /6), self.spritesheet.get_height(), False )
         
-        self.vel = vec(1, 0)  # Velocidad inicial para moverse hacia la derecha
-        self.speed = 0.5 
+        self.vel = vec(globals.config.get_player_Acc()*2, 0)  # Velocidad inicial para moverse hacia la derecha
+        self.speed = globals.config.get_player_Acc()
         self.frames = {
             "idle": [(0, 0)],
             "walk": [(i * self.width, 0) for i in range(4)],
             "death": [((self.width * 4 )+(i * self.width), 0) for i in range(2)]
         }
-        self.can_shoot = 120
+        self.can_shoot = 60
         self.projectiles = Stone()
         self.group.add(self.projectiles)
         self.lifes = 1

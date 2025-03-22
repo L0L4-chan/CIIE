@@ -31,7 +31,7 @@ class Heart(OneUse):
         self.vel_y = 0  # Reiniciar velocidad vertical
         #recurso sonido explosión
         self.platform = pygame.sprite.Group()
-        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("Explosion.wav")}"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("Explosion.wav")))
         self.sound.set_volume(0.5)
     
     def set_Platform(self,platform):
