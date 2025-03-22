@@ -47,7 +47,6 @@ class GameManager():
             self.scene = None
             self.next_scene = None
             self.player = None
-            self.enemy = None
             self.music = False
             self.music_on()
     
