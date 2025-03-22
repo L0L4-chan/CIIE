@@ -21,7 +21,7 @@ class Event(Platforms):
         self.path = path
         self.level = level
         self.triggered = False
-        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}noKey.wav"))  #suena cuando se pisa sin la llave
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("noKey.wav")}"))  #suena cuando se pisa sin la llave
         self.sound.set_volume(0.5)
           
     def on_collision(self, player):
@@ -37,5 +37,5 @@ class Event(Platforms):
             globals.game.load_player(3, life)
             globals.game.scene_end()
             from views.scene import Scene
-            globals.game.load_game(Scene("level3.jpg", "level3.json"), auxiliar.get_path(f"{globals.config.get_audiobspath()}levels-_2_.wav", 3))
+            globals.game.load_game(Scene("level3.jpg", "level3.json"), auxiliar.get_path(f"{globals.config.get_audiobspath("levels-_2_.wav")}", 3))
            

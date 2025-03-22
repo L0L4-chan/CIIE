@@ -51,7 +51,7 @@ class Enemy(Entity):
         self.not_death = True
         self.respawn_time = 3600
         self.lifes = 1
-        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}hit.wav"))
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("hit.wav")}"))
         self.sound.set_volume(0.5)
         
         self.animation_map.update({
@@ -98,7 +98,7 @@ class Enemy(Entity):
                 if not self.hit:    
                     self.die()       
                         
-    #funcion que actualiza la posicion del jugador si es necesario            
+    #Funcion que actualiza la posicion del jugador si es necesario            
     def update(self):
         if self.on_screen :
             if self.not_death:
@@ -124,13 +124,13 @@ class Enemy(Entity):
             self.hit =False
             self.rect = self.surf.get_rect(topleft=(self.respawn_x, self.respawn_y))
  
-    #funcion de dibujado en pantalla
+    #Funcion de dibujado en pantalla
     def draw(self, screen= None, position = None):
         if self.on_screen and self.not_death:
             self.render()
             screen.blit(self.surf,position)  
         
-    #gestionamos la colision y muerte
+    #Gestionamos la colision y muerte
     def die(self):
         if not self.hit:
             self.vel = -self.vel
@@ -145,10 +145,9 @@ class Enemy(Entity):
             self.not_death = False
             self.rect.topleft = (-100, -100)
         else:
-            #self.rect.move(0,30)
             self.hit = False
-    #funcion que establece un objetivo para el enemigo    
-    
+
+    #Funcion que establece un objetivo para el enemigo    
     def set_objective(self):
         aux = globals.game.player_position()
         if aux == None:

@@ -60,10 +60,10 @@ class Options(Base):
                     globals.config.update_config_difficulty(3)
                 if self.buttons["small"].checkForInput(pygame.mouse.get_pos()):
                    self.buttons["small"].make_sound()                   
-                   self.change_resolution(auxiliar.get_path("../config/720x405.json"))
+                   self.change_resolution(auxiliar.get_path("config/720x405.json"))
                 if self.buttons["big"].checkForInput(pygame.mouse.get_pos()):
                     self.buttons["big"].make_sound()
-                    self.change_resolution(auxiliar.get_path("../config/1280x720.json"))
+                    self.change_resolution(auxiliar.get_path("config/1280x720.json"))
                 if self.buttons["BACK"].checkForInput(pygame.mouse.get_pos()):
                     self.buttons["BACK"].make_sound()
                     self.running = False

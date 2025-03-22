@@ -41,8 +41,8 @@ class Player(Entity):
         self.jump_Max =  globals.config.get_player_jump()
         self.y_acc_value =  globals.config.get_player_Acc()
         self.lifes = 3
-        self.death_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}death.wav"))
-        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath()}ticktock.wav"))
+        self.death_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("death.wav")}"))
+        self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path(f"{globals.config.get_audiofxpath("ticktock.wav")}"))
         self.power_up_counter = 0
         self.death_timer = 0
         self.power_up = False
@@ -72,7 +72,7 @@ class Player(Entity):
         self.animation_map.update({
             "shoot":self.end_shooting,
             "death": self.animation_death          
-         })
+        })
         
     def get_lifes(self):
         return self.lifes
@@ -121,7 +121,7 @@ class Player(Entity):
             self.vel += self.acc
             self.pos += self.vel + self.ACC * self.acc
             self.update_rect()
-       
+    
     def end_shooting(self):
         if self.index >= self.end_index:
             self.shoot()
@@ -151,9 +151,6 @@ class Player(Entity):
                     self.end_of_death()
                 else:
                     self.index -=1   
-    
-         
-    
     
 
     #funcion de dibujado en pantalla
@@ -197,7 +194,7 @@ class Player(Entity):
                 if not self.die and self.death_timer > 100:
                     self.to_die()
                 hit.hit()
-              
+                
             # --- COLISIONES CON SWITCH ---
             if isinstance(hit, Switch):
                 if self.pos.y == hit.rect.topleft[1] + 1:
