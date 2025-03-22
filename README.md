@@ -77,7 +77,7 @@ Skelly_and_Soulie/
 │   │   ├── BSO/
 │   │   ├── FX/
 ```
-```
+```mermaid
 classDiagram
 class AnimationPlayer {
     - int amount
