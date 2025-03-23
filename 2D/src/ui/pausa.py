@@ -53,7 +53,6 @@ class Pausa(Base):
       btn.render(self.screen)
     pygame.display.flip()  # Actualiza la pantalla
     
-
   def run(self):    
     self.running = True
     while self.running:           

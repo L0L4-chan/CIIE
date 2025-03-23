@@ -69,8 +69,7 @@ class GameManager():
             pygame.mixer.music.load(auxiliar.get_path(path))
             pygame.mixer.music.play(-1)
             self.music = True
-
-             
+           
     #change the resolution of the screen
     def change_resolution(self):
         self.screen = pygame.display.set_mode((globals.config.get_width(), globals.config.get_height())) 
@@ -82,15 +81,13 @@ class GameManager():
         self.music = False
         from ui.menu import Menu
         self.next_scene =  Menu()
-        
-        
+             
     def load_options(self):
         if self.scene:
             self.scene.stop()
         from ui.options import Options
         self.next_scene = Options()
        
-    
     def load_game(self, scene, sound, level):
         if self.scene:
             self.scene.stop()
@@ -101,7 +98,6 @@ class GameManager():
         from game.game import Game
         self.next_scene = Game(scene, sound)
         
-
     def load_player(self, level, lifes=3):
         if level == 1:
             from classes.player import Player
@@ -116,7 +112,6 @@ class GameManager():
             from classes.player2 import Player2
             self.player = Player2(globals.config.get_player_posx(4), globals.config.get_player_posy(4),lifes+1)
 
-
     def load_loading(self):
         if self.scene:
             self.scene.stop()
@@ -129,8 +124,7 @@ class GameManager():
         self.music = False
         from views.credits import Credits
         self.next_scene =  Credits()
-        
-    
+         
     def load_pause(self):
         from ui.pausa import Pausa
         Pausa().run()
@@ -143,15 +137,13 @@ class GameManager():
         self.music = False
         self.next_scene =  GameOver()
        
-
     def load_start(self, path):
         if self.scene:
             self.scene.stop()
             self.music = False
         from views.start import Start
         self.next_scene = Start(path)
-        
-    
+         
     def player_position(self):
         if self.player is not None:
             return self.player.rect.midbottom 

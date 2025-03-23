@@ -138,7 +138,7 @@ class Game(Base):
         globals.game.changeMusic(self.sound)    
         self.running = True
         while self.running:           
-            self.clock.tick(self.FPS) # indicamos el numero de frames por segundo
+            self.clock.tick(self.FPS)                                       # indicamos el numero de frames por segundo
             self.handle_events()
             self.update()
             self.collision()

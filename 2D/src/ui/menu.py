@@ -43,7 +43,6 @@ class Menu(Base):
                     self.buttons["quit"].make_sound()
                     self.running = False  
 
-
     # create buttons    
     def new_buttons(self):
          self.buttons = {
@@ -52,7 +51,6 @@ class Menu(Base):
             "options": Button(pos=(self.screen_width/8, (self.screen_height/8)*5), text_input=  globals.config.get_text_button(key ="OPTIONS")),
             "quit": Button(pos=(self.screen_width/8, (self.screen_height/8)*6), text_input=  globals.config.get_text_button(key ="QUIT")),
         }
-
 
     # update buttons color in case the mouse is hovering on them
     def update(self):

@@ -37,5 +37,5 @@ class Event(Platforms):
             globals.game.load_player(3, life)
             globals.game.scene_end()
             from views.scene import Scene
-            globals.game.load_game(Scene("level3.jpg", "level3.json"), auxiliar.get_path(globals.config.get_audiobspath("levels-_2_.wav"), 3))
+            globals.game.load_game(Scene("level3.jpg", "level3.json"), globals.config.get_audiobspath("06-level3.wav"), 3)
            
