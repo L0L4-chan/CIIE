@@ -485,7 +485,7 @@ El juego se distingue por su sistema de scroll dinámico que permite explorar es
     \end{center}
 \end{itemize}
 
-\paragraph{Objetos}
+\paragraph{Objetos}\mbox{}\\
 
 Los sprites de objetos utilizados finalmente en el desarrollo del videojuego en 2 dimensiones han sido los siguientes:
 
@@ -531,42 +531,197 @@ Para ello se han creado o modificado los siguientes elementos:
 \end{itemize}
 
 
+\paragraph{Diseño OPCIÓN 1}\mbox{}\\
+
+El juego comienza mostrando el menú inicial. Este nos muestra las opciones de empezar partida nueva, cargar partida, opciones y salir. (DIAGRAMA DE ESTADOS) La IU es manejada con el ratón: nos pondremos sobre el texto y clicaremos sobre él. Al estar encima podremos ver el cambio de color del texto y, al interactuar, un sonido nos informará de que la acción ha sido registrada.
+
+\begin{itemize}
+    \item \textbf{Cargar Partida:}\\[1mm]
+    Inicialmente el juego no cuenta con partidas guardadas; estas se guardan de forma automática cuando un nivel es finalizado, permitiendo al jugador empezar en el siguiente si así lo desea. Se guarda tan solo información de las vidas, dado que no existe puntuación u otra información necesaria para comenzar el nivel.\\[1mm]
+    Se proporcionan tres archivos de guardado para que se pueda acceder a las pantallas durante la fase de testeado y corrección. Se proporcionarán con tres vidas (el máximo), pero si se finaliza un nivel con otro número de vida, el slot de guardado será sobreescrito.
+
+    \item \textbf{Pantalla de opciones:}\\[1mm]
+    Las opciones que hemos incluido en el juego son: tres idiomas disponibles (gallego, castellano e inglés); tres niveles de dificultad, que se reflejarán en el juego como mayor número de enemigos y menor número de cofres conforme la dificultad aumente; y cambio de resolución, con un tamaño inferior similar al de dispositivos portátiles. No se recomienda utilizarlo por ser muy pequeño, pero está totalmente implementado. Para ello, los recursos artísticos se han guardado con la nueva resolución acorde a este tamaño y los archivos de configuración también son diferentes, permitiéndonos adaptar la velocidad de movimiento, ataque o el tamaño de las plataformas a la nueva resolución.\\[1mm]
+    Este menú sólo está implementado al inicio del juego. No se ha considerado necesario añadir modificaciones de sonido (dado que se puede modificar vía hardware), ni incluirlo en el menú de pausa, ya que una vez elegidas, las opciones permanecen en la partida. (Aunque, en caso de muerte o abandono del nivel, podemos volver a este menú a través del menú principal).
+
+    \item \textbf{Salida:}\\[1mm]
+    Al salir se finaliza el bucle del juego, se realiza la limpieza de los recursos de la escena y, finalmente, se llama al sistema para que cierre el programa. La opción de salida puede llamarse también desde el menú de pausa, con el mismo funcionamiento, o pulsando el botón de cierre de ventana (la "x" superior derecha); con la excepción de cuando una animación está en funcionamiento, ya que en ese caso dicho botón simplemente finaliza la ejecución de la animación.\\\\
+
+    \item \textbf{Nueva partida:}\\[1mm]
+    Partimos de que el personaje protagonista, Skelly, despierta en un cementerio; en la animación principal, Soulie le explica que debe recuperar sus partes. La animación termina mostrando al jugador los botones con los que se puede mover al personaje o ejecutar las funciones.\\[1mm]
+    Esta dinámica se mantiene en las animaciones inter-nivel, en la historia y en el menú de interfaz de juego.\\[1mm]
+    El primer nivel pretende permitir que el jugador se sienta cómodo con las dinámicas del juego: moverse, saltar y disparar (especialmente dado que solo cuenta con una piedra y deberá esperar a que la lanzada alcance el objetivo o salga de pantalla para poder volver a utilizarla).\\[1mm]
+    Aparecen las primeras trampas y las plataformas amarillas que indicarán el camino a seguir. El escenario se mueve en horizontal durante este primer encuentro y, una vez se desciende al nivel intermedio, el jugador toma el control. Se proporciona un cofre con vidas, de modo que las vidas perdidas se recuperan mientras se esté en contacto con el objeto, permitiendo recuperar todas las vidas con un solo cofre. Ahora, los enemigos aparecen a diferentes alturas y de forma más agrupada; no es necesario eliminarlos para avanzar, por lo que no se ha generado marcador, y en ocasiones, la mejor estrategia es intentar evitarlos (si bien es necesario indicar que la IA implementada en los enemigos los empuja a perseguir al personaje, pero a una velocidad inferior, lo que permite cierto espacio de maniobra).\\[1mm]
+    Volvemos a descender en el nivel y encontramos, por primera vez, un pulsador: este abre una puerta durante un tiempo y, pasado este tiempo, es necesario volver a pulsarlo para que se abra de nuevo. El nivel está diseñado para que el jugador pulse el botón y no llegue a la puerta a tiempo la primera vez, debido a que aparecen enemigos que dificultan el acceso; de este modo, debe intentar atravesar la puerta antes de que ésta se cierre, observando cómo el botón regresa a su posición original y escuchando el ruido de la puerta al caer, lo que añade reto al juego.\\[1mm]
+    Una vez pasada la puerta, nos aparece por primera vez el problema de plataformas inalcanzables y, con ello, nuestra respuesta: el objeto \emph{pulmones} que nos permitirá obtener un power-up de salto durante un tiempo limitado.\\[1mm]
+    Esta parte presenta un reto, dado que se debe subir con el power-up activado, eliminando o esquivando a los enemigos; algunas plataformas impiden alcanzar otras y el camino más instintivo no es siempre el posible o el adecuado.\\[1mm]
+    Cabe decir aquí que los cofres volverán a aparecer al cabo de un tiempo con su contenido original (con una excepción) y que, si el objeto del cofre no es tocado antes de que desaparezca, no obtendremos el efecto, obligando al jugador a esperar por el nuevo cofre. (Existen indicadores auditivos distintos para cada objeto recogido y otro para marcar la duración del power-up).\\[1mm]
+    Si llegamos arriba, veremos un cofre sobre un árbol: este cofre es la excepción, el único que no vuelve a aparecer y cuyo contenido no desaparece hasta que el personaje lo toca; en él se encuentra la llave que nos permitirá abandonar el nivel al alcanzar el final.\\[1mm]
+    Si llegamos al final sin la llave, escucharemos un ruido o no podremos abandonar el nivel.\\[1mm]
+    Al finalizar, veremos una animación en la que conseguiremos un ítem, el \emph{estómago}, que nos permitirá ser inmunes a los ataques y causará daño a los enemigos que nos toquen cuando lo tengamos puesto. También se mostrarán nuevamente los controles necesarios y comenzaremos nuestro recorrido por el bosque.\\[1mm]
+    La primera parte de la escena presenta enemigos, lo que nos urgirá a utilizar este nuevo elemento.\\[1mm]
+    Este segundo nuevo nivel introduce un nuevo enemigo, el \emph{muércielago}, que es más duro que el fantasma anterior y que no solo persigue al personaje en horizontal, sino que también se acerca en vertical de forma más acuciada y con mayor velocidad.\\[1mm]
+    Una vez finalizado este nivel, el video indicará que hemos conseguido nuestro \emph{corazón}, el cual nos abrirá nuevos caminos. Este elemento no está pensado para el ataque, sino para romper ciertas plataformas y dejarnos avanzar, lo que será muy útil en las cuevas que visitaremos.\\[1mm]
+    El tercer nivel presenta un tercer enemigo, el \emph{diablillo}, que no solo persigue al personaje, sino que también dispara, por lo que deberá eliminarse lo antes posible.\\[1mm]
+    Al finalizar el nivel, veremos una animación en la que se presenta al jefe final, contra quien deberemos pelear y repeler sus ataques para recuperar nuestro \emph{cerebro} y finalizar el juego. El jefe presenta dos tipos de ataque: cuerpo a cuerpo y un ataque mágico, el cual se activa una vez sus vidas se han reducido a la mitad (revisar esta parte con los cambios de Ivan).\\[1mm]
+    Si sobrevivimos, llegaremos a la parte final de los créditos y volveremos a la pantalla del menú inicial.
+\end{itemize}
+
+\paragraph{Diseño OPCIÓN 2}\mbox{}\\
+
+El juego comienza con la clase Main, desde la cual se crea el objeto GameManager, objeto singleton que se encarga de realizar los cambios entre escena y controlar el gameLoop, tambien almacena al Player para poder incluirlo en los niveles del juego al comenzar la partida, el objeto Clock para la actualizacion de los frames durante el renderizado, y el objeto Display comun para todas las escenas.
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images_tec2d/DiagramadeClases.jpg}
+\end{center}
+
+El uso de GameManager sigue dos patrones de diseño  ampliamente usados en videojuegos:
+
+•	Singleton El patrón Singleton garantiza que una clase tenga solo una instancia y proporciona un punto de acceso global a esa instancia.
+
+•	Manejador de juego (Game Manager) El patrón Manejador de juego es el encargado de gestionar el ciclo de vida del juego, incluyendo la actualización de estados, la lógica de los niveles y las interacciones de los personajes.
+
+Cuando se activa por primera vez se carga la escena inicial, se activa la musica y se comienza el bucle. Su misión principal es llamar a la escena actual y cuando esta acabe, asegurarse que se realiza la limpieza de recursos y si existe una nueva escena en espera convertirla en la principal, En caso de que no fuera asi, volveriamos al main donde se realiza el cierre del programa.
+
+Los motivos para escoger esta opción sobre el patrón Director explicado en clase dadas las características específicas del proyecto y en la necesidad de garantizar una arquitectura clara, eficiente y escalable.
+
+En primer lugar seguimos una progresion lineal y consta de tres niveles y una batalla final. Cada escena del juego se genera a partir de una imagen de fondo y la carga de elementos específicos desde un archivo JSON, lo que permite definir la estructura de cada nivel de manera externa al código.
+
+El juego sigue una secuencia predefinida de niveles, lo que implica que la estructura del juego no requiere de una lógica compleja para la creación dinámica de escenas. El Game Manager permite manejar esta progresión de manera eficiente, asegurando que solo la escena activa permanezca en memoria, liberando recursos de manera controlada al avanzar entre niveles.
+Dado que los niveles se definen mediante archivos JSON, el Game Manager actúa como un intermediario que se encarga enviar los datos a la escena correspondiente para su renderizado. Esto permite un diseño más modular y facilita la modificación de niveles sin alterar el código base del juego.
+El patrón Game Manager facilita la escalabilidad del juego, ya que permite añadir nuevos niveles sin necesidad de modificar la estructura del código. La carga de niveles se realiza de manera homogénea, permitiendo integrar nuevos elementos a través de la modificación de los archivos JSON sin afectar el flujo central del juego.También simplifica la gestión del código al centralizar el control del flujo del juego en una única entidad. Su implementación resulta más eficiente y permite un mantenimiento más sencillo, reduciendo la complejidad y mejorando la legibilidad del código.
+El patrón Director es una alternativa que podría utilizarse en casos donde la construcción de las escenas requiere un alto grado de modularidad y flexibilidad. Sin embargo, en este proyecto, las escenas están predefinidas y no requieren ensamblaje dinámico, lo que hace innecesaria la implementación de un Director. La elección del Game Manager se justifica porque se adapta mejor a la estructura secuencial del juego y permite un control más directo sobre la ejecución de las escenas, siendo estas responsables de su formación, de sus propios bucles y de su limpieza en el acabado.
+
+Para la compartición de información creamos, siguiendo de nuevo el patron singleton la clase ConfigManager, que también sigue el patrón Gestor de recursos 
+El patrón Gestor de recursos centraliza y gestiona todos los recursos del juego, asegurando que estos se carguen y gestionen correctamente.
+Este patrón es crucial para optimizar el rendimiento del juego, evitando la carga repetida de recursos y asegurando que los recursos se gestionen de forma eficiente.
+Para la elaboracion de las escenas Menu Inicial, Opciones, Pausa, Game, y Carga de Partida, ... se ha creado una clase Base que  establece las variables comunes, los métodos basicos y el bucle de evento para todas esta pantallas. Implementando el patrón plantilla.
+
+ Este patrón define el esqueleto  una clase base que define el flujo general, mientras que las subclases se encargan de detalles específicos. Como por ejemplo lo que implica la función de cleanup (limpieza) para cada uno de estas escenas, o el manejo de los eventos que puedan ser necesarios en la pantalla.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images_tec2d/DiagramadeClases2.jpg}
+\end{center}
+
+De entre todas las escenas merecen especial atención Game y Start dado que forman parte del centro del juego.
+
+La escena start se encarga de la lectura del archivo que indica los siguientes pasos a dar según el nivel del que se viene y al cual pasamos, puede ser llamada desde menu inicial a través de iniciar partida o desde load, pasandole la información del nivel desde el que se va a comenzar la ejecución. En cierto modo funciona como un pequeño gameManager para las acciones que componen un nivel de juego, que son:
+La ejecución de la animación (siendo la clase Animation Player quien realiza la animación)  
+y la carga, desde gameManager de la clase Game con los datos correctos.
+
+Finalmente la Game es la encargada de montar el nivel del juego.
+Para ello contiene un elemento scene.(Clase Scene)
+
+La clase Scene crea con la información de nivel los elementos necesarios para la misma, enemigos, coleccionables, plataformas, trampas, interactuables... con un funcionamiento similar al patron fábrica. El patrón Fábrica proporciona una interfaz para crear objetos sin especificar la clase exacta del objeto que se va a crear.  En nuestro caso, tiene la información para crear los elementos necesarios para cualquier nivel en baso a el contenido del Json de nivel.
+
+Seguir este sistema nos permite que la creación de niveles o la modificación de los mismos sea algo rápido y sencillo.
+Entre los elmentos que crea la Escena, junto con el Player que es creado en GameManager aparece otro de los patrones aplicados en la creación del juego, el patrón Decorador, que permite añadir nuevas funcionalidades a un objeto de manera dinámica sin alterar su estructura. Se utiliza para extender las funcionalidades de una clase de forma flexible.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images_tec2d/DiagramadeClases3.jpg.png}
+\end{center}
 
 
+ 
+Todo esto se realiza durante la inicializacion de la clase Game, asignación del jugador, fondo, elementos, enemigos, etc
 
-\paragraph{Diseño}
-% Contenido de diseño en 2D.
-Texto de diseño (2D)...
+game entonces es el encargado de que, en su gameloop o bucle se realicen los pasos necesarios para cada frame:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images_tec2d/DiagramadeClases4.jpg.png}
+\end{center}
+
+Manejo de los eventos o interaciones del jugador, actualizacion de elementos en el juego, revisión de las colisiones ocasionadas y finalmente el renderizado de la imagen actual del juego.
+
+Dentro de la función handle events solo incluimos los eventos que tiene que ver con la UI durante el juego (llamada a pausa, o cierre de pantalla,) la clase player maneja los eventos de teclado desde la llamada update.
+
+En update cada elemento revisara si durante ese ciclo ha ocurrido algo que implique un cambio en su estado, aquí el jugador revisara las entradas para modificar su posición, los enemigos reaccionaran sobre la posición del jugador y los elementos del nivel podrán, o no sufrir cambios si ha habido interacción o si han salido de pantalla.
+
+Las colisiones son principalmente manejadas por los elemnetos Player y Enemy, que activaran sus funciones según la colisión y haran que, de ser necesario el objeto con el que han colisionado realice la accion necesaria, como una reacción en cadena.
+Las colisiones bases como elementos comunes de Player y Enemigo (animaciones ante estados por ejemplo) se desarrollan en la clase Entity. 
+En esta clase, a través de un diccionario, un nuevo estado en el player o enemy llamará a una función similando el funcionamiento del patrón Estado (State)
+El patrón Estado permite que un objeto altere su comportamiento cuando cambia su estado interno. 
+Este patrón es ampliamente usado en máquinas de estado finitas, como la lógica de un personaje o enemigo que cambia de comportamiento dependiendo de su estado (por ejemplo, la animación que muestra según el estado o las acciones que acomente).
+Finalmente la funcion renderizado llama a los elementos enpantallas para que ejecuten su funcion de dibujado y crear la escena a mostrar.
+
+Para el manejo de la pausa se traslada el elemento clock a la nueva escena Pausa, dejando Game congelado, por lo que nada se actualiza y el reloj continua ejecutando los ciclos por segundo que requiere, pero en pantalla tenemos acceso a volver al juego o al menu inicial. (siendo la clase pausa quien gestionara la llama de finalizacion de escenas)
+
+Aspectos destacador:
+
+Destacamos del producto los siguientes elementos.
+
+Manejo de Scroll: Para gestionar el movimiento de la cámara en el juego, se ha implementado una clase Cámara, cuya función principal es convertir las posiciones globales de los elementos en posiciones locales dentro del área visible del display. Esta conversión permite que el desplazamiento del escenario se realice de manera eficiente y sin modificar directamente las coordenadas de los objetos en el mundo del juego.
+La clase Cámara es invocada durante la fase de renderización, donde se le pasan como parámetros los elementos en pantalla para ajustar su posición en función del desplazamiento. Este enfoque minimiza el número de cálculos necesarios, ya que el movimiento se gestiona de manera centralizada, evitando que cada objeto realice ajustes individuales en su posición. Con esta implementación, se logra un sistema de scroll fluido y optimizado, mejorando el rendimiento sin afectar la lógica de movimiento de los objetos dentro del mundo del juego.
+Clase Event: La clase Event cumple una función específica dentro del flujo del juego: detectar la finalización de un nivel y notificar al sistema que debe iniciar el siguiente. Para ello, esta clase sigue una arquitectura similar al patrón Observador, donde un objeto (Event) comunica cambios en su estado a otro objeto (Game Manager), sin que exista un fuerte acoplamiento entre ellos.
+Cuando un evento de finalización de nivel ocurre, la clase Event notifica al Game Manager, permitiéndole ejecutar las acciones correspondientes, como el almacenamiento de la información de progreso y la carga del siguiente nivel. Esta implementación permite un diseño más modular y flexible, asegurando que el sistema pueda reaccionar a eventos sin depender de verificaciones constantes dentro del bucle principal del juego.
+
+Sistema de Guardado: En el desarrollo del videojuego, se ha optado por utilizar el formato JSON para la gestión del guardado y carga de partidas. Esta elección responde a las necesidades específicas del proyecto y se fundamenta en la simplicidad, eficiencia y compatibilidad que ofrece este formato en comparación con otras alternativas como la instanciación de un objeto de partida o el uso de Pickle para la serialización de datos en Python.  
+El sistema de guardado del juego registra un conjunto mínimo de información, únicamente el número de vidas con el que el jugador alcanzó un nivel y el acceso desbloqueado a dicho nivel. Dado que el estado del juego no requiere el almacenamiento de múltiples variables complejas (como posiciones exactas de objetos, inventarios extensos o configuraciones detalladas), no es necesario un sistema de serialización avanzada.
+
 
 \subsubsection{Escenas}
-\paragraph{Escena 1: }
-\paragraph{Descripción}
-% Detalles de la descripción de la Escena 1.
+\paragraph{Escena 1}
+\subparagraph{Descripción}\\
 Texto de descripción de Escena 1...
 
-\paragraph{Modelo}
-% Detalles del modelo de la Escena 1.
+\subparagraph{Modelo}\\
 Texto de modelo de Escena 1...
 
-\paragraph{Detalles de implementación}
-% Detalles de implementación de la Escena 1.
+\subparagraph{Detalles de implementación}\\
 Texto de detalles de implementación...
 
-\subsubsubsection{Escena 2: <nombre de la escena 2>}
-% Contenido para Escena 2.
+
+\paragraph{Escena 2}
+\subparagraph{Descripción}\\
+Texto de descripción de Escena 2...
+
+\subparagraph{Modelo}\\
+Texto de modelo de Escena 2...
+
+\subparagraph{Detalles de implementación}\\
+Texto de detalles de implementación...
 
 
-\subsubsubsection{Escena 3: <nombre de la escena 3>}
-% Contenido para Escena 3.
+\subsubsection{Manual de usuario}
+El juego implementado para el que se realiza esta memoria contiene un documento \emph{README} donde se adjuntan las instrucciones de herramientas y librerías necesarias para su instalación.
+
+Skelly and Soulie es un juego de plataformas en 2D que cuenta con tres niveles y una batalla final. Ofrece dos resoluciones de pantalla (1280x720 y 720x405), tres niveles de dificultad y diálogos disponibles en inglés, castellano y gallego.
+
+Para poder interactuar con el juego, debemos distinguir entre:
+
+- Interacciones con la UI: Se utiliza el ratón y el botón izquierdo del mismo. Estas interacciones incluyen acceder a menús, saltar animaciones, escoger opciones, pausar el juego y salir del programa.
+
+- Interacciones del juego o jugabilidad: Se usará principalmente el teclado (ver imagen "Controles").
+\begin{itemize}
+    \item Flechas direccionales: Mueven al personaje hacia adelante y atrás.
+    \item Barra espaciadora: Controla el salto.
+    \item "Q": Lanzar piedra (habilitado desde el nivel 1).
+    \item "W": Activa el escudo (habilitado desde el nivel 2).
+    \item "E": Lanza la bomba rompe-plataformas (habilitado desde el nivel 3).
+\end{itemize}
+
+Para no generar confusiones en los jugadores, justo antes del inicio de cada nivel se visualizan en pantalla los controles disponibles en cada uno de los niveles.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{images_tec2d/Controles.png}
+\end{center}
 
 
 \subsubsection{Aspectos destacables}
-% Contenido de aspectos destacables en 2D.
-Texto de aspectos destacables (2D)...
 
-\subsubsection{Manual de usuario}
-% Contenido del manual de usuario para el videojuego en 2D.
-Texto del manual de usuario (2D)...
+Para disfrutar del juego, puede ser útil conocer ciertos detalles. Sin embargo, algunos jugadores pueden preferir descubrir todo por sí mismos. Para quienes prefieran una guía, aquí dejamos información clave:
+
+\begin{itemize}
+    \item Skelly solo cuenta con un disparo a la vez. Si la piedra aún no ha impactado o salido de la pantalla, no será posible volver a disparar.
+    \item El escudo se activa y desactiva entre usos. No es recomendable avanzar con él siempre activado.
+    \item La bomba solo destruye plataformas rompibles. Estas plataformas son más cortas que las normales y solo aparecen en el nivel 3.
+    \item Los enemigos y cofres reaparecen. Si se pierde un power-up necesario, solo hay que esperar a que vuelva a aparecer.
+    \item El camino más obvio no siempre es el correcto. Si no se puede avanzar, puede ser necesario explorar alternativas.
+    \item No todos los enemigos deben ser eliminados. Un enfrentamiento directo no siempre es necesario.
+\end{itemize}
+
+
+
+
 
 \subsubsection{Reporte de bugs}
 
