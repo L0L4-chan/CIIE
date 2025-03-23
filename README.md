@@ -813,6 +813,33 @@ class Switch {
 
 
 ```
+## De interés
+
+![Controles](2D/src/img/1280x720/3animation/0301.jpg)
+
+Para poder interactuar con el juego, debemos distinguir entre:
+
+- **Interacciones con la UI:** Se utilizará el ratón y el botón izquierdo del mismo. Estas interacciones incluyen acceder a menús, saltar animaciones, escoger opciones, pausar el juego y salir del programa.
+
+- **Interacciones del juego o jugabilidad:** Se usará principalmente el teclado (ver imagen "Controles").  
+  - **Flechas direccionales:** Mueven al personaje hacia adelante y atrás.  
+  - **Barra espaciadora:** Controla el salto.  
+  - **"Q":** Dispara (habilitado desde el nivel 1).  
+  - **"W":** Activa el escudo (habilitado desde el nivel 2).  
+  - **"E":** Lanza la bomba rompe-plataformas (habilitado desde el nivel 3).  
+
+## Consejos 
+
+Para disfrutar del juego, puede ser útil conocer ciertos detalles. Sin embargo, algunos jugadores pueden preferir descubrir todo por sí mismos. Para quienes prefieran una guía, aquí dejamos información clave:
+
+- **Skelly solo cuenta con un disparo a la vez.** Si la piedra aún no ha impactado o salido de la pantalla, no será posible volver a disparar.
+- **El escudo se activa y desactiva entre usos.** No es recomendable avanzar con él siempre activado.
+- **La bomba solo destruye plataformas rompibles.** Estas plataformas son más cortas que las normales y solo aparecen en el nivel 3.
+- **Los enemigos y cofres reaparecen.** Si se pierde un power-up necesario, solo hay que esperar a que vuelva a aparecer.
+- **El camino más obvio no siempre es el correcto.** Si no se puede avanzar, puede ser necesario explorar alternativas.
+- **No todos los enemigos deben ser eliminados.** Un enfrentamiento directo no siempre es necesario.
+
+
 
 
 
