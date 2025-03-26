@@ -63,18 +63,17 @@ Skelly_and_Soulie/
 │   ├── utils/
 │   ├── views/
 │   ├── main.py
-│── assets/
-│   ├── Art/
+│   ├── img/
 │   │   ├── 1280x720/
 │   │   ├── 720x405/
-│   │   ├── common/
+│   │   ├── varios/
 │   ├── ButtonText/
 │   ├── config/
 │   ├── Credits/
 │   ├── Dialog/
 │   ├── Font/
-│   ├── Sound/
-│   │   ├── BSO/
+│   ├── audio/
+│   │   ├── BS/
 │   │   ├── FX/
 ```
 ```mermaid
