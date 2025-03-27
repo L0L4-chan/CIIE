@@ -52,8 +52,13 @@ class Boss(Enemy):
         self.dash_duration = 30
         self.dash_timer = 0
         
-               
+    #region move
     def move(self):
+        """
+        Mueve al jefe por la pantalla y gestiona sus acciones.
+
+        :return: None
+        """
         if self.current_action != "death":
             self.set_objective()
             distance_x = self.objective[0] - self.rect.x
@@ -94,49 +99,101 @@ class Boss(Enemy):
                 else:
                     if self.current_action != "walk":
                         self.index = 0  
-                    self.current_action = "walk"   
-    
+                    self.current_action = "walk"
+    #endregion
+
+    #region the_end
     def the_end(self):
+        """
+        Gestiona la animación final del jefe y la transición a la siguiente escena.
+
+        :return: None
+        """
         if self.index == self.end_index:
             self.index -= 1
             self.sound.play()
             globals.game.scene.running= False
             globals.game.load_start("st5.json")
+    #endregion
                                 
+    #region magic_attack
     def magic_attack(self):
+        """
+        Realiza el ataque mágico del jefe, activando un Fireball.
+
+        :return: None
+        """
         for item in self.group:
             if not item.get_inUse():
                 random_x = random.randint(self.rect.x - 300, self.rect.x + 300)
                 item.active(random_x, self.height*3, 1)
                 break
+    #endregion
             
+    #region update
     def update(self):
+        """
+        Actualiza el estado del jefe, incluyendo el temporizador de ataque, el temporizador de animación y el movimiento.
+        También incluye la posibilidad de que el boss haga 'dash' de manera aleatoria.
+        :return: None
+        """
         self.attack -= 1
         self.animation_timer += 1
         self.move()
         if self.current_action == "walk" and random.randint(0, 100) < 5:
             self.dash()
+    #endregion
  
+    #region draw
     def draw(self, screen= None, position = None):
+        """
+        Dibuja el jefe.
+
+        :param screen: Superficie sobre la que dibujar.
+        :param position: Posición en la que colocar el jefe.
+        :return: None
+        """
         self.render()
-        screen.blit(self.surf,position)    
+        screen.blit(self.surf,position)
+    #endregion   
         
+    #region die
     def die(self):
+        """
+        Gestiona la muerte del jefe, reproduciendo un sonido y cambiando su estado.
+
+        :return: None
+        """
         if not self.hit:
             self.hurt_sound.play()
             self.hit = True
             self.wounded()
+    #endregion
                                        
+    #region wounded
     def wounded(self):
+        """
+        Reduce las vidas del jefe y gestiona la transición a la animación de muerte si las vidas llegan a 0.
+
+        :return: None
+        """
         self.lifes -= 1
         if self.lifes == 0:
             self.current_action = "death"
             self.index = 0
         else:
             self.hit = False
+    #endregion
             
+    #region dash
     def dash(self):
+        """
+        Inicia el movimiento de embestida (dash) del jefe.
+
+        :return: None
+        """
         if self.dash_timer == 0:
             self.current_action = "dash"
             self.index = 0
             self.dash_timer = self.dash_duration
+    #endregion

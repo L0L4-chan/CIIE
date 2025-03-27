@@ -20,8 +20,16 @@ vec = pygame.math.Vector2
 
 
 class Game(Base):
-
+    #region __init__
     def __init__(self, scene, sound ):
+        """
+        Inicializa la clase Game.
+
+        Configura el entorno del juego, incluyendo la escena, el fondo, los grupos de sprites, la cámara, los botones, y el jugador.
+
+        :param scene: La escena del juego (contiene plataformas, enemigos, etc.).
+        :param sound: La música del juego.
+        """
         super().__init__()   
         #cuando se trate del nivel en lugar de una escena se pasara la lista de escenas que debera gestionar los cambios de momento tiene una 
         self.scene = scene
@@ -59,10 +67,18 @@ class Game(Base):
         self.in_scene.add(self.scene.platform)
         
         self.player.set_platform(self.scene.platform)
+    #endregion
        
     
+    #region handle_events
     #game loop se modificara si es necesario cuando se tengan los niveles
     def handle_events(self):
+        """
+        Maneja los eventos del juego.
+
+        Procesa eventos de teclado y ratón, como salir del juego o activar la pausa.
+
+        """
         if self.player.get_lifes() == 0:
             self.running = False
             globals.game.end_game()
@@ -74,8 +90,15 @@ class Game(Base):
                 if self.buttons["pause"].checkForInput(pygame.mouse.get_pos()):
                     self.buttons["pause"].make_sound()
                     globals.game.load_pause()
+    #endregion
     
+    #region update
     def update(self):    
+        """
+        Actualiza el estado del juego en cada ciclo.
+
+        Llama a los métodos update de los objetos del juego, actualiza las vidas del jugador, actualiza la cámara y verifica los elementos en la pantalla.
+        """    
             
         self.player.update()
         self.in_scene.update()
@@ -89,13 +112,27 @@ class Game(Base):
         self.camera.update(self.player)
         self.in_scene_now.empty()
         self.in_scene_now.add(self.camera.check_elements_on_screen(self.in_scene))
+    #endregion
         
+    #region collision
     def collision(self):
+        """
+        Gestiona las colisiones entre los objetos del juego.
+
+        Llama al método collision_managment para sprites, para gestionar las colisiones.
+        """
         for item in self.sprites:
-             item.collision_managment(self.in_scene_now)
-        self.in_scene_now.add(self.player)
+            item.collision_managment(self.in_scene_now)
+        self.in_scene_now.add(self.player) 
+    #endregion
                 
+    #region render
     def render(self):
+        """
+        Dibuja todos los elementos en la pantalla.
+
+        Dibuja el fondo, los elementos en la escena, las vidas y los botones.
+        """
         # Dibujado: el fondo y cada objeto se dibujan desplazados
         self.screen.blit(self.bg, (-self.camera.offset.x, -self.camera.offset.y))
         #capa escenario se actualiza
@@ -108,8 +145,15 @@ class Game(Base):
         
         #Muestra por pantalla
         pygame.display.flip()
+    #endregion
     
+    #region cleanup
     def cleanup(self):
+        """
+        Limpia los recursos del juego.
+
+        Detiene el bucle del juego, libera la memoria de los objetos, para la recolección de basura
+        """
         # Detener el bucle de juego
         self.running = False
         # Limpiar eventos pendientes
@@ -132,9 +176,16 @@ class Game(Base):
         # Forzar al recolector de basura a limpiar
         import gc
         gc.collect()
-    
+    #endregion
        
+    #region run
     def run(self):
+        """
+        Ejecuta el bucle principal del juego.
+
+        Inicia la música, establece la variable running a True y ejecuta el bucle principal del juego,
+        llamando a los métodos handle_events, update, collision y render en cada ciclo.
+        """
         globals.game.changeMusic(self.sound)    
         self.running = True
         while self.running:           
@@ -143,13 +194,4 @@ class Game(Base):
             self.update()
             self.collision()
             self.render()
-
-        
-            
-            
-            
-        
-        
-
-
-        
+    #endregion

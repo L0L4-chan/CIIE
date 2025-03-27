@@ -74,38 +74,73 @@ class Player(Entity):
             "death": self.animation_death          
         })
         
+    #region get_lifes
     def get_lifes(self):
+        """
+        Obtiene el número de vidas del jugador.
+        :return: Número de vidas.
+        """
         return self.lifes
+    #endregion
 
+    #region handle_idle
     def handle_idle(self):
+        """
+        Maneja el estado idle (parado) del jugador.
+        """
         self.acc.x = 0
         self.current_action = "idle"
+    #endregion
 
+    #region handle_walk_left
     def handle_walk_left(self):
+        """
+        Maneja el movimiento hacia la izquierda.
+        """
         self.acc.x = -self.ACC
         self.direction = -1
         self.current_action = "walk"
+    #endregion
 
+    #region handle_walk_right
     def handle_walk_right(self):
+        """
+        Maneja el movimiento hacia la derecha.
+        """
         self.acc.x = self.ACC
         self.direction = 1
         self.current_action = "walk"
+    #endregion
 
+    #region handle_jump
     def handle_jump(self):
+        """
+        Maneja el salto del jugador.
+        """
         hits = pygame.sprite.spritecollide(self, self.platform, False)
         if hits and not self.jumping:
             self.jumping = True
             self.vel.y = self.jump_Max
+    #endregion
 
+    #region handle_shoot
     def handle_shoot(self):
+        """
+        Maneja la acción de disparar.
+        """
         if self.projectiles.get_inUse():
             self.acc.x = 0
             self.current_action = "idle"
         else:
             self.shooting = True
             self.current_action = "shoot"
+    #endregion
 
+    #region move
     def move(self):
+        """
+        Controla el movimiento general del jugador.
+        """
         if not self.shooting and not self.die:
             self.acc = vec(0, self.y_acc_value)
             pressed_keys = pygame.key.get_pressed()
@@ -121,15 +156,25 @@ class Player(Entity):
             self.vel += self.acc
             self.pos += self.vel + self.ACC * self.acc
             self.update_rect()
-    
+    #endregion
+
+    #region end_shooting
     def end_shooting(self):
+        """
+        Finaliza la animación de disparo.
+        """
         if self.index >= self.end_index:
             self.shoot()
             self.shooting = False
             self.current_action = "idle"
             self.index = 0
+    #endregion
 
+    #region end_of_death
     def end_of_death(self): 
+        """
+        Resetea parámetros tras la muerte del jugador.
+        """
         self.death_sound.play()
         self.index = 0
         self.lifes -= 1
@@ -144,77 +189,82 @@ class Player(Entity):
         self.pos.y = self.respawn_y
         self.rect.topleft = [self.respawn_x, self.respawn_y]
         self.current_action = "idle"
-    
+    #endregion
+
+    #region animation_death
     def animation_death(self):
+        """
+        Maneja la animación de muerte.
+        """
         if self.index >= self.end_index:
                 if self.lifes >= 0:
                     self.end_of_death()
                 else:
                     self.index -=1   
-    
+    #endregion
 
-    #funcion de dibujado en pantalla
+    #region draw
     def draw(self, screen, position = None):
+        """
+        Dibuja el jugador en pantalla.
+        :param screen: Superficie donde dibujar.
+        :param position: Posición del jugador.
+        """
         if self.animation_timer > self.frame_rate:
             self.render()
         screen.blit(self.surf,position)  
+    #endregion
 
-    #funcion de gestion de disparo
+    #region shoot
     def shoot(self):
+        """
+        Ejecuta la acción de disparo.
+        """
         if self.direction > 0:
             stone_x = self.pos.x + (self.rect.width * self.direction)
         else:
             stone_x = self.pos.x - (self.rect.width)
         stone_y = self.rect.y + (self.height / 2)
         self.projectiles.active(x=stone_x, y=stone_y, direction=self.direction)
+    #endregion
 
-    #definicion de colisones
+    #region collision_managment
     def collision_managment(self, platforms):
+        """
+        Gestiona todas las colisiones del jugador.
+        :param platforms: Plataformas y objetos a comprobar.
+        """
         hits = pygame.sprite.spritecollide(self, platforms, False)
-        # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
         for hit in hits:
             self.resolve_collisions(hit, vertical_margin=10)
-            # --- COLISIONES CON PINCHOS ---
+            from classes.enemy import Enemy  # Importación local
             if isinstance(hit, Spikes):
                 if not self.die and self.death_timer > 100:
                     self.pos.y = hit.rect.top + 1
                     self.to_die()
-            
-            # --- COLISIONES CON ENEMY ---
-            from classes.enemy import Enemy  # Importación local
             if isinstance(hit, Enemy):
                 if not self.die and self.death_timer > 100:
                     self.to_die()
                 from enemies.boss import Boss
                 if not isinstance(hit, Boss):
                     hit.die()
-                
-            # --- COLISIONES CON STONE O FIREBALL---
             if isinstance(hit, Stone) or isinstance(hit, Fireball):
                 if not self.die and self.death_timer > 100:
                     self.to_die()
                 hit.hit()
-                
-            # --- COLISIONES CON SWITCH ---
             if isinstance(hit, Switch):
                 if self.pos.y == hit.rect.topleft[1] + 1:
                     hit.change_position()
-            
-            # --- COLISIONES CON CHEST ---
             if isinstance(hit, Chest):
                 hit_result = hit.open()
                 self.respawn_x = self.rect.x
                 self.respawn_y = self.rect.y
-            
-            # --- COLISIONES CON EVENT ---
             if isinstance(hit, Event):
                 if self.got_key:
                     hit.on_collision(self)
                 else:
                     hit.sound.play()
                     hit.no_key(self.lifes-1)
-
-            # --- COLISIONES CON LUNGS (Power-Up de salto) ---
             if isinstance(hit, Lungs):
                 if not self.power_up:
                     hit.sound.play()
@@ -222,48 +272,76 @@ class Player(Entity):
                     self.power_up_counter = 0
                     self.power_up_sound.play()
                     self.power_up = True
-            
-            # --- COLISIONES CON KEY ---
             if isinstance(hit, Key):
                 if not self.got_key:
                     hit.sound.play()
                     self.got_key = True
                     hit.kill()
-            
-            # --- COLISIONES CON EXTRA (vida extra) ---
             if isinstance(hit, Extra):
                     self.get_life(hit)
+    #endregion
 
+    #region check_power_up
     def check_power_up(self):
+        """
+        Verifica si el power-up ha expirado.
+        """
         if self.power_up_counter >= 1690:
             self.jump_Max =  globals.config.get_player_jump()
             self.power_up = False
+    #endregion
 
-    #aumenta el numero de vidas
+    #region get_life
     def get_life(self, hit):
+        """
+        Incrementa vidas si es posible.
+        :param hit: Objeto de tipo Extra.
+        """
         if hit.get_can_pick():
             if self.lifes < 3:
                 self.lifes += 1
                 hit.sound.play()
             hit.being_pick()
+    #endregion
 
+    #region to_die
     def to_die(self):
+        """
+        Maneja la muerte del jugador.
+        """
         self.die = True
         self.current_action = "death"
         self.index = 0
         self.animation_timer = self.frame_rate + 1
-    
+    #endregion
+
+    #region update
     def update(self):
+        """
+        Actualiza el estado del jugador.
+        """
         self.animation_timer += 1
         self.death_timer += 1
         self.power_up_counter += 1
         if self.power_up:
             self.check_power_up()
         self.move()
-              
+    #endregion
+
+    #region get_group
     def get_group(self):
+        """
+        Devuelve el grupo de proyectiles.
+        :return: Grupo.
+        """
         return self.group
-        
+    #endregion
+
+    #region set_platform
     def set_platform(self, platform):
+        """
+        Asigna las plataformas del nivel.
+        :param platform: Grupo de plataformas.
+        """
         self.platform = platform
-       
+    #endregion

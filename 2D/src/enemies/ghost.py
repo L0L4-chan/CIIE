@@ -28,8 +28,16 @@ class Ghost(Enemy):
             "death": [((self.width * 2) + (i * self.width), 0) for i in range(3)]
         }
 
-    #funcion que gestiona el movimiento
+    #region move
     def move(self):
+        """
+        Gestiona el movimiento del fantasma.
+
+        Determina la dirección horizontal basándose en la posición del objetivo y se mueve en horizontal,
+        también añade movimiento vertical aleatorio y actualiza la posición del rectángulo.
+
+        :return: None
+        """
         self.set_objective()
         distance_x = self.objective[0] - self.rect.x
         if distance_x < 0:
@@ -47,8 +55,4 @@ class Ghost(Enemy):
         self.pos.y += self.vel.y
         
         self.update_rect()
-        
-
-
-    
-   
+    #endregion

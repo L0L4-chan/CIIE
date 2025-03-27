@@ -32,9 +32,17 @@ class Devil(Enemy):
         self.projectiles = Stone()
         self.group.add(self.projectiles)
         self.lifes = 1
-    #funcion que gestiona el movimiento
     
+    #region move
     def move(self):
+        """
+        Gestiona el movimiento del diablo.
+
+        Determina la dirección basada en la posición del objetivo, y se mueve horizontalmente y verticalmente.
+        También gestiona el disparo si está cerca del objetivo.
+
+        :return: None
+        """
         self.set_objective()
         distance_x = self.objective[0] - self.rect.x
         distance_y = self.objective[1] - self.rect.y
@@ -53,15 +61,31 @@ class Devil(Enemy):
             self.pos.x += self.vel.x
             
         self.update_rect()
-    
+    #endregion
+            
+    #region check_bullets
     def check_bullets(self):
+        """
+        Gestiona el contador de disparo y llama a la función shoot si es necesario.
+
+        :return: None
+        """
         self.can_shoot -=1
         if self.can_shoot < 0:
             self.shoot()
             self.can_shoot = 120      
-    
-    #funcion para disparo
+    #endregion
+          
+    #region shoot
     def shoot(self):
+        """
+        Crea y dispara un proyectil (Stone).
+
+        Calcula la posición del proyectil en función de la dirección del diablo, y activa el proyectil si no está en uso.
+
+        :return: True si el proyectil se disparó, False en caso contrario.
+        :rtype: bool
+        """
         if self.direction > 0:
             stone_x = self.pos.x + (self.rect.width * self.direction)
         else:
@@ -72,4 +96,4 @@ class Devil(Enemy):
         else:
             self.projectiles.active(x=stone_x, y=stone_y, direction = self.direction)
             return True
-     
+    #endregion

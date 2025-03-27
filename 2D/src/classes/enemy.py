@@ -23,7 +23,18 @@ class Enemy(Entity):
       - Si cae sobre una plataforma, se asienta sobre ella.
       - Si colisiona con un jugador, se comporta igual que con los spikes.
     """
-    def __init__(self, x, y, width, height,  path = True):
+    
+    #region __init__
+    def __init__(self, x, y, width, height, path=True):
+        """
+        Constructor de la clase Enemy, inicializa el enemigo con sus atributos.
+
+        :param x: Posición X del enemigo.
+        :param y: Posición Y del enemigo.
+        :param width: Ancho del rectángulo de colisión del enemigo.
+        :param height: Alto del rectángulo de colisión del enemigo.
+        :param path: Parámetro que indica si se carga el sprite del enemigo.
+        """
         # Cargamos el sprite sheet del enemigo (por ejemplo, un murciélago).
         if path:
            self.spritesheet = pygame.Surface((60, 60))
@@ -31,13 +42,13 @@ class Enemy(Entity):
         # Llamamos al constructor de Entity para establecer posición y el rectángulo de colisión.
         super().__init__(x, y, width, height)
         # Asignamos la imagen completa como superficie inicial.
-        self.surf = self.spritesheet.subsurface(pygame.Rect(0,0,self.width, self.height))
+        self.surf = self.spritesheet.subsurface(pygame.Rect(0, 0, self.width, self.height))
         # Configuración de velocidad y movimiento
         self.change_direction_interval = 60  # Opcional: intervalos para cambiar dirección.
         self.frame_counter = 0 
         # Dimensiones de la pantalla (para rebotar en los bordes).
-        self.screen_width =  globals.config.get_width()
-        self.screen_height =  globals.config.get_height()
+        self.screen_width = globals.config.get_width()
+        self.screen_height = globals.config.get_height()
         # Variables para animación.
         self.frames = {
             "idle": [(0, 0)],
@@ -45,7 +56,7 @@ class Enemy(Entity):
             "death": [(0, 0)]
         }
         self.current_action = "walk"
-        #otras variables
+        # otras variables
         self.on_screen = False
         self.hit = False
         self.not_death = True
@@ -56,15 +67,17 @@ class Enemy(Entity):
         
         self.animation_map.update({
             "death": self.other_animation         
-         })
-        
-
-    """
-        Actualiza la posición del enemigo en función de su velocidad y rebota en los bordes.
-    """
-    #funcion que gestiona el movimiento
+        })
+    #endregion
+    
+    #region move
     def move(self):
-        
+        """
+        Actualiza la posición del enemigo en función de su velocidad y rebota en los bordes.
+
+        :param None:
+        :return: None
+        """
         self.pos.x += self.vel.x * self.speed
         self.pos.y += self.vel.y * self.speed
 
@@ -81,13 +94,17 @@ class Enemy(Entity):
         
         # Actualizamos el rectángulo de colisión.
         self.update_rect()
+    #endregion
 
-    #funcion que maneja las colisiones de los enemigos
-    """
+    #region collision_managment
+    def collision_managment(self, platforms):
+        """
         Gestiona las colisiones genéricas utilizando el método de la clase padre
         y añade la condición para colisión con un jugador (Player), comportándose igual que con spikes.
-    """
-    def collision_managment(self, platforms):
+
+        :param platforms: Lista de plataformas con las que el enemigo puede colisionar.
+        :return: None
+        """
         hits = pygame.sprite.spritecollide(self, platforms, False)
         # Colisiones específicas: si choca con un jugador, invertimos la velocidad (comportamiento similar a spikes).
         for hit in hits:
@@ -96,61 +113,102 @@ class Enemy(Entity):
                 hit.hit()
                 # Al colisionar con un jugador, invertimos la velocidad.
                 if not self.hit:    
-                    self.die()       
-                        
-    #Funcion que actualiza la posicion del jugador si es necesario            
+                    self.die()
+    #endregion
+
+    #region update
     def update(self):
-        if self.on_screen :
+        """
+        Actualiza el estado del enemigo, gestionando su movimiento, animación y tiempos de respawn.
+
+        :return: None
+        """
+        if self.on_screen:
             if self.not_death:
                 self.animation_timer += 1
                 self.move()
                 if self.vel.x != 0:
                     self.current_action = "walk"
                 else:
-                    self.current_action = "idle"       
+                    self.current_action = "idle"
             else:
-                self.respawn_time -=1
+                self.respawn_time -= 1
                 self.check_respawn()
-        else:     
+        else:
             if not self.not_death:
                 self.respawn_time -= 1
                 self.check_respawn()
-        
+    #endregion
+
+    #region check_respawn
     def check_respawn(self):
-        if self.respawn_time <=0:
+        """
+        Verifica si el enemigo debe reaparecer tras haber muerto.
+
+        :return: None
+        """
+        if self.respawn_time <= 0:
             self.respawn_time = 3000
             self.not_death = True
             self.lifes = 1
-            self.hit =False
+            self.hit = False
             self.rect = self.surf.get_rect(topleft=(self.respawn_x, self.respawn_y))
- 
-    #Funcion de dibujado en pantalla
-    def draw(self, screen= None, position = None):
+    #endregion
+
+    #region draw
+    def draw(self, screen=None, position=None):
+        """
+        Dibuja el enemigo en la pantalla.
+
+        :param screen: Superficie sobre la que dibujar.
+        :param position: Posición en la que colocar el enemigo.
+        :return: None
+        """
         if self.on_screen and self.not_death:
             self.render()
-            screen.blit(self.surf,position)  
-        
-    #Gestionamos la colision y muerte
+            screen.blit(self.surf, position)
+    #endregion
+
+    #region die
     def die(self):
+        """
+        Gestiona la muerte del enemigo, invirtiendo su velocidad y cambiando su animación.
+
+        :return: None
+        """
         if not self.hit:
             self.vel = -self.vel
             self.current_action = "death"
             self.hit = True
             self.wounded()
-    
+    #endregion
+
+    #region wounded
     def wounded(self):
+        """
+        Maneja el daño recibido por el enemigo, reduciendo sus vidas y reproduciendo un sonido de impacto.
+
+        :return: None
+        """
         self.lifes -= 1
         self.sound.play()
-        if self.lifes<= 0:
+        if self.lifes <= 0:
             self.not_death = False
             self.rect.topleft = (-100, -100)
         else:
             self.hit = False
+    #endregion
 
-    #Funcion que establece un objetivo para el enemigo    
+    #region set_objective
     def set_objective(self):
+        """
+        Establece un objetivo para el enemigo, como la posición del jugador.
+
+        :return: None
+        """
         aux = globals.game.player_position()
-        if aux == None:
+        if aux is None:
             return
         else:
             self.objective = aux
+    #endregion

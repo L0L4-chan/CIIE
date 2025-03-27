@@ -19,13 +19,38 @@ class Extra(Prize):
        self.sound.set_volume(0.5)
        self.to_pick= True
     
+    #region set_use
     def set_use(self):
+        """
+        Cambia el estado de uso del premio y el estado de "ser recogido".
+
+        Invierte el valor de `inUse` y `to_pick`.
+
+        :return: None
+        """
         self.inUse = not self.inUse  
         self.to_pick = not self.to_pick
+    #endregion
     
+    #region being_pick
     def being_pick(self):
+        """
+        Establece el premio como "no recogible".
+
+        Establece el atributo `to_pick` a `False`.
+
+        :return: None
+        """
         self.to_pick = False
+    #endregion
         
+    #region get_can_pick
     def get_can_pick(self):
-        return self.to_pick   
-    
+        """
+        Obtiene el estado de "ser recogido" del premio.
+
+        :return: True si el premio se puede recoger, False en caso contrario.
+        :rtype: bool
+        """
+        return self.to_pick
+    #endregion
