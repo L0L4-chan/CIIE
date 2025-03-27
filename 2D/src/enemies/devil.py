@@ -51,7 +51,7 @@ class Devil(Enemy):
         else:
             self.direction = 1
         if abs(distance_x) < self.screen_width/10:
-            if abs(distance_y) < int(self.screen_width/26):
+            if abs(distance_y) < int(self.screen_width/20):
                 self.check_bullets()
             else:
                 self.vel.y = self.speed * (1 if distance_y > 0 else -1)
@@ -73,7 +73,7 @@ class Devil(Enemy):
         self.can_shoot -=1
         if self.can_shoot < 0:
             self.shoot()
-            self.can_shoot = 120      
+            self.can_shoot = 60      
     #endregion
           
     #region shoot
