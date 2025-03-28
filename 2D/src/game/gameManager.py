@@ -11,7 +11,13 @@ Version: 1.0.0
 
 import pygame ,  utils.globals as globals, utils.auxiliar as auxiliar
 from game.configManager import ConfigManager
-
+#Clase que controla el juego, se encarga de cargar las escenas, cambiarlas, cargar el jugador, la música, etc.
+#Implementa el patron Singleton, solo puede haber una instancia de esta clase en todo el juego.
+#Implementa el patron Factory, ya que se encarga de crear las escenas y el jugador.
+#Implementa el patron Observer, ya que notifica a las escenas cuando se produce un cambio en el juego.  
+#Implementa el patron State, ya que se encarga de gestionar los estados del juego.
+#Implementa el patron Strategy, ya que se encarga de cargar las escenas y el jugador segun el nivel del juego.
+#Implementa el patron Manejador, ya que se encarga de gestionar las escenas y el jugador.
 
 class GameManager():
     #region __new__

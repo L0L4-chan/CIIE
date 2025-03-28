@@ -17,6 +17,9 @@ from ui.button import Button
 class Load(Base):
     
     def __init__(self):
+        """
+        Constructor de la clase Load.
+        """
         super().__init__()
         self.bg = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/background/Menu.jpg"))  # Cambiar fondo
         self.buttons = {}  # Contenedor de botones
@@ -25,6 +28,9 @@ class Load(Base):
 
     # Manejo de eventos del mouse
     def handle_events(self):
+        """
+        Manejo de eventos del mouse.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False 
@@ -68,7 +74,7 @@ class Load(Base):
                     self.buttons["4"] = Button(pos=(self.screen_width / 6, (self.screen_height / 8) * 5),
                                             text_input= globals.config.get_text_button(key="BATTLE"))
 
-    # Conseguir el número de vidasque tenia el jugador cuando guardo
+    # Conseguir el número de vidas que tenia el jugador cuando guardo
     def get_player_lifes(self, level_file):
         info = auxiliar.load_json(auxiliar.get_path(f"../src/save/{level_file}")) 
         return info["player_lifes"] 

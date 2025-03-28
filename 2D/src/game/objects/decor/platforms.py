@@ -14,6 +14,15 @@ import pygame
 class Platforms(pygame.sprite.Sprite):
     
     def __init__(self, x=0, y=0, width=0, height=0):
+        """
+        Constructor de la clase Platform.
+
+        :param x: Posición inicial en X.
+        :param y: Posición inicial en Y.
+        :param width: Ancho de la plataforma.
+        :param height: Alto de la plataforma.
+        :return: None
+        """
         super().__init__()
         self.x_pos = x
         self.y_pos = y
@@ -24,12 +33,19 @@ class Platforms(pygame.sprite.Sprite):
     
     
     def init_surf(self):
+        """
+        Inicializa la superficie de la plataforma.
+        """
         # Se crea una superficie transparente, ignorando cualquier imagen o textura.
         self.surf = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
         self.surf.fill((0, 0, 0, 0))  # Color totalmente transparente      
         self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
               
     def draw(self, screen, position =[0,0]):
+        """
+        Dibuja la plataforma en pantalla.   
+        Se creara de forma individualizada en las subclases.
+        """
         pass  
 """
     #PRUEBA PARA COMPROBAR Y TESTEAR POSICIÓN PLATAFORMAS

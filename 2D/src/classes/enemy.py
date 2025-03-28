@@ -57,10 +57,10 @@ class Enemy(Entity):
         }
         self.current_action = "walk"
         # otras variables
-        self.on_screen = False
-        self.hit = False
+        self.on_screen = False #evitara el renderizado de los enemigos que no esten en pantalla
+        self.hit = False 
         self.not_death = True
-        self.respawn_time = 3600
+        self.respawn_time = 3600 #tiempo de respawn
         self.lifes = 1
         self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("hit.wav")))
         self.sound.set_volume(0.5)

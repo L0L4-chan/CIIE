@@ -18,18 +18,26 @@ from views.animationPlayer import AnimationPlayer
 class Start(Base):
 
    def __init__(self, path):
+      """
+      Constructor de la clase Start.
+      
+      :param path: Ruta del archivo JSON.
+      
+      :return: None
+      """
       super().__init__()
       self.info = auxiliar.load_json(auxiliar.get_path(f"config/{path}"))
       self.animation = AnimationPlayer(self.info["ani_path"], self.info["ani_start"], self.info["ani_amount"], self.info["ani_event"])
       self.screen_width =  globals.config.get_width()
       self.screen_height =   globals.config.get_height()
      
-      
+   #Activacion del sonido   
    def music_on(self):
       pygame.mixer.music.stop()
       pygame.mixer.music.load(auxiliar.get_path(self.info["ani_sound"]))
       pygame.mixer.music.play(-1)
-      
+   
+   #Funcion de limpieza al finalizar   
    def cleanup(self):
       pygame.mixer.music.stop()
       self.running = False 
@@ -38,6 +46,7 @@ class Start(Base):
       import gc
       gc.collect()
 
+   #Bucle de eventos
    def run(self):
       self.music_on()
       self.animation.run()

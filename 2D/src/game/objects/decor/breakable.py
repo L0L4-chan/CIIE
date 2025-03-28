@@ -15,6 +15,13 @@ from game.objects.decor.platforms import Platforms
 class Breakable(Platforms):
    #Funcion de inicializacion delelemento
    def __init__(self, x , y ):
+      """
+        Constructor de la clase Platform.
+
+        :param x: Posición inicial en X.
+        :param y: Posición inicial en Y.
+        :return: None
+      """
       #cargamos las imagenes y asignamos tamaño de forma dinámica
       self.spritesheet = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/breakable/breakablesheet.png"))
       self.width = self.spritesheet.get_width()/5
@@ -33,19 +40,30 @@ class Breakable(Platforms):
    
    #Funcion que establece la image inicial y la posicion inicial con el colisionador
    def init_surf(self):
-        self.surf = self.spritesheet.subsurface(self.frames["position"][0][0], self.frames["position"][0][1],self.width, self.height)
-        self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
+      """
+      Inicializa la superficie de la plataforma.
+      """
+      self.surf = self.spritesheet.subsurface(self.frames["position"][0][0], self.frames["position"][0][1],self.width, self.height)
+      self.rect = self.surf.get_rect(topleft=(self.x_pos, self.y_pos))
     
    #Funcion de actualización de estado por llamada de reloj    
    def update(self):
+      """
+      Actualiza el estado del objeto.  
+      """
       if self.breaking:
          self.animation_timer += 1
          self.start_break()
    
    #dibujado en pantalla       
    def draw(self, screen, position):
-        if self.on_screen:
-            screen.blit(self.surf,position)
+      """
+      Dibuja la plataforma en pantalla.   
+      : param screen: pantalla en la que se dibuja
+      : param position: posición en la que se dibuja
+      """
+      if self.on_screen:
+         screen.blit(self.surf,position)
    
    #funciones de manejo de la clase y sus acciones   
     

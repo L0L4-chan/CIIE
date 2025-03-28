@@ -10,7 +10,12 @@ Version: 1.0.0
 '''
 
 import pygame, utils.auxiliar as auxiliar
-
+#Clase que gestiona la configuración del juego, carga los textos, las fuentes, el idioma, la dificultad, etc.
+#Siguiendo el patro Singleton, solo puede haber una instancia de esta clase.
+#Se encarga de cargar la configuración, establecer el idioma, la dificultad y otros parámetros iniciales.
+#Se encarga de cargar las fuentes de texto, los textos en el idioma seleccionado y los textos de los botones.
+#Se encarga de pasar a otras clases los parametros necesarios
+#Implementa el patron Gestor de Configuración.
 class ConfigManager:
     #region __new__
     _instance = None

@@ -43,7 +43,7 @@ class Camera:
 
         Calcula el desplazamiento necesario para centrar al objetivo, ajusta el offset de la cámara y asegura que no se salga de los límites del mundo.
 
-        :param target: El objeto (usualmente el jugador) al que la cámara debe seguir.
+        :param target: El objeto (el jugador) al que la cámara debe seguir.
         """
         # Posición del target en pantalla (en coordenadas del mundo menos el offset)
         player_screen_x = target.rect.centerx - self.offset.x
@@ -79,6 +79,7 @@ class Camera:
         Aplica el offset de la cámara a un rectángulo.
 
         Mueve el rectángulo restando el offset de la cámara.
+        Se usa para calcular la posición de los elementos en pantalla.
 
         :param rect: El rectángulo a mover.
         :return: El rectángulo movido.
@@ -95,7 +96,8 @@ class Camera:
 
         Itera sobre una lista de elementos, aplica el offset de la cámara a sus rectángulos y verifica si colisionan con la pantalla..
         Establece el atributo `on_screen` de cada elemento y retorna un grupo de sprites con los elementos visibles..
-
+        De esta forma minimizamos el uso de recursos en las funciones de renderizado
+        
         :param elements: Lista de elementos (sprites) a verificar.
         :return: Un grupo de sprites que están en la pantalla.
         :rtype: pygame.sprite.Group

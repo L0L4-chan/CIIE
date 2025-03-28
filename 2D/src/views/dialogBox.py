@@ -3,6 +3,12 @@ import pygame, utils.globals as globals, utils.auxiliar as auxiliar
 class DialogBox:
     
     def __init__(self, event = 0):
+        """
+        Constructor de la clase DialogBox.
+        
+        :param event: Número del dialogo.
+        :return: None
+        """
         self.screen = globals.game.screen
         self.dialog = next((d for d in globals.config.get_text(key="dialogues") if d["event"] == event), None)
         name = self.dialog["character"]
@@ -14,7 +20,7 @@ class DialogBox:
 
         self.font =  globals.config.get_font_dialog()
 
-
+    # Dividir el texto para que entre en el espacio del cuadro
     def wrap_text(self):
         
         words = self.dialog["text"].split(" ")
@@ -32,6 +38,7 @@ class DialogBox:
         lines.append(current_line)  # Añadir la última línea
         return lines
 
+    # Dibujar el cuadro de diálogo
     def draw(self):
         
         if not self.dialog:

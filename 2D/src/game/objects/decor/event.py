@@ -14,9 +14,20 @@ from game.gameManager import GameManager
 from game.objects.decor.platforms import Platforms
 
 
-
+#Objeto pensado para la activavión de fin de nivel y cambio de escena
 class Event(Platforms):
     def __init__(self, x, y, w, h, path, level):
+        """
+        Constructor de la clase Event.
+        
+        :param x: Posición inicial en X.
+        :param y: Posición inicial en Y.
+        :param w: Ancho del objeto.
+        :param h: Alto del objeto.
+        :param path: Ruta del archivo de guardado.
+        :param level: Nivel del juego.
+        :return: None
+        """
         super().__init__(x,y,w,h)
         self.path = path
         self.level = level
@@ -25,6 +36,9 @@ class Event(Platforms):
         self.sound.set_volume(0.5)
           
     def on_collision(self, player):
+        """ 
+        Función que se ejecuta cuando el jugador colisiona con el objeto.
+        """
         if not self.triggered:
             self.triggered = True
             data = {"level": self.level, "player_lifes":player.get_lifes() }
@@ -33,6 +47,10 @@ class Event(Platforms):
             globals.game.load_start(self.path)
     
     def no_key(self, life):
+        """
+        Función que se ejecuta cuando el jugador no tiene la llave
+        y se encuentra en el nivel 3.
+        """
         if (self.level-1) == 3:
             globals.game.load_player(3, life)
             globals.game.scene_end()

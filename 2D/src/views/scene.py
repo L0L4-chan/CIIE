@@ -20,12 +20,18 @@ from enemies.ghost import Ghost
 from enemies.bat import Bat
 from enemies.boss import Boss
 
-
-
-
+# Clase que representa una escena del juego
+# Se encarga de cargar los elementos de la escena
 class Scene():
     def __init__(self, background,file):
         super().__init__() 
+        """
+        Constructor de la clase Scene.
+        
+        :param background: Imagen de fondo de la escena.
+        :param String: Archivo JSON con la información de la escena.
+        
+        """
         self.background = background
         self.items = auxiliar.load_json(auxiliar.get_path(f"{ globals.config.get_artpath()}/levels/{ globals.config.get_difficulty()}/{file}"))
         self.platform = pygame.sprite.Group()
@@ -33,7 +39,8 @@ class Scene():
         self.it = pygame.sprite.Group()
   
         self.create_scene()
-        
+    
+    #Funcion encargada de la creacion de los objetos de la escena indicados en el json    
     def create_scene(self):    
         if self.items.get("platform"):
             for (x, y, w, h) in self.items["platform"]:

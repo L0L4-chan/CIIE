@@ -11,13 +11,21 @@ Version: 1.0.0
 
 import pygame ,  utils.globals as globals, utils.auxiliar as auxiliar
 from game.objects.prize import Prize
-
+#Clase que define los premios de vida extra que puede recoger el jugador.
+#Tiene un atributo para saber si se puede recoger o no, y un sonido asociado a la recogida.
 class Extra(Prize):
     def __init__(self,x,y):
-       super().__init__(x,y, "prize/003.png")
-       self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("Life.wav")))
-       self.sound.set_volume(0.5)
-       self.to_pick= True
+        """
+        Constructor de la clase Extra.
+        
+        :param x: Posición inicial en X.
+        :param y: Posición inicial en Y.
+        :return:  None
+        """
+        super().__init__(x,y, "prize/003.png")
+        self.sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("Life.wav")))
+        self.sound.set_volume(0.5)
+        self.to_pick= True
     
     #region set_use
     def set_use(self):

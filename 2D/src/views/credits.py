@@ -13,6 +13,10 @@ from game.base import Base
 
 class Credits(Base):
     def __init__(self):
+        """
+        Constructor de la clase Credits.
+        """
+        
         super().__init__()
         self.credits = aux.load_json(aux.get_path("Credits/credits.json"))  # Carga los créditos
         self.index = 0  # Índice del crédito actual (Asegúrate de que comience desde 0 o el índice adecuado)
@@ -20,15 +24,15 @@ class Credits(Base):
         self.font =  globals.config.get_font_title()  # Fuente del texto
         self.lines = self.credits[self.index].split('\n')  # Dividir el primer crédito en líneas por saltos de línea
 
+    # Iniciar la música
     def music_on(self):
       pygame.mixer.music.stop()
       pygame.mixer.music.load(aux.get_path(globals.config.get_audiobspath("10-Credits.wav")))
       pygame.mixer.music.play(-1)
     
+    # bucle que se encarga de mostrar los creditos por pantalla
     def run(self):
         self.running = True
-        
-        
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -36,10 +40,10 @@ class Credits(Base):
             
             current_time = pygame.time.get_ticks()
             if current_time - self.last_update_time > 10000:  # Verifica si es hora de cambiar el texto
-                self.index += 1  # Cambia de crédito
+                self.index += 1  # Cambia de linea
                 self.last_update_time = current_time
                 if self.index < len(self.credits):
-                    self.lines = self.credits[self.index].split('\n')  # Dividir el nuevo crédito en líneas
+                    self.lines = self.credits[self.index].split('\n')  # Dividir el nuevo texto en líneas
 
             # Dibujar fondo y texto
             self.screen.fill((0, 0, 0))  # Fondo negro
@@ -54,7 +58,7 @@ class Credits(Base):
 
             pygame.display.flip()  # Actualiza la pantalla
 
-            if self.index >= len(self.credits):  # Asegúrate de que el índice no se pase de la longitud de los créditos
+            if self.index >= len(self.credits):  # AAseguramos de que el índice no se pase de la longitud de los créditos
                 self.running = False  # Terminamos, si hemos mostrado todos los créditos
 
         globals.game.scene_end()

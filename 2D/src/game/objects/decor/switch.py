@@ -15,8 +15,22 @@ from game.objects.decor.platforms import Platforms
 from game.objects.decor.door import Door
 
 vec = pygame.math.Vector2  # Vector para cálculos de posición y velocidad
+#Clase ligada a un objeto Door, que al ser activado cambia de posición
+#y abre la puerta ligada a él.
+# También resetea la posicion de la puerta al estado original una vez
+#el tiempo de activación ha pasado.
 class Switch(Platforms):
     def __init__(self, x, y, door_x, door_y):
+        """
+        Constructor de la clase Switch.
+
+        :param x: Posición inicial en X.
+        :param y: Posición inicial en Y.
+        :param door_x: Posición inicial en X de la puerta ligada.
+        :param door_y: Posición inicial en Y de la puerta ligada.
+        :return: None
+        """
+        
         #cargamos las imagenes y asignamos tamaño de forma dinámica
         self.spritesheet = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/pushbutton/boton.PNG"))
         self.width = self.spritesheet.get_width()/2
@@ -40,12 +54,21 @@ class Switch(Platforms):
     
     #Funcion de actualización de estado por llamada de reloj       
     def update(self):
+        """
+        Inicializa la superficie de la plataforma.
+        """
         self.counter += 1
         if self.pressed and self.counter >= self.time:
             self.reset()
      
     #dibujado en pantalla           
     def draw(self, screen, position):
+        """
+        Dibuja la plataforma en pantalla.
+        : param screen: pantalla en la que se dibuja
+        : param position: posición en la que se dibuja
+
+        """
         if self.on_screen:
             screen.blit(self.surf,position) 
     
@@ -61,7 +84,7 @@ class Switch(Platforms):
             self.sound.play()
             self.surf = self.spritesheet.subsurface(self.frames["position"][1][0], self.frames["position"][1][1],self.width, self.height)   
             self.rect.y += (self.height / 2)
-            self.door.switch_position()
+            self.door.switch_position() #cambiamos la posición de la puerta
             self.counter = 0
             self.pressed = True
     
@@ -69,7 +92,7 @@ class Switch(Platforms):
     def reset(self):
         self.surf = self.spritesheet.subsurface(self.frames["position"][0][0], self.frames["position"][0][1],self.width, self.height)
         self.rect.y -= (self.height / 2)
-        self.door.reset_back()
+        self.door.reset_back() #restablecemos la posición de la puerta
         self.counter = 0
         self.sound.play()
         self.pressed = False

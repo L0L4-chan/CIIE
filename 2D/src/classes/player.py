@@ -33,18 +33,19 @@ class Player(Entity):
         # Llamamos al constructor de Entity con posición y dimensiones.
         super().__init__(x, y, self.width, self.height)
         self.surf = self.spritesheet.subsurface(pygame.Rect(0, 0, self.width, self.height))
-        self.vel = vec(0, 0)
-        self.got_key = False
+        #variables de movimiento que dependen de la configuracion de tamaño de la pantalla
         self.ACC =  globals.config.get_player_Acc()
         self.FRIC =  globals.config.get_player_fric()
         self.speed =  globals.config.get_player_speed()
         self.jump_Max =  globals.config.get_player_jump()
         self.y_acc_value =  globals.config.get_player_Acc()
+        # Otras variables de estado.
         self.lifes = 3
         self.death_sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("death.wav")))
         self.power_up_sound = pygame.mixer.Sound(auxiliar.get_path(globals.config.get_audiofxpath("ticktock.wav")))
         self.power_up_counter = 0
         self.death_timer = 0
+        self.got_key = False
         self.power_up = False
         self.jumping = False 
         self.shooting = False

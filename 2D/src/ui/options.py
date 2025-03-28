@@ -18,6 +18,9 @@ class Options(Base):
     
     def __init__(self):
         super().__init__() 
+        """
+        Constructor de la clase Options.
+        """
         self.bg = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/background/Options.jpg"))
         self.font =   globals.config.get_font_title()
         self.LANGUAGE =  globals.config.get_text_button(key ="LANGUAGE")
@@ -35,7 +38,11 @@ class Options(Base):
         # Botones del menú
         self.new_buttons()
 
+    # Manejo de eventos del mouse
     def handle_events(self):
+        """
+        Manejo de eventos del mouse.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -69,8 +76,14 @@ class Options(Base):
                     self.running = False
                     globals.game.load_menu()
                    
-    
+    # Cambiar el idioma
     def change_language(self,language): 
+        """
+        Cambia el idioma del juego.
+        
+        :param language: Idioma al que se cambia.
+        Actualiza todas las variables dependientes de texto a la nueva configuración.
+        """
         globals.config.update_config_lang(language)
         self.LANGUAGE =  globals.config.get_text_button(key ="LANGUAGE")
         self.op_1 =  globals.config.get_text_button(key ="galician")
@@ -87,8 +100,14 @@ class Options(Base):
         self.new_buttons()
         
                    
-    
+   # manejo de cambio de resolución 
     def change_resolution(self, path):
+        """
+        Cambia la resolución del juego.
+            
+        :param path: Ruta del archivo de configuración de la resolución.
+        Actualiza todas las variables dependientes de la resolución a la nueva configuración.
+        """
         globals.config.update_config_meassurement(path)  
         self.bg = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/background/Options.jpg"))
         self.screen_width =  globals.config.get_width()
@@ -96,7 +115,7 @@ class Options(Base):
         globals.game.change_resolution()
         self.new_buttons()
 
-
+    # Crear botones
     def new_buttons(self):        
         self.buttons = {
             "galician": Button(pos=((self.screen_width/12)*5, (self.screen_height/10)*3), text_input= self.op_1),
@@ -110,11 +129,13 @@ class Options(Base):
             "BACK": Button(pos=((self.screen_width/8)*5, (self.screen_height/10)*8), text_input=self. BACK )
             }
     
+    # Actualizar botones
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         for btn in self.buttons.values():
             btn.changeColor(mouse_pos)
 
+    # Dibujar en pantalla
     def render(self):
         self.screen.blit(self.bg, (0, 0))
         menu_text =self.font.render( globals.config.get_text_button(key="OPTIONS"), True, (255, 255, 255))
@@ -131,6 +152,7 @@ class Options(Base):
 
         pygame.display.update()
 
+    # Liberar recursos
     def cleanup(self):
         # Liberar recursos
         self.running = False 

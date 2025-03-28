@@ -17,6 +17,9 @@ class Menu(Base):
 
     def __init__(self):
         super().__init__()
+        """
+        Constructor de la clase Menu.
+        """
         self.bg = pygame.image.load(auxiliar.get_path(f"{ globals.config.get_artpath()}/background/Menu.jpg")) #add background
         # Botones del menu
         self.new_buttons() #create buttons
@@ -67,8 +70,8 @@ class Menu(Base):
             btn.render(self.screen)
         pygame.display.update() # show
 
+    # Liberar recursos de imágenes y botones
     def cleanup(self):
-        # Liberar recursos de imágenes y botones
         self.running = False 
         self.bg = None
         self.buttons.clear()

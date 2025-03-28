@@ -18,7 +18,9 @@ from game.base import Base
 from ui.button import Button
 vec = pygame.math.Vector2  
 
-
+#Clase que define el juego en sí, con la escena, los sprites, la cámara, los botones y el jugador.
+#Se encarga de gestionar los eventos, las colisiones y el renderizado de los elementos llamando a las funciones correspondientes
+# de cada elemento.
 class Game(Base):
     #region __init__
     def __init__(self, scene, sound ):
@@ -39,7 +41,7 @@ class Game(Base):
         self.group_lifes = pygame.sprite.Group()
         self.in_scene = pygame.sprite.Group()
         self.in_scene_now = pygame.sprite.Group() #elemetos en escena ahora
-        self.clock =  globals.game.get_clock()
+        self.clock =  globals.game.get_clock()# utiliza el relog del config
         self.FPS =  globals.config.get_fps()
         self.world_width = self.bg.get_width()   # O la dimensión que abarque todo el escenario
         self.world_height = self.bg.get_height()   # O la altura máxima del escenario
@@ -189,7 +191,7 @@ class Game(Base):
         globals.game.changeMusic(self.sound)    
         self.running = True
         while self.running:           
-            self.clock.tick(self.FPS)                                       # indicamos el numero de frames por segundo
+            self.clock.tick(self.FPS)  # indicamos el numero de frames por segundo
             self.handle_events()
             self.update()
             self.collision()

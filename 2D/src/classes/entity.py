@@ -15,7 +15,7 @@ vec = pygame.math.Vector2
 
 class Entity(pygame.sprite.Sprite):
     """
-    Clase base para todas las entidades (players, enemigos, utensilios, objetos, etc.)
+    Clase base para todas las entidades (players, enemigos)
     que comparten la lógica básica de movimiento y resolución de colisiones
     verticales y horizontales.
     """
